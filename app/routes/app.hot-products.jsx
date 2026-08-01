@@ -1,9 +1,14 @@
-import { Outlet } from "react-router";
+import VeltoLayout from "../components/velto/VeltoLayout.jsx";
 import { cozyWarmPremiumButton, cozyWarmPremiumButtonHover } 
 from "../components/styles/cozyButtons";
 
-export default function App() {
-  return <Outlet />;
+export default function HotProductsPage() {
+  return (
+    <VeltoLayout>
+      <h1>Hot Products</h1>
+      <p>Contenu simple pour l'instant.</p>
+    </VeltoLayout>
+  );
 }
 <Link
   to="/app/alerts"

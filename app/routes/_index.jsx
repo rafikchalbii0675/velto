@@ -1,7 +1,5 @@
-import { redirect } from "react-router";
-import { authenticate } from "../shopify.server";
+import { redirect } from "@remix-run/node";
 
-export const loader = async ({ request }) => {
-  await authenticate.admin(request);
-  return redirect("/app");
-};
+export function loader() {
+  return redirect("/app_index");
+}

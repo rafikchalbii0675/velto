@@ -1,3 +1,6 @@
+import { cozyWarmPremiumButton, cozyWarmPremiumButtonHover } 
+from "../components/styles/cozyButtons";
+
 export default function AdditionalPage() {
   return (
     <s-page heading="Additional page">
@@ -35,3 +38,11 @@ export default function AdditionalPage() {
     </s-page>
   );
 }
+<Link
+  to="/app/alerts"
+  style={cozyWarmPremiumButton}
+  onMouseEnter={(e) => Object.assign(e.target.style, cozyWarmPremiumButtonHover)}
+  onMouseLeave={(e) => Object.assign(e.target.style, cozyWarmPremiumButton)}
+>
+  Accéder au tableau de bord
+</Link>

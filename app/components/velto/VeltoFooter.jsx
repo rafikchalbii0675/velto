@@ -1,9 +1,20 @@
-import { Outlet } from "react-router";
 import { cozyWarmPremiumButton, cozyWarmPremiumButtonHover } 
 from "../components/styles/cozyButtons";
 
-export default function App() {
-  return <Outlet />;
+export default function VeltoFooter() {
+  return (
+    <footer
+      style={{
+        padding: "12px",
+        backgroundColor: "#3a2f28",
+        color: "#fff",
+        textAlign: "center",
+        marginTop: "20px",
+      }}
+    >
+      <small>© 2026 Velto — Cozy Warm Edition</small>
+    </footer>
+  );
 }
 <Link
   to="/app/alerts"

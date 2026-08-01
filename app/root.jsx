@@ -6,18 +6,35 @@ import {
   ScrollRestoration,
 } from "@remix-run/react";
 
-export default function App() {
+import { AppProvider } from "@shopify/polaris";
+import "@shopify/polaris/build/esm/styles.css";
+import translations from "@shopify/polaris/locales/fr.json";
+
+export function links() {
+  return [];
+}
+
+export function meta() {
+  return [
+    { charset: "utf-8" },
+    { title: "Velto" },
+    { viewport: "width=device-width, initial-scale=1" },
+  ];
+}
+
+export default function Root() {
   return (
     <html lang="fr">
       <head>
-        <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <Meta />
         <Links />
       </head>
 
       <body>
-        <Outlet />
+        <AppProvider i18n={translations}>
+          <Outlet />
+        </AppProvider>
+
         <ScrollRestoration />
         <Scripts />
       </body>
