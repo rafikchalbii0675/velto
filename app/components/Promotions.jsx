@@ -1,38 +1,158 @@
-import { json } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
-import { authenticate } from "../shopify.server";
-import VeltoLayout from "../components/velto/VeltoLayout";
-import CozyCard from "../components/CozyCard";
-import CozyButton from "../components/CozyButton";
-
-export async function loader({ request }) {
-  const { session } = await authenticate.admin(request);
-
-  const promotions = [
-    { id: 1, title: "Promo été", description: "20% sur toute la boutique" },
-    { id: 2, title: "Promo VIP", description: "30% pour les membres" },
-  ];
-
-  return json({ promotions });
-}
+import { useState } from "react";
+import { Form, useActionData } from "@remix-run/react";
+import VeltoLayout from "./velto/VeltoLayout";
 
 export default function Promotions() {
-  const { promotions } = useLoaderData();
+  const actionData = useActionData();
+  const [showForm, setShowForm] = useState(true);
 
   return (
-    <VeltoLayout>
-      <main style={{ padding: "20px" }}>
-        <h1>Promotions</h1>
+    <VeltoLayout title="Promotions intelligentes">
+      <p
+        style={{
+          fontSize: "16px",
+          color: "#6b5b4d",
+          marginBottom: "24px",
+        }}
+      >
+        Gérez vos campagnes chaleureuses, ciblées et efficaces.
+      </p>
 
-        {promotions.map((promo) => (
-          <CozyCard key={promo.id} title={promo.title}>
-            <p>{promo.description}</p>
-            <CozyButton onClick={() => alert("Modifier promo")}>
-              Modifier
-            </CozyButton>
-          </CozyCard>
-        ))}
-      </main>
+      <button
+        onClick={() => setShowForm((prev) => !prev)}
+        style={{
+          backgroundColor: "#c49b63",
+          color: "#fff",
+          padding: "12px 20px",
+          borderRadius: "999px",
+          border: "none",
+          cursor: "pointer",
+          fontWeight: "bold",
+          marginBottom: "20px",
+        }}
+        type="button"
+      >
+        {showForm ? "Masquer le formulaire" : "+ Créer une promotion"}
+      </button>
+
+      {showForm && (
+        <div
+          style={{
+            backgroundColor: "#faf7f3",
+            padding: "20px",
+            borderRadius: "12px",
+            marginBottom: "20px",
+            boxShadow: "0 2px 10px rgba(0,0,0,0.05)",
+          }}
+        >
+          <Form method="post">
+            <label style={{ color: "#3a2f28" }}>Titre de la promotion</label>
+            <input
+              name="title"
+              type="text"
+              placeholder="Ex: Cozy Warm -20%"
+              style={{
+                width: "100%",
+                padding: "10px",
+                marginTop: "8px",
+                marginBottom: "16px",
+                borderRadius: "8px",
+                border: "1px solid #ddd",
+              }}
+              required
+            />
+
+            <label style={{ color: "#3a2f28" }}>Pourcentage</label>
+            <input
+              name="percentage"
+              type="number"
+              placeholder="Ex: 20"
+              style={{
+                width: "100%",
+                padding: "10px",
+                marginTop: "8px",
+                marginBottom: "16px",
+                borderRadius: "8px",
+                border: "1px solid #ddd",
+              }}
+              min={1}
+              required
+            />
+
+            <div style={{ marginTop: "20px" }}>
+              <label style={{ color: "#3a2f28" }}>
+                Utiliser l’IA simple Cozy Warm
+              </label>
+              <input
+                type="radio"
+                name="ai"
+                value="simple"
+                style={{ marginLeft: "10px" }}
+              />
+
+              <br />
+
+              <label style={{ color: "#3a2f28" }}>
+                Utiliser l’IA avancée Cozy Warm
+              </label>
+              <input
+                type="radio"
+                name="ai"
+                value="advanced"
+                style={{ marginLeft: "10px" }}
+              />
+            </div>
+
+            <button
+              type="submit"
+              style={{
+                backgroundColor: "#8b6b3f",
+                color: "#fff",
+                padding: "12px 20px",
+                borderRadius: "999px",
+                border: "none",
+                cursor: "pointer",
+                fontWeight: "bold",
+                marginTop: "20px",
+              }}
+            >
+              Créer la promotion
+            </button>
+          </Form>
+        </div>
+      )}
+
+      {actionData?.error && (
+        <div
+          style={{
+            backgroundColor: "#ffe0e0",
+            padding: "20px",
+            borderRadius: "12px",
+            marginTop: "20px",
+            border: "1px solid #e8b2b2",
+          }}
+        >
+          <strong style={{ color: "#8b2a2a" }}>
+            Erreur : {actionData.error}
+          </strong>
+        </div>
+      )}
+
+      {actionData?.success && (
+        <div
+          style={{
+            backgroundColor: "#dfffe0",
+            padding: "20px",
+            borderRadius: "12px",
+            marginTop: "20px",
+            border: "1px solid #b2e8b5",
+          }}
+        >
+          <strong style={{ color: "#2a6f2a" }}>
+            Promotion créée avec succès !
+          </strong>
+        </div>
+      )}
     </VeltoLayout>
   );
 }

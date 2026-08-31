@@ -1,0 +1,471 @@
+.dashboard-ia {
+  padding: 40px;
+  background: #fdf8f3;
+  color: #3a2f2a;
+  font-family: "Inter", sans-serif;
+}
+
+.dashboard-ia h1 {
+  font-size: 2.4rem;
+  color: #c59d5f;
+  margin-bottom: 30px;
+}
+
+.dashboard-ia section {
+  background: white;
+  padding: 25px;
+  border-radius: 16px;
+  margin-bottom: 25px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.dashboard-ia h2 {
+  color: #c59d5f;
+  margin-bottom: 10px;
+}
+
+.crypto-item,
+.log-item {
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+}
+.filters {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.filters button {
+  background: #c59d5f;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.filters button:hover {
+  background: #b0894f;
+}
+
+.notification-item {
+  padding: 15px;
+  border-bottom: 1px solid #eee;
+}
+
+.notification-item strong {
+  color: #c59d5f;
+}
+
+.notification-item .date {
+  font-size: 0.8rem;
+  color: #7a6f69;
+  margin-top: 4px;
+}
+.login-page {
+  max-width: 400px;
+  margin: 80px auto;
+  background: #fff;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.login-page h1 {
+  color: #c59d5f;
+  margin-bottom: 20px;
+}
+
+.login-page input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+}
+
+.login-page button {
+  width: 100%;
+  padding: 12px;
+  background: #c59d5f;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.login-page button:hover {
+  background: #b0894f;
+}
+
+.button {
+  display: inline-block;
+  padding: 12px 20px;
+  background: #c59d5f;
+  color: white;
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: 600;
+}
+.error {
+  color: #b33a3a;
+  background: #fbeaea;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.success {
+  color: #2f7a3d;
+  background: #e6f4ea;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.dashboard-ia input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+}
+
+.dashboard-ia button {
+  background: #c59d5f;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.dashboard-ia button:hover {
+  background: #b0894f;
+}
+.error {
+  color: #b33a3a;
+  background: #fbeaea;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.success {
+  color: #2f7a3d;
+  background: #e6f4ea;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+section {
+  margin-bottom: 30px;
+}
+
+section h2 {
+  color: #c59d5f;
+  margin-bottom: 10px;
+}
+
+section button {
+  background: #c59d5f;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+section button:hover {
+  background: #b0894f;
+}
+.product-item {
+  padding: 15px;
+  border-bottom: 1px solid #eee;
+}
+
+.product-item strong {
+  color: #c59d5f;
+}
+
+.product-item.hot {
+  background: #fff4e6;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 15px;
+}
+.system-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.system-card {
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  text-align: center;
+}
+
+.system-card h3 {
+  color: #c59d5f;
+  margin-bottom: 10px;
+}
+
+.system-card.health {
+  background: #fff4e6;
+  border-left: 5px solid #c59d5f;
+}
+.search-input {
+  width: 100%;
+  padding: 12px;
+  margin: 20px 0;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+}
+
+.log-item {
+  padding: 15px;
+  border-bottom: 1px solid #eee;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+.log-item strong {
+  color: #c59d5f;
+}
+
+.log-item .date {
+  font-size: 0.8rem;
+  color: #7a6f69;
+}
+.ai-summary {
+  background: #fff4e6;
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+}
+
+.ai-summary h2 {
+  color: #c59d5f;
+}
+
+.ai-insights {
+  margin-top: 20px;
+}
+
+.insight-item {
+  background: #fff;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  margin-bottom: 10px;
+  border-left: 5px solid #c59d5f;
+}
+.ai-section {
+  margin-bottom: 30px;
+}
+
+.ai-section h2 {
+  color: #c59d5f;
+  margin-bottom: 10px;
+}
+
+.ai-item {
+  background: #fff;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  margin-bottom: 10px;
+  border-left: 5px solid #c59d5f;
+}
+
+.ai-item.action {
+  border-left-color: #b33a3a;
+  background: #ffe6e6;
+}
+
+.ai-item.optimization {
+  border-left-color: #2f7a3d;
+  background: #e6f4ea;
+}
+.ai-section {
+  margin-top: 20px;
+}
+
+.ai-item {
+  background: #fff;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  margin-bottom: 10px;
+  border-left: 5px solid #c59d5f;
+}
+
+button {
+  background: #c59d5f;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+button:hover {
+  background: #b0894f;
+}
+select {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+}
+
+label {
+  color: #c59d5f;
+  font-weight: 600;
+  margin-bottom: 10px;
+  display: block;
+}
+.vision-item {
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  margin-bottom: 20px;
+  border-left: 5px solid #c59d5f;
+}
+
+.vision-item h3 {
+  color: #c59d5f;
+  margin-bottom: 10px;
+}
+.points-box, .rewards-box, .offers-box, .suggestions-box {
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.reward-item, .offer-item {
+  padding: 15px;
+  border-left: 5px solid #c59d5f;
+  margin-bottom: 10px;
+  background: #fffdf7;
+}
+.offer-item {
+  background: #fff;
+  padding: 15px;
+  border-radius: 10px;
+  border-left: 5px solid #c59d5f;
+  margin-bottom: 10px;
+}
+
+.offer-item.premium {
+  border-left-color: #b33a3a;
+  background: #fff0e6;
+}
+.market-section {
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 25px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.market-item {
+  background: #fffdf7;
+  padding: 15px;
+  border-left: 5px solid #c59d5f;
+  border-radius: 10px;
+  margin-bottom: 15px;
+}
+
+.market-item h3 {
+  margin: 0;
+  color: #c59d5f;
+}
+.wallet-box {
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 25px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.transactions-box {
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.transaction-item {
+  background: #fffdf7;
+  padding: 15px;
+  border-left: 5px solid #c59d5f;
+  border-radius: 10px;
+  margin-bottom: 15px;
+}
+.notif-item {
+  background: #fffdf7;
+  padding: 15px;
+  border-left: 5px solid #c59d5f;
+  border-radius: 10px;
+  margin-bottom: 15px;
+}
+.coach-box, .coach-section {
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 25px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.coach-section p {
+  background: #fffdf7;
+  padding: 10px;
+  border-left: 5px solid #c59d5f;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+.success-item {
+  background: #fffdf7;
+  padding: 15px;
+  border-left: 5px solid #c59d5f;
+  border-radius: 10px;
+  margin-bottom: 15px;
+}
+.daily-box, .daily-section {
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 25px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.daily-section p {
+  background: #fffdf7;
+  padding: 10px;
+  border-left: 5px solid #c59d5f;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+.owner-box, .owner-section {
+  background: #fffdf7;
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 25px;
+  border-left: 6px solid #c59d5f;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}

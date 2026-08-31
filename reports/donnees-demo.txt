@@ -1,0 +1,22 @@
+﻿C:\dev\velto\app\components\Promotions.jsx:37: - Nouveaux clients détectés : ${newClients.length}
+C:\dev\velto\app\components\Promotions.jsx:42: - Offres de bienvenue pour les nouveaux clients
+C:\dev\velto\app\components\Promotions.jsx:189: { name: "Produit A", sales: 80 },
+C:\dev\velto\app\components\Promotions.jsx:192: { name: "Produit D", sales: 2 },
+C:\dev\velto\app\components\Promotions.jsx:286: <h4>Nouveaux clients :</h4>
+C:\dev\velto\app\models\iaFuture.server.js:23: if (level === "beginner") return "Je prévois que tu peux optimiser un produit aujourd’hui.";
+C:\dev\velto\app\models\iaPersonality.server.js:40: return "Doc, commence par optimiser un produit aujourd’hui.";
+C:\dev\velto\app\models\insights.server.js:23: insights.push("Aucun produit détecté. Ajoutez vos produits pour commencer l’analyse IA.");
+C:\dev\velto\app\models\promotionsAssistant.server.js:34: return "Ce produit a une bonne traction. Une petite optimisation peut augmenter les ventes.";
+C:\dev\velto\app\models\promotionsAssistant.server.js:36: return "Ce produit a du potentiel mais nécessite un ajustement de prix.";
+C:\dev\velto\app\models\successAssistant.server.js:28: if (merchant.products > 0) list.push("Premier produit ajouté");
+C:\dev\velto\app\models\visionAssistant.server.js:33: return "Ce produit a du potentiel mais nécessite une optimisation.";
+C:\dev\velto\app\routes\app.dashboard.jsx:10: topProduct: "Produit A",
+C:\dev\velto\app\routes\app.dashboard.jsx:11: weakProduct: "Produit D",
+C:\dev\velto\app\routes\app.dashboard.jsx:47: <h3 style={statTitle}>Nouveaux clients</h3>
+C:\dev\velto\app\routes\home.jsx:5: totalSales: 1280,
+C:\dev\velto\app\routes\home.jsx:9: topProduct: "Produit A",
+C:\dev\velto\app\routes\home.jsx:10: weakProduct: "Produit D",
+C:\dev\velto\app\routes\home.jsx:31: <h3 style={overviewTitle}>Ventes totales</h3>
+C:\dev\velto\app\routes\home.jsx:41: <h3 style={overviewTitle}>Nouveaux clients</h3>
+C:\dev\velto\app\routes\home.jsx:46: <h3 style={overviewTitle}>Promotions actives</h3>
+C:\dev\velto\app\utils\cozy-ai-advanced.js:14: reason: "Produit avec ventes très faibles",

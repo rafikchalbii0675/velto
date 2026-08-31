@@ -1,11 +1,19 @@
+// app/db.server.js
 import { PrismaClient } from "@prisma/client";
+
+// --- Velto PRO: gestion unique de l'instance Prisma ---
+// Remix recharge les modules à chaque requête en développement.
+// Pour éviter de créer 1000 connexions DB, on stocke Prisma dans globalThis.
 
 let prisma;
 
-if (!global.__db__) {
-  global.__db__ = new PrismaClient();
+if (!globalThis.__velto_prisma__) {
+  globalThis.__velto_prisma__ = new PrismaClient({
+    log: ["query", "info", "warn", "error"], // Logs PRO pour Velto
+  });
 }
 
-prisma = global.__db__;
+prisma = globalThis.__velto_prisma__;
 
-export { prisma };
+// --- Export PRO ---
+export default prisma;

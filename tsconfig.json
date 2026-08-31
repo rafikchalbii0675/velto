@@ -1,5 +1,10 @@
 {
-"include": ["app/**/*.jsx", "app/**/*.js", "**/*.js", "**/*.jsx"],
+  "include": [
+    "app/**/*.jsx",
+    "app/**/*.js",
+    "**/*.js",
+    "**/*.jsx"
+  ],
   "compilerOptions": {
     "lib": ["DOM", "DOM.Iterable", "ES2022"],
     "isolatedModules": true,
@@ -12,8 +17,11 @@
     "strict": true,
     "allowJs": true,
     "skipLibCheck": true,
-        "forceConsistentCasingInFileNames": true,
+    "forceConsistentCasingInFileNames": true,
     "noEmit": true,
-    "types": ["vite/client"]
+    "types": ["vite/client"],
+    "paths": {
+      "~/*": ["./app/*"]
+    }
   }
 }

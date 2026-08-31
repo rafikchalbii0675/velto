@@ -1,0 +1,19 @@
+:root {
+  --cozy-blue: #3a4fff;
+  --cozy-dark: #1a1a2e;
+  --cozy-light: #f5f7ff;
+}
+
+body {
+  background-color: var(--cozy-light);
+}
+
+.Polaris-Page {
+  background-color: white;
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.Polaris-Card {
+  border-radius: 12px !important;
+}

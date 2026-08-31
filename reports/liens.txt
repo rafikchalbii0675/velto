@@ -1,0 +1,22 @@
+﻿C:\dev\velto\app\routes\app.additional.jsx:17: href="https://shopify.dev/docs/apps/tools/app-bridge"
+C:\dev\velto\app\routes\app.additional.jsx:35: href="https://shopify.dev/docs/apps/design-guidelines/navigation#app-nav"
+C:\dev\velto\app\routes\app.additional.jsx:47: to="/app/alerts"
+C:\dev\velto\app\routes\app.index.jsx:45: <Link to="/app/promotions" style={{ fontSize: "18px", color: "#8b5e3c" }}>
+C:\dev\velto\app\routes\app.index.jsx:51: <Link to="/crypto" style={{ fontSize: "18px", color: "#8b5e3c" }}>
+C:\dev\velto\app\routes\app.index.jsx:57: <Link to="/dashboard" style={{ fontSize: "18px", color: "#8b5e3c" }}>
+C:\dev\velto\app\routes\app.marketplace.jsx:78: <Link to="/app.ai.vision">Accéder</Link>
+C:\dev\velto\app\routes\app.marketplace.jsx:84: <Link to="/app.ai.autopilot">Accéder</Link>
+C:\dev\velto\app\routes\app.marketplace.jsx:90: <Link to="/app.ai.points">Accéder</Link>
+C:\dev\velto\app\routes\app.marketplace.jsx:96: <Link to="/app.partners">Accéder</Link>
+C:\dev\velto\app\routes\app.onboarding.jsx:26: <a href={`/dashboard.ia?shop=${user.shopId}`} className="button">
+C:\dev\velto\app\routes\app.settings.jsx:96: to="/app_index"
+C:\dev\velto\app\routes\app._index.jsx:48: to="/app/alerts"
+C:\dev\velto\app\routes\home.jsx:66: <a href="/promotions" style={moduleCard}>
+C:\dev\velto\app\routes\home.jsx:71: <a href="/dashboard" style={moduleCard}>
+C:\dev\velto\app\routes\home.jsx:76: <a href="/crypto" style={moduleCard}>
+C:\dev\velto\app\routes\home.jsx:81: <a href="/settings" style={moduleCard}>
+C:\dev\velto\app\routes\Step3Finish.jsx:20: to="/app/dashboard"
+C:\dev\velto\app\routes\_index.jsx:9: <Link to="/promotions" style={{ fontSize: "20px" }}>
+C:\dev\velto\app\routes\_index.jsx:13: <Link to="/crypto-commerce" style={{ fontSize: "20px" }}>
+C:\dev\velto\app\routes\_index.jsx:17: <Link to="/dashboard" style={{ fontSize: "20px" }}>
+C:\dev\velto\app\routes\_index.jsx:21: <Link to="/home" style={{ fontSize: "20px" }}>

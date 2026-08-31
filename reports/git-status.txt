@@ -1,0 +1,143 @@
+﻿ D app/app/app/components/cozyButtons.js
+ D app/app/app/components/cozyHeader.js
+ D app/app/app/components/styles/cozySidebar.js
+ D app/app/app/cozyCards.js
+ D app/app/db.server.js
+ M app/components/Promotions.jsx
+ M app/components/onboarding/CozyCard.jsx
+ D app/components/onboarding/Header.jsx
+ D app/components/onboarding/HotProducts.jsx
+ M app/components/onboarding/Products.jsx
+ D "app/components/onboarding/cd app/components/onboarding.jsx"
+ M app/components/velto/VeltoFooter.jsx
+ D app/components/velto/VeltoHeader.jsx
+ M app/components/velto/VeltoLayout.jsx
+ M app/components/velto/VeltoSidebar.jsx
+ M app/db.server.js
+ M app/entry.server.jsx
+ M app/routes/_index.jsx
+ M app/routes/app._index.jsx
+ M app/routes/app.additional.jsx
+ M app/routes/app.alerts.jsx
+ D app/routes/app.hot-products.jsx
+ D app/routes/app.jsx
+ M app/routes/app.settings.jsx
+ D app/routes/app/routes/app.dashboard.jsx
+ D app/routes/app_index.jsx
+ D app/routes/auth.$.jsx
+ D app/routes/auth.login/route.jsx
+ D app/routes/crypto.jsx
+ D app/routes/onboarding.jsx
+ D app/routes/products.jsx
+ M app/routes/promotions.jsx
+ M app/utils/crypto.server.js
+ M package-lock.json
+ M package.json
+ M prisma/dev.db
+ M prisma/schema.prisma
+ M shopify.app.toml
+ M tsconfig.json
+?? "-File \357\201\274"
+?? _archive_velto/
+?? app/actions/
+?? app/app.ai.vision.jsx
+?? app/app.notifications.jsx
+?? app/assets/
+?? app/components/onboarding/Checkmark.jsx
+?? app/components/onboarding/FadeIn.jsx
+?? app/components/onboarding/FadeTransition.jsx
+?? app/components/onboarding/LoaderCozy.jsx
+?? app/components/onboarding/ProgressBar.jsx
+?? app/components/onboarding/Step1Priorities.jsx
+?? app/components/onboarding/Step2Details.jsx
+?? app/components/onboarding/Step3Finish.jsx
+?? app/components/onboarding/onboarding.jsx
+?? app/components/styles/
+?? app/components/velto/CozyFooter.jsx
+?? app/components/velto/CozyHeader.jsx
+?? app/components/velto/VeltoNav.jsx
+?? app/components/velto/VeltoWallet.jsx
+?? app/components/velto/db.server.js
+?? app/config/
+?? app/models/
+?? app/routes/Step1Priorities.jsx
+?? app/routes/Step3Finish.jsx
+?? app/routes/about.jsx
+?? app/routes/ai.jsx
+?? app/routes/api.autopilot.run.jsx
+?? app/routes/api.crypto.jsx
+?? app/routes/app.ai.advanced.jsx
+?? app/routes/app.ai.autopilot.jsx
+?? app/routes/app.ai.autopilot.settings.jsx
+?? app/routes/app.ai.jsx
+?? app/routes/app.ai.points.jsx
+?? app/routes/app.auth.jsx
+?? app/routes/app.auth.login/
+?? app/routes/app.coaching.jsx
+?? app/routes/app.crypto.jsx
+?? app/routes/app.daily.jsx
+?? app/routes/app.dashboard.jsx
+?? app/routes/app.hot_products.jsx
+?? app/routes/app.index.jsx
+?? app/routes/app.marketplace.jsx
+?? app/routes/app.notifications.jsx
+?? app/routes/app.onboarding.jsx
+?? app/routes/app.partners.jsx
+?? app/routes/app.products.jsx
+?? app/routes/app.profile.jsx
+?? app/routes/app.security.alerts.jsx
+?? app/routes/app.security.dashboard.jsx
+?? app/routes/app.security.jsx
+?? app/routes/app.success.jsx
+?? app/routes/app.system.jsx
+?? app/routes/app.wallet.jsx
+?? app/routes/brand.jsx
+?? app/routes/crypto-commerce.jsx
+?? app/routes/dashboard.ia.jsx
+?? app/routes/dashboard.jsx
+?? app/routes/dashboard.notifications.jsx
+?? app/routes/home.jsx
+?? app/routes/logs.jsx
+?? app/routes/owner.control.jsx
+?? app/routes/owner.dashboard.jsx
+?? app/routes/partnership.jsx
+?? app/routes/points.jsx
+?? app/routes/policy.jsx
+?? app/routes/register.jsx
+?? app/routes/rewards.jsx
+?? app/routes/roadmap.jsx
+?? app/routes/security.audit.jsx
+?? app/routes/settings.jsx
+?? app/routes/support.jsx
+?? app/routes/team.jsx
+?? app/routes/updates.jsx
+?? app/routes/webhooks.customers.jsx
+?? app/routes/webhooks.jsx
+?? app/routes/webhooks.products.jsx
+?? app/routes/webhooks.sales.jsx
+?? app/session.server.js
+?? app/styles/
+?? app/utils/ai.ml.suggestions.server.js
+?? app/utils/ai.suggestions.advanced.server.js
+?? app/utils/ai.suggestions.server.js
+?? app/utils/ai.velto.engine.server.js
+?? app/utils/audit.server.js
+?? app/utils/charts.js
+?? app/utils/cozy-ai-advanced.js
+?? app/utils/cozy-ai.js
+?? app/utils/createDiscount.js
+?? app/utils/notifications.server.js
+?? app/utils/regenerateToken.js
+?? app/utils/roles.server.js
+?? app/utils/security.alerts.server.js
+?? app/utils/shopify-analysis.js
+?? app/utils/shopify-discounts.js
+?? app/utils/verifyShopify.js
+?? app/utils/verifyVelto.js
+?? app/utils/webhook.server.js
+?? prisma/prisma/
+?? public/velto-logo-1200.png
+?? reports/
+?? structure_velto.txt
+?? velto_core.txt
+?? velto_structure.txt

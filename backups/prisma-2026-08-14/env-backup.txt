@@ -1,0 +1,6 @@
+SHOPIFY_API_KEY=f99b070bef6dec2b4386313ebe0af234
+SHOPIFY_API_SECRET=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
+SCOPES=write_products,read_products,read_orders
+
+DATABASE_URL="file:./prisma/dev.db"
+SESSION_SECRET=velto_session_2026_cozy_warm_premium_secure_93f7a4

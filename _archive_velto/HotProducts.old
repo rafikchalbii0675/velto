@@ -1,0 +1,118 @@
+import { Link, useLoaderData } from "@remix-run/react";
+import VeltoLayout from "../components/velto/VeltoLayout";
+
+export default function HotProducts() {
+  const { hotProducts } = useLoaderData();
+
+  return (
+    <VeltoLayout>
+      <main
+        style={{
+          padding: "32px",
+          maxWidth: "900px",
+          margin: "0 auto",
+        }}
+      >
+        <h1
+          style={{
+            marginBottom: "24px",
+            fontSize: "28px",
+            fontWeight: "700",
+            color: "#3a2f28",
+          }}
+        >
+          Produits chauds 🔥
+        </h1>
+
+        {/* Liste des produits chauds */}
+        <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+          {hotProducts?.map((p) => (
+            <div
+              key={p.id}
+              style={{
+                padding: "18px",
+                borderRadius: "12px",
+                backgroundColor: "#fdf8f3",
+                border: "1px solid #e8d9c5",
+                boxShadow: "0px 2px 6px rgba(0,0,0,0.06)",
+              }}
+            >
+              <h3
+                style={{
+                  margin: 0,
+                  fontSize: "20px",
+                  fontWeight: "600",
+                  color: "#3a2f28",
+                }}
+              >
+                {p.title}
+              </h3>
+
+              <div
+                style={{
+                  marginTop: "12px",
+                  display: "flex",
+                  gap: "12px",
+                  flexWrap: "wrap",
+                }}
+              >
+                <span
+                  style={{
+                    backgroundColor: "#d4f8d4",
+                    padding: "6px 10px",
+                    borderRadius: "8px",
+                    fontSize: "14px",
+                    fontWeight: "500",
+                  }}
+                >
+                  Tendance : {p.trend}
+                </span>
+
+                <span
+                  style={{
+                    backgroundColor: "#fff3c4",
+                    padding: "6px 10px",
+                    borderRadius: "8px",
+                    fontSize: "14px",
+                    fontWeight: "500",
+                  }}
+                >
+                  Vues : {p.views}
+                </span>
+
+                <span
+                  style={{
+                    backgroundColor: "#d4f8d4",
+                    padding: "6px 10px",
+                    borderRadius: "8px",
+                    fontSize: "14px",
+                    fontWeight: "500",
+                  }}
+                >
+                  Ventes : {p.sales}
+                </span>
+
+                <span
+                  style={{
+                    backgroundColor:
+                      p.inventory < 10 ? "#ffd4d4" : "#d4e8ff",
+                    padding: "6px 10px",
+                    borderRadius: "8px",
+                    fontSize: "14px",
+                    fontWeight: "500",
+                  }}
+                >
+                  Stock : {p.inventory}
+                </span>
+              </div>
+
+              <div style={{ marginTop: "16px" }}>
+                <Link
+                  to={`/products/${p.id}`}
+                  style={{
+                    padding: "10px 16px",
+                    backgroundColor: "#3a2f28",
+                    color: "#fff",
+                    borderRadius: "8px",
+                    textDecoration: "none",
+                    fontSize: "14px

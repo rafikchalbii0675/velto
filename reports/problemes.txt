@@ -1,0 +1,4 @@
+﻿C:\dev\velto\app\routes\app.settings.jsx:96: to="/app_index"
+C:\dev\velto\app\routes\webhooks.app.scopes_update.jsx:7: console.log(`Received ${topic} webhook for ${shop}`);
+C:\dev\velto\app\routes\webhooks.app.uninstalled.jsx:7: console.log(`Received ${topic} webhook for ${shop}`);
+C:\dev\velto\app\utils\audit.server.js:13: console.log(`[VELTO-SECURITY] ${timestamp} — ${event}`, details);

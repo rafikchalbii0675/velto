@@ -12,8 +12,7 @@ export default function handleRequest(
   responseHeaders,
   remixContext
 ) {
-  // Ajoute automatiquement les en-têtes nécessaires
-  // pour afficher Velto dans l’administration Shopify.
+  // Shopify ajoute ses propres headers
   shopify.addDocumentResponseHeaders(request, responseHeaders);
 
   return isbot(request.headers.get("user-agent"))
@@ -31,6 +30,9 @@ export default function handleRequest(
       );
 }
 
+/* ---------------------------------------------------------
+   BOT REQUEST (Google, Bing, etc.)
+--------------------------------------------------------- */
 function handleBotRequest(
   request,
   responseStatusCode,
@@ -43,6 +45,13 @@ function handleBotRequest(
       {
         onAllReady() {
           responseHeaders.set("Content-Type", "text/html");
+
+          // 🔥 Correction Shopify iframe
+          responseHeaders.delete("X-Frame-Options");
+          responseHeaders.set(
+            "Content-Security-Policy",
+            "frame-ancestors https://admin.shopify.com https://*.shopify.com;"
+          );
 
           const body = new PassThrough();
 
@@ -71,6 +80,9 @@ function handleBotRequest(
   });
 }
 
+/* ---------------------------------------------------------
+   BROWSER REQUEST (Shopify Admin)
+--------------------------------------------------------- */
 function handleBrowserRequest(
   request,
   responseStatusCode,
@@ -83,6 +95,13 @@ function handleBrowserRequest(
       {
         onShellReady() {
           responseHeaders.set("Content-Type", "text/html");
+
+          // 🔥 Correction Shopify iframe
+          responseHeaders.delete("X-Frame-Options");
+          responseHeaders.set(
+            "Content-Security-Policy",
+            "frame-ancestors https://admin.shopify.com https://*.shopify.com;"
+          );
 
           const body = new PassThrough();
 

@@ -1,48 +1,34 @@
-import { Link } from "@remix-run/react";
-import {
-  cozyHeaderContainer,
-  cozyHeaderTitle,
-  cozyHeaderBadge,
-  cozyHeaderLink,
-  cozyHeaderLinkHover,
-} from "../styles/cozyHeader";
-
-export default function VeltoHeader() {
+export default function VeltoHeader({ title }) {
   return (
-    <header style={cozyHeaderContainer}>
-      {/* Identité Velto */}
-      <h1 style={cozyHeaderTitle}>Velto — Cozy Commerce</h1>
+    <header
+      style={{
+        width: "100%",
+        padding: "20px 32px",
+        backgroundColor: "#3a2f28",
+        color: "#fff",
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        boxShadow: "0px 2px 8px rgba(0,0,0,0.15)",
+      }}
+    >
+      <h1
+        style={{
+          margin: 0,
+          fontSize: "22px",
+          fontWeight: "700",
+        }}
+      >
+        {title || "Velto Dashboard"}
+      </h1>
 
-      {/* Navigation + Badge */}
-      <div style={{ display: "flex", gap: "20px", alignItems: "center" }}>
-        <Link
-          to="/app_index"
-          style={cozyHeaderLink}
-          onMouseEnter={(e) => Object.assign(e.target.style, cozyHeaderLinkHover)}
-          onMouseLeave={(e) => Object.assign(e.target.style, cozyHeaderLink)}
-        >
-          Dashboard
-        </Link>
-
-        <Link
-          to="/app/settings"
-          style={cozyHeaderLink}
-          onMouseEnter={(e) => Object.assign(e.target.style, cozyHeaderLinkHover)}
-          onMouseLeave={(e) => Object.assign(e.target.style, cozyHeaderLink)}
-        >
-          Paramètres
-        </Link>
-
-        <Link
-          to="/crypto"
-          style={cozyHeaderLink}
-          onMouseEnter={(e) => Object.assign(e.target.style, cozyHeaderLinkHover)}
-          onMouseLeave={(e) => Object.assign(e.target.style, cozyHeaderLink)}
-        >
-          Crypto
-        </Link>
-
-        <div style={cozyHeaderBadge}>Adventure Mode</div>
+      <div
+        style={{
+          fontSize: "14px",
+          opacity: 0.9,
+        }}
+      >
+        Cozy Warm Edition
       </div>
     </header>
   );

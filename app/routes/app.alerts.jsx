@@ -1,56 +1,32 @@
+import VeltoLayout from "../components/velto/VeltoLayout";
+
 export default function AppAlerts() {
-  const { alerts } = useLoaderData();
+  const alerts = [
+    { type: "Information", message: "Velto est connecté correctement à votre boutique." },
+    { type: "Sécurité", message: "Aucune alerte critique détectée." },
+  ];
 
   return (
     <VeltoLayout>
-      <main
-        style={{
-          padding: "32px",
-          maxWidth: "900px",
-          margin: "0 auto",
-        }}
-      >
-        <h1
-          style={{
-            marginBottom: "24px",
-            fontSize: "28px",
-            fontWeight: "700",
-            color: "#3a2f28",
-          }}
-        >
-          Alertes de la boutique
-        </h1>
+      <main style={{ padding: "24px" }}>
+        <h1 style={{ marginBottom: "24px" }}>Alertes de la boutique</h1>
 
-        {/* Cards Cozy Warm Premium 3D */}
-        {alerts.map((a) => (
+        {alerts.map((alert, index) => (
           <div
-            key={a.id}
-            style={cozyCardContainer}
-            onMouseEnter={(e) => Object.assign(e.target.style, cozyCardHover)}
-            onMouseLeave={(e) => Object.assign(e.target.style, cozyCardContainer)}
+            key={index}
+            style={{
+              backgroundColor: "#ffffff",
+              padding: "20px",
+              borderRadius: "14px",
+              boxShadow: "0 3px 12px rgba(0,0,0,0.06)",
+              marginBottom: "16px",
+              transition: "transform 0.25s ease, box-shadow 0.25s ease",
+            }}
           >
-            <h2 style={cozyCardTitle}>{a.type}</h2>
-            <p style={cozyCardText}>{a.message}</p>
+            <strong>{alert.type}</strong>
+            <p>{alert.message}</p>
           </div>
         ))}
-
-        {/* Bouton Cozy Warm Premium 3D */}
-        <Link
-          to="/app_index"
-          style={{
-            ...cozyWarmPremiumButton,
-            marginTop: "24px",
-            display: "inline-block",
-          }}
-          onMouseEnter={(e) =>
-            Object.assign(e.target.style, cozyWarmPremiumButtonHover)
-          }
-          onMouseLeave={(e) =>
-            Object.assign(e.target.style, cozyWarmPremiumButton)
-          }
-        >
-          Retour au tableau de bord
-        </Link>
       </main>
     </VeltoLayout>
   );

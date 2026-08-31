@@ -1,6 +1,8 @@
 import { Link } from "@remix-run/react";
-import { cozyWarmPremiumButton, cozyWarmPremiumButtonHover } 
-from "../components/styles/cozyButtons";
+import {
+  cozyWarmPremiumButton,
+  cozyWarmPremiumButtonHover
+} from "../components/styles/cozyButtons";
 
 export default function AppIndex() {
   return (
@@ -45,8 +47,12 @@ export default function AppIndex() {
         <Link
           to="/app/alerts"
           style={cozyWarmPremiumButton}
-          onMouseEnter={(e) => Object.assign(e.target.style, cozyWarmPremiumButtonHover)}
-          onMouseLeave={(e) => Object.assign(e.target.style, cozyWarmPremiumButton)}
+          onMouseEnter={(e) =>
+            Object.assign(e.target.style, cozyWarmPremiumButtonHover)
+          }
+          onMouseLeave={(e) =>
+            Object.assign(e.target.style, cozyWarmPremiumButton)
+          }
         >
           Accéder au tableau de bord
         </Link>

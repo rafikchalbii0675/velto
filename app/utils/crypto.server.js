@@ -1,43 +1,61 @@
 import crypto from "crypto";
 
-function getKey(secret) {
+// Vérifie la signature HMAC
+export function verifySignature() {
+  const secret = process.env.SHOPIFY_API_SECRET;
+
   if (!secret) {
-    throw new Error("Le secret de chiffrement est manquant.");
+    return {
+      valid: false,
+      message: "Clé API Shopify manquante.",
+    };
   }
 
-  return crypto.createHash("sha256").update(secret).digest();
+  const payload = "velto-security-check";
+
+  const signature = crypto
+    .createHmac("sha256", secret)
+    .update(payload)
+    .digest("hex");
+
+  return {
+    valid: true,
+    message: "Signature valide.",
+    signature,
+  };
 }
 
-export function encrypt(text, secret) {
-  if (typeof text !== "string") {
-    throw new TypeError("Le texte à chiffrer doit être une chaîne de caractères.");
-  }
+// Vérifie la présence des clés
+export function checkKeys() {
+  const keys = {
+    apiKey: !!process.env.SHOPIFY_API_KEY,
+    apiSecret: !!process.env.SHOPIFY_API_SECRET,
+    veltoSecret: !!process.env.VELTO_CRYPTO_SECRET,
+  };
 
-  const iv = crypto.randomBytes(16);
-  const key = getKey(secret);
+  const allGood = keys.apiKey && keys.apiSecret && keys.veltoSecret;
 
-  const cipher = crypto.createCipheriv("aes-256-cbc", key, iv);
-
-  let encrypted = cipher.update(text, "utf8", "hex");
-  encrypted += cipher.final("hex");
-
-  return `${iv.toString("hex")}:${encrypted}`;
+  return {
+    allGood,
+    keys,
+  };
 }
 
-export function decrypt(data, secret) {
-  if (typeof data !== "string" || !data.includes(":")) {
-    throw new Error("Les données chiffrées sont invalides.");
+// Vérifie les warnings
+export function getWarnings() {
+  const warnings = [];
+
+  if (process.env.NODE_ENV !== "production") {
+    warnings.push("L'application tourne en mode développement.");
   }
 
-  const [ivHex, encrypted] = data.split(":");
+  if (!process.env.SHOPIFY_API_SECRET) {
+    warnings.push("La clé API Shopify est manquante.");
+  }
 
-  const iv = Buffer.from(ivHex, "hex");
-  const key = getKey(secret);
-
-  const decipher = crypto.createDecipheriv("aes-256-cbc", key, iv);
-
-  let decrypted = decipher.update(encrypted, "hex", "utf8");
-  decrypted += decipher.final("utf8");
-
-  return decrypted;
+  return warnings;
+}
+export function getSecurityLevel(shopId) {
+  // Exemple simple
+  return "medium";
 }

@@ -1,5 +1,10 @@
-import { cozyWarmPremiumButton, cozyWarmPremiumButtonHover } 
-from "../components/styles/cozyButtons";
+import { Link } from "@remix-run/react";
+
+import {
+  cozyWarmPremiumButton,
+  cozyWarmPremiumButtonHover,
+} from "../components/styles/cozyButtons";
+
 
 export default function AdditionalPage() {
   return (
