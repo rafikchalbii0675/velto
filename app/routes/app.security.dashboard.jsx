@@ -1,7 +1,7 @@
 import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { getSecurityEvents } from "../utils/audit.server";
-import { verifySignature, checkKeys, getWarnings, getSecurityLevel } from "../utils/crypto.server";
+import { verifySignature, checkKeys, getWarnings, getSecurityLevel } from "../utils/crypto.ai.server";
 import { FiShield, FiKey, FiAlertTriangle, FiCheckCircle } from "react-icons/fi";
 
 export async function loader() {

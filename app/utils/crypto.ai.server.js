@@ -1,4 +1,4 @@
-import crypto from "crypto";
+import { verifySignature } from "../utils/crypto/crypto.ai.server";
 
 // Vérifie la signature HMAC
 export function verifySignature() {
