@@ -1,7 +1,7 @@
 // app/components/IAOpportunityCard.jsx
 
 import React from "react";
-import { Card, Text, Badge, Button, Stack } from "@shopify/polaris";
+import { Card, Text, Badge, Button, InlineStack, VerticalStack } from "@shopify/polaris";
 
 export default function IAOpportunityCard({ opportunity, onApply, loading }) {
   if (!opportunity) return null;
@@ -11,19 +11,20 @@ export default function IAOpportunityCard({ opportunity, onApply, loading }) {
 
   return (
     <Card title="Opportunité IA du jour" sectioned>
-      <Stack vertical spacing="tight">
-        <Stack alignment="center">
+      <VerticalStack gap="4">
+        
+        <InlineStack align="center" gap="2">
           <Text as="h3" variant="headingMd">
             {title}
           </Text>
           <Badge status="info">IA recommandée</Badge>
-        </Stack>
+        </InlineStack>
 
         <Text as="p" variant="bodyMd">
           {description}
         </Text>
 
-        <Stack spacing="tight">
+        <InlineStack gap="2">
           {impact?.conversion && (
             <Badge status="success">
               Conversion {impact.conversion}
@@ -39,18 +40,19 @@ export default function IAOpportunityCard({ opportunity, onApply, loading }) {
               Rétention {impact.retention}
             </Badge>
           )}
-        </Stack>
+        </InlineStack>
 
         <Text as="p" variant="bodySm" tone="subdued">
           Transporteur recommandé : {carrier} · Valide jusqu’au {expiresAt}
         </Text>
 
-        <Stack distribution="trailing">
+        <InlineStack align="end">
           <Button primary onClick={onApply} loading={loading}>
             {actionLabel}
           </Button>
-        </Stack>
-      </Stack>
+        </InlineStack>
+
+      </VerticalStack>
     </Card>
   );
 }
