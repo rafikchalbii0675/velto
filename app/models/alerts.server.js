@@ -1,36 +1,33 @@
-import { prisma } from "~/db.server";
+// app/models/alerts.server.js
 
-export async function addAlert({
-  shopId,
-  type,
-  message,
-  severity = "info",
-}) {
-  if (!shopId) {
-    throw new Error("addAlert : shopId est obligatoire");
-  }
+// IMPORTANT : alias "~" casse dans Railway → chemin relatif 100% fiable
+import { prisma } from "../db.server";
 
-  if (!message) {
-    throw new Error("addAlert : message est obligatoire");
-  }
-
+// Ajouter une alerte
+export async function addAlert({ shopId, type, message }) {
   return prisma.alert.create({
     data: {
       shopId,
-      type: type || "system",
+      type,
       message,
-      severity,
+      createdAt: new Date(),
     },
   });
 }
 
+// Récupérer les alertes d’un shop
 export async function getAlerts(shopId) {
-  if (!shopId) {
-    return [];
-  }
-
   return prisma.alert.findMany({
     where: { shopId },
     orderBy: { createdAt: "desc" },
+    take: 50,
+  });
+}
+
+// Marquer une alerte comme lue
+export async function markAlertRead(id) {
+  return prisma.alert.update({
+    where: { id },
+    data: { read: true },
   });
 }
