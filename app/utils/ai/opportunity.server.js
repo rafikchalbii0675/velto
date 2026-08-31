@@ -1,3 +1,5 @@
+import { analyzeOpportunity } from "../utils/ai/opportunity.server";
+
 // app/utils/ia/opportunity.server.js
 
 // Ici tu pourras plus tard brancher une vraie IA (OpenAI, Azure, etc.)
