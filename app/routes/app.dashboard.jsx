@@ -10,7 +10,7 @@ import {
 import { Link, useLoaderData } from "@remix-run/react";
 
 import IAChart from "../components/IAChart";
-import { predictSales7Days } from "../utils/ai.sales.predict.server";
+import { predictSales7Days } from "../utils/ai.sales.predict";
 import { analyzeProduct } from "../utils/ai.product.analysis.server";
 import { generateMarketingText } from "../utils/ai.marketing.server";
 

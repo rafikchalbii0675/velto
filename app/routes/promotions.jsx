@@ -4,7 +4,7 @@ import {
   useActionData,
   Form,
 } from "@remix-run/react";
-import VeltoLayout from "../components/VeltoLayout";
+import VeltoLayout from "../components/velto/VeltoLayout";
 import { shopify } from "../shopify.server";
 import {
   Card,
