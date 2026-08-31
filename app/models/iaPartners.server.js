@@ -1,49 +1,33 @@
-import { prisma } from "~/db.server";
+// app/models/iaPartners.server.js
 
+// IMPORTANT : alias "~" casse dans Railway → chemin relatif 100% fiable
+import { prisma } from "../db.server";
+
+// Récupérer les offres partenaires selon le niveau IA
 export async function getPartnerOffersForLevel(level) {
   return prisma.partnerOffer.findMany({
-    where: { minLevel: level },
-    include: { partner: true },
+    where: { level },
+    orderBy: { createdAt: "desc" },
+    take: 50,
   });
 }
 
-export async function negotiatePartnerOffer(level, points) {
-  // IA négocie automatiquement selon le niveau + points
-  if (level === "premium" && points > 8000) {
-    return {
-      title: "Billet d’avion offert",
-      description: "Votre niveau Premium vous donne accès à un billet d’avion offert par notre partenaire.",
-      type: "travel",
-      value: 1,
-    };
-  }
+// Récupérer toutes les offres partenaires
+export async function getAllPartnerOffers() {
+  return prisma.partnerOffer.findMany({
+    orderBy: { createdAt: "desc" },
+  });
+}
 
-  if (level === "premium" && points > 5000) {
-    return {
-      title: "Nuit d’hôtel 5★",
-      description: "Profitez d’une nuit d’hôtel pour deux dans un établissement partenaire.",
-      type: "hotel",
-      value: 1,
-    };
-  }
-
-  if (level === "pro" && points > 2500) {
-    return {
-      title: "SPA complet",
-      description: "Un SPA complet pour deux offert par notre partenaire bien-être.",
-      type: "spa",
-      value: 1,
-    };
-  }
-
-  if (level === "beginner" && points > 500) {
-    return {
-      title: "Carte cadeau 25$",
-      description: "Une carte cadeau offerte pour vous encourager dans votre progression.",
-      type: "gift",
-      value: 25,
-    };
-  }
-
-  return null;
+// Ajouter une offre partenaire
+export async function addPartnerOffer({ level, title, description, link }) {
+  return prisma.partnerOffer.create({
+    data: {
+      level,
+      title,
+      description,
+      link,
+      createdAt: new Date(),
+    },
+  });
 }
