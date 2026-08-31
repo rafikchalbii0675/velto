@@ -1,31 +1,43 @@
-import { requireUserId } from "~/session.server";
+// app/routes/app.onboarding.jsx
+
 import { useLoaderData } from "@remix-run/react";
 import { json } from "@remix-run/node";
-import { prisma } from "~/db.server";
+import { requireUserId } from "~/session.server";
+
+// IMPORTANT : on utilise les modèles, pas Prisma directement
+import { getAllPartnerOffers } from "~/models/iaPartners.server";
+import { getAllRewards } from "~/models/iaRewards.server";
 
 export async function loader({ request }) {
   const userId = await requireUserId(request);
 
-  const user = await prisma.user.findUnique({
-    where: { id: userId },
-  });
+  // Pour l’onboarding, on montre tout ce qui est disponible
+  const partnerOffers = await getAllPartnerOffers();
+  const rewards = await getAllRewards();
 
-  return json({ user });
+  return json({ partnerOffers, rewards });
 }
 
 export default function Onboarding() {
-  const { user } = useLoaderData();
+  const { partnerOffers, rewards } = useLoaderData();
 
   return (
-    <div className="dashboard-ia">
-      <h1>Bienvenue sur Velto 🎉</h1>
+    <div>
+      <h1>Bienvenue dans Velto</h1>
 
-      <p>Votre compte est prêt.</p>
-      <p>Shop ID : {user.shopId}</p>
+      <h2>Offres partenaires disponibles</h2>
+      <ul>
+        {partnerOffers.map((offer) => (
+          <li key={offer.id}>{offer.title}</li>
+        ))}
+      </ul>
 
-      <a href={`/dashboard.ia?shop=${user.shopId}`} className="button">
-        Accéder au Dashboard IA
-      </a>
+      <h2>Récompenses IA disponibles</h2>
+      <ul>
+        {rewards.map((reward) => (
+          <li key={reward.id}>{reward.title}</li>
+        ))}
+      </ul>
     </div>
   );
 }
