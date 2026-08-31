@@ -1,59 +1,43 @@
-import { json } from "@remix-run/node";
+// app/routes/owner.dashboard.jsx
+
 import { useLoaderData } from "@remix-run/react";
+import { json } from "@remix-run/node";
 import { requireUserId } from "~/session.server";
-import { prisma } from "~/db.server";
+
+// IMPORTANT : on utilise les modèles, pas Prisma directement
+import { getAllPartnerOffers } from "~/models/iaPartners.server";
+import { getAllRewards } from "~/models/iaRewards.server";
 
 export async function loader({ request }) {
   const userId = await requireUserId(request);
 
-  const ownerPoints = await prisma.ownerPoints.findUnique({
-    where: { ownerId: userId }
-  });
+  // Le owner voit tout : toutes les offres + toutes les récompenses
+  const partnerOffers = await getAllPartnerOffers();
+  const rewards = await getAllRewards();
 
-  const ownerRewards = await prisma.ownerReward.findMany({
-    where: { ownerId: userId }
-  });
-
-  return json({ ownerPoints, ownerRewards });
+  return json({ partnerOffers, rewards });
 }
 
 export default function OwnerDashboard() {
-  const { ownerPoints, ownerRewards } = useLoaderData();
+  const { partnerOffers, rewards } = useLoaderData();
 
   return (
-    <div className="owner-dashboard">
-      <h1>Owner Dashboard — Studio Cozy Founder</h1>
+    <div>
+      <h1>Dashboard Owner</h1>
 
-      <section className="owner-box">
-        <h2>Niveau : {ownerPoints.level}</h2>
-        <p>Points : {ownerPoints.points}</p>
-        <p>Progression : {ownerPoints.progress}%</p>
-      </section>
+      <h2>Toutes les offres partenaires</h2>
+      <ul>
+        {partnerOffers.map((offer) => (
+          <li key={offer.id}>{offer.title}</li>
+        ))}
+      </ul>
 
-      <section className="owner-section">
-        <h2>Badges</h2>
-        {ownerRewards
-          .filter(r => r.type === "badge")
-          .map((badge, i) => <p key={i}>• {badge.title}</p>)}
-      </section>
-
-      <section className="owner-section">
-        <h2>Trophées</h2>
-        {ownerRewards
-          .filter(r => r.type === "trophy")
-          .map((trophy, i) => <p key={i}>🏆 {trophy.title}</p>)}
-      </section>
-
-      <section className="owner-section">
-        <h2>Privilèges</h2>
-        <p>• IA Future Engine</p>
-        <p>• IA Personality Engine</p>
-        <p>• IA Negotiation Engine</p>
-        <p>• IA System Control</p>
-        <p>• IA Marketplace Creator</p>
-        <p>• IA Partner Manager</p>
-        <p>• IA Premium Rewards Manager</p>
-      </section>
+      <h2>Toutes les récompenses IA</h2>
+      <ul>
+        {rewards.map((reward) => (
+          <li key={reward.id}>{reward.title}</li>
+        ))}
+      </ul>
     </div>
   );
 }
