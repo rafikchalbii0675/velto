@@ -5,15 +5,14 @@ import { prisma } from "../db.server";
 import { runAutopilot } from "./aiAutopilot.server";
 import { addSecurityLog } from "./securityLogs.server";
 
-// Exécuter les tâches planifiées
-export async function runScheduledTasks() {
+// Fonction principale : exécuter l'autopilot IA pour tous les shops
+export async function runScheduledAutopilot() {
   const shops = await prisma.shop.findMany({
     select: { id: true },
   });
 
   for (const shop of shops) {
     try {
-      // Exécution de l'autopilot IA pour chaque shop
       await runAutopilot({ shopId: shop.id });
     } catch (error) {
       await addSecurityLog({
@@ -27,3 +26,6 @@ export async function runScheduledTasks() {
 
   return { success: true };
 }
+
+// Alias interne si tu veux garder l’ancien nom
+export const runScheduledTasks = runScheduledAutopilot;
