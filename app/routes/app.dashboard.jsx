@@ -11,7 +11,7 @@ import { Link, useLoaderData } from "@remix-run/react";
 
 import IAChart from "../components/IAChart";
 import { predictSales7Days } from "../utils/ai.sales.predict";
-import { analyzeProduct } from "../utils/ai.product.analysis.server";
+import { analyzeProduct } from "../utils/ai.product.analysis";
 import { generateMarketingText } from "../utils/ai.marketing.server";
 
 // Tout le code qui appelle des modules .server.js doit vivre ici,
