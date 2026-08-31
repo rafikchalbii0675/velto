@@ -1,7 +1,7 @@
 // app/components/IAOpportunityCard.jsx
 
 import React from "react";
-import { Card, Text, Badge, Button, InlineStack, VerticalStack } from "@shopify/polaris";
+import { Card, Text, Badge, Button, InlineStack, BlockStack } from "@shopify/polaris";
 
 export default function IAOpportunityCard({ opportunity, onApply, loading }) {
   if (!opportunity) return null;
@@ -11,7 +11,7 @@ export default function IAOpportunityCard({ opportunity, onApply, loading }) {
 
   return (
     <Card title="Opportunité IA du jour" sectioned>
-      <VerticalStack gap="4">
+      <BlockStack gap="4">
         
         <InlineStack align="center" gap="2">
           <Text as="h3" variant="headingMd">
@@ -52,7 +52,7 @@ export default function IAOpportunityCard({ opportunity, onApply, loading }) {
           </Button>
         </InlineStack>
 
-      </VerticalStack>
+      </BlockStack>
     </Card>
   );
 }
