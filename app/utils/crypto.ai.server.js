@@ -1,4 +1,4 @@
-import { verifySignature } from "../utils/crypto/crypto.ai.server";
+import crypto from "crypto";
 
 // Vérifie la signature HMAC
 export function verifySignature() {
@@ -55,7 +55,8 @@ export function getWarnings() {
 
   return warnings;
 }
+
+// Niveau de sécurité (exemple simple)
 export function getSecurityLevel(shopId) {
-  // Exemple simple
   return "medium";
 }
