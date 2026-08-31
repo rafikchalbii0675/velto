@@ -1,30 +1,48 @@
-import { prisma } from "~/db.server";
+// app/models/products.server.js
 
+// IMPORTANT : alias "~" casse dans Railway → chemin relatif 100% fiable
+import { prisma } from "../db.server";
+
+// Récupérer les produits d’un shop
 export async function getProducts(shopId) {
   return prisma.product.findMany({
     where: { shopId },
     orderBy: { createdAt: "desc" },
+    take: 100,
   });
 }
 
-export async function updateProductScore(productId) {
-  const product = await prisma.product.findUnique({
-    where: { id: productId },
+// Récupérer un produit spécifique
+export async function getProductById(id) {
+  return prisma.product.findUnique({
+    where: { id },
   });
+}
 
-  // Score IA simple : ventes + prix / 10
-  const score = product.sales + product.price / 10;
+// Ajouter un produit
+export async function addProduct({ shopId, title, price, description }) {
+  return prisma.product.create({
+    data: {
+      shopId,
+      title,
+      price,
+      description,
+      createdAt: new Date(),
+    },
+  });
+}
 
+// Mettre à jour un produit
+export async function updateProduct(id, data) {
   return prisma.product.update({
-    where: { id: productId },
-    data: { score },
+    where: { id },
+    data,
   });
 }
 
-export async function getHotProducts(shopId) {
-  return prisma.product.findMany({
-    where: { shopId },
-    orderBy: { score: "desc" },
-    take: 10,
+// Supprimer un produit
+export async function deleteProduct(id) {
+  return prisma.product.delete({
+    where: { id },
   });
 }
