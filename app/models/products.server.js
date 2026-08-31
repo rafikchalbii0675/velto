@@ -1,6 +1,5 @@
 // app/models/products.server.js
 
-// IMPORTANT : alias "~" casse dans Railway → chemin relatif 100% fiable
 import { prisma } from "../db.server";
 
 // Récupérer les produits d’un shop
@@ -44,5 +43,14 @@ export async function updateProduct(id, data) {
 export async function deleteProduct(id) {
   return prisma.product.delete({
     where: { id },
+  });
+}
+
+// Récupérer les produits "hot" (les plus vendus, populaires, etc.)
+export async function getHotProducts(shopId) {
+  return prisma.product.findMany({
+    where: { shopId },
+    orderBy: { salesCount: "desc" },
+    take: 20,
   });
 }
