@@ -1,79 +1,63 @@
-import { prisma } from "~/db.server";
-import { addAlert } from "~/models/alerts.server";
-import { addSecurityLog } from "~/models/securityLogs.server";
+// app/models/aiAutopilot.server.js
 
-export async function runAutopilot(shopId) {
-  const products = await prisma.product.findMany({ where: { shopId } });
-  const crypto = await prisma.cryptoSale.findMany({ where: { shopId } });
-  const alerts = [];
+// IMPORTANT : alias "~" casse dans Railway → chemins relatifs 100% fiables
+import { prisma } from "../db.server";
+import { addAlert } from "./alerts.server";
+import { addSecurityLog } from "./securityLogs.server";
 
-  // -----------------------------
-  // AUTO‑OPTIMISATION : Prix produits
-  // -----------------------------
-  for (const p of products) {
-    // Produit cher sans ventes → baisse automatique
-    if (p.sales === 0 && p.price > 200) {
-      const newPrice = p.price * 0.85; // -15%
-
-      await prisma.product.update({
-        where: { id: p.id },
-        data: { price: newPrice },
-      });
-
-      alerts.push(`Prix réduit automatiquement pour ${p.title} → ${newPrice}$`);
-      await addAlert({
-        shopId,
-        type: "autopilot",
-        message: `Prix réduit automatiquement pour ${p.title}`,
-        severity: "medium",
-      });
-    }
-
-    // Produit très performant → augmentation automatique
-    if (p.sales > 1000) {
-      const newPrice = p.price * 1.10; // +10%
-
-      await prisma.product.update({
-        where: { id: p.id },
-        data: { price: newPrice },
-      });
-
-      alerts.push(`Prix augmenté automatiquement pour ${p.title} → ${newPrice}$`);
-      await addAlert({
-        shopId,
-        type: "autopilot",
-        message: `Prix augmenté automatiquement pour ${p.title}`,
-        severity: "low",
-      });
-    }
-  }
-
-  // -----------------------------
-  // AUTO‑SÉCURITÉ : Crypto
-  // -----------------------------
-  for (const c of crypto) {
-    if (c.amount > 10000) {
-      await addSecurityLog({
-        shopId,
-        type: "crypto",
-        message: `Auto‑Pilot : Transaction crypto très élevée détectée (${c.amount})`,
-        severity: "high",
-      });
-
-      alerts.push(`Auto‑Pilot : Transaction crypto élevée détectée (${c.amount})`);
-    }
-  }
-
-  // -----------------------------
-  // AUTO‑ANALYSE : Alertes critiques
-  // -----------------------------
-  const highAlerts = await prisma.alert.findMany({
-    where: { shopId, severity: "high" },
+// Fonction principale : exécution de l'autopilot IA
+export async function runAutopilot({ shopId }) {
+  // Récupérer les paramètres IA du shop
+  const settings = await prisma.autopilotSettings.findUnique({
+    where: { shopId },
   });
 
-  if (highAlerts.length > 0) {
-    alerts.push("Auto‑Pilot : Alertes critiques détectées. Vérification recommandée.");
+  if (!settings) {
+    await addAlert({
+      shopId,
+      type: "AUTOPILOT",
+      message: "Aucun paramètre IA trouvé pour ce shop.",
+    });
+
+    return { success: false, reason: "missing_settings" };
   }
 
-  return alerts;
+  // Exemple : exécuter une analyse IA
+  const analysis = await generateAutopilotAnalysis(shopId);
+
+  // Log de sécurité si anomalie détectée
+  if (analysis?.anomalyDetected) {
+    await addSecurityLog({
+      shopId,
+      type: "ANOMALY",
+      message: analysis.details,
+      severity: "HIGH",
+    });
+  }
+
+  // Sauvegarder le résultat IA
+  await prisma.autopilotResults.create({
+    data: {
+      shopId,
+      result: JSON.stringify(analysis),
+      createdAt: new Date(),
+    },
+  });
+
+  return { success: true, analysis };
+}
+
+// Exemple de fonction IA simulée
+async function generateAutopilotAnalysis(shopId) {
+  // Simu : détection d’anomalie aléatoire
+  const anomaly = Math.random() < 0.2;
+
+  return {
+    shopId,
+    anomalyDetected: anomaly,
+    details: anomaly
+      ? "Activité inhabituelle détectée dans les commandes."
+      : "Aucune anomalie détectée.",
+    score: Math.floor(Math.random() * 100),
+  };
 }
