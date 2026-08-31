@@ -1,6 +1,5 @@
 import VeltoLayout from "../components/velto/VeltoLayout";
 import {
-
   Page,
   Layout,
   Card,
@@ -8,15 +7,17 @@ import {
   Text,
   Button,
 } from "@shopify/polaris";
-import { Link } from "@remix-run/react";
+import { Link, useLoaderData } from "@remix-run/react";
 
 import IAChart from "../components/IAChart";
 import { predictSales7Days } from "../utils/ai.sales.predict.server";
 import { analyzeProduct } from "../utils/ai.product.analysis.server";
 import { generateMarketingText } from "../utils/ai.marketing.server";
 
-export default function DashboardRoute() {
-  // Données IA de base (tu pourras les remplacer par des vraies valeurs)
+// Tout le code qui appelle des modules .server.js doit vivre ici,
+// dans loader(). Cette fonction ne tourne QUE côté serveur —
+// c'est ce qui évite l'erreur "Server-only module referenced by client".
+export async function loader() {
   const ai = {
     marginRate: 40,
     newMarginRate: 25,
@@ -43,6 +44,14 @@ export default function DashboardRoute() {
     discount: 20,
     productName: "le T-shirt Velto édition Cozy Warm",
   });
+
+  return { ai, sales, productAI, marketing };
+}
+
+export default function DashboardRoute() {
+  // Le composant ne fait plus AUCUN appel direct aux modules .server.js.
+  // Il récupère simplement le résultat déjà calculé par loader().
+  const { ai, sales, productAI, marketing } = useLoaderData();
 
   return (
     <VeltoLayout title="Dashboard Cozy Warm">
