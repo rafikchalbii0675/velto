@@ -1,51 +1,39 @@
-import db from "../../db.server";
-import { createNotification } from "../notifications.server";
+// app/utils/ai/ai.suggestions.server.js
 
-export async function generateVeltoSuggestions() {
-  // 1) Produits peu performants
-  const lowProducts = await db.product.findMany({
-    where: { salesCount: { lt: 1 } },
-    take: 5,
+// IMPORTANT : aucune dépendance "~" → chemins relatifs uniquement
+import { prisma } from "../../db.server";
+
+// Génération d’une promotion simple (Cozy)
+export async function generateCozyPromotion(shopId) {
+  // Récupérer quelques données du shop
+  const shop = await prisma.shop.findUnique({
+    where: { id: shopId },
   });
 
-  for (const p of lowProducts) {
-    await createNotification({
-      type: "ai",
-      level: "info",
-      title: "Produit à optimiser",
-      message: `Le produit "${p.title}" n'a pas eu de ventes récemment. Pensez à une promotion ou à le revoir.`,
-    });
+  if (!shop) {
+    return {
+      success: false,
+      reason: "shop_not_found",
+    };
   }
 
-  // 2) Produits chauds
-  const hotProducts = await db.product.findMany({
-    where: { viewsCount: { gt: 100 } },
-    take: 5,
+  // Exemple : récupérer les produits les plus vendus
+  const topProducts = await prisma.product.findMany({
+    where: { shopId },
+    orderBy: { salesCount: "desc" },
+    take: 3,
   });
 
-  for (const p of hotProducts) {
-    await createNotification({
-      type: "ai",
-      level: "warning",
-      title: "Produit en tendance",
-      message: `Le produit "${p.title}" est en tendance. Une promotion ciblée pourrait augmenter vos ventes.`,
-    });
-  }
+  // Générer une promotion simple
+  const promo = {
+    title: "Cozy Deal",
+    description: `Promotion spéciale pour ${shop.name}`,
+    products: topProducts.map((p) => p.title),
+    discount: 10, // 10% par défaut
+  };
 
-  // 3) Pages SEO à améliorer
-  const weakPages = await db.page.findMany({
-    where: { seoScore: { lt: 50 } },
-    take: 5,
-  });
-
-  for (const page of weakPages) {
-    await createNotification({
-      type: "ai",
-      level: "info",
-      title: "Page SEO à améliorer",
-      message: `La page "${page.title}" a un score SEO faible. Pensez à améliorer le contenu et les balises.`,
-    });
-  }
-
-  return true;
+  return {
+    success: true,
+    promotion: promo,
+  };
 }
