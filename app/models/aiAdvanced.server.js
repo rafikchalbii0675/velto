@@ -3,9 +3,8 @@
 // IMPORTANT : alias "~" casse dans Railway → chemin relatif 100% fiable
 import { prisma } from "../db.server";
 
-// Analyse IA avancée pour un shop
+// Fonction IA avancée principale
 export async function runAdvancedAI({ shopId }) {
-  // Récupérer les données du shop
   const shop = await prisma.shop.findUnique({
     where: { id: shopId },
   });
@@ -14,7 +13,6 @@ export async function runAdvancedAI({ shopId }) {
     return { success: false, reason: "shop_not_found" };
   }
 
-  // Exemple : analyse IA avancée
   const metrics = await prisma.metric.findMany({
     where: { shopId },
     orderBy: { createdAt: "desc" },
@@ -23,7 +21,6 @@ export async function runAdvancedAI({ shopId }) {
 
   const score = calculateAdvancedScore(metrics);
 
-  // Sauvegarder le résultat IA
   await prisma.aiAdvancedResults.create({
     data: {
       shopId,
@@ -33,6 +30,11 @@ export async function runAdvancedAI({ shopId }) {
   });
 
   return { success: true, score };
+}
+
+// Alias demandé par le route
+export async function getAdvancedAI(shopId) {
+  return runAdvancedAI({ shopId });
 }
 
 // Exemple de calcul IA avancé
