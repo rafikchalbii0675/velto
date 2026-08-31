@@ -1,31 +1,29 @@
-import { prisma } from "~/db.server";
-import { runAutopilot } from "~/models/aiAutopilot.server";
-import { addSecurityLog } from "~/models/securityLogs.server";
+// app/models/scheduler.server.js
 
-export async function runScheduledAutopilot() {
-  const shops = await prisma.user.findMany({
-    select: { shopId: true },
+// IMPORTANT : alias "~" casse dans Railway → chemins relatifs 100% fiables
+import { prisma } from "../db.server";
+import { runAutopilot } from "./aiAutopilot.server";
+import { addSecurityLog } from "./securityLogs.server";
+
+// Exécuter les tâches planifiées
+export async function runScheduledTasks() {
+  const shops = await prisma.shop.findMany({
+    select: { id: true },
   });
 
-  const results = [];
-
   for (const shop of shops) {
-    const actions = await runAutopilot(shop.shopId);
-
-    if (actions.length > 0) {
+    try {
+      // Exécution de l'autopilot IA pour chaque shop
+      await runAutopilot({ shopId: shop.id });
+    } catch (error) {
       await addSecurityLog({
-        shopId: shop.shopId,
-        type: "autopilot",
-        message: `Auto‑Pilot programmé : ${actions.length} actions effectuées`,
-        severity: "medium",
+        shopId: shop.id,
+        type: "SCHEDULER_ERROR",
+        message: error?.message ?? "Erreur inconnue dans le scheduler",
+        severity: "HIGH",
       });
     }
-
-    results.push({
-      shopId: shop.shopId,
-      actions,
-    });
   }
 
-  return results;
+  return { success: true };
 }
