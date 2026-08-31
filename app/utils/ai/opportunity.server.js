@@ -1,16 +1,7 @@
-import { analyzeOpportunity } from "../utils/ai/opportunity.server";
-
-// app/utils/ia/opportunity.server.js
-
 // Ici tu pourras plus tard brancher une vraie IA (OpenAI, Azure, etc.)
 // Pour l’instant, on simule une recommandation intelligente.
 
 export async function getDailyOpportunity({ merchant, stats }) {
-  // Exemples de données possibles :
-  // merchant: { name, country, plan, ... }
-  // stats: { carrierStats, loyaltyStats, ordersStats, ... }
-
-  // Simu : on recommande Postes Canada avec des points bonus
   const opportunity = {
     id: "poste-canada-bonus-20",
     title: "Postes Canada — +20 points bonus cette semaine",
@@ -31,11 +22,7 @@ export async function getDailyOpportunity({ merchant, stats }) {
   return opportunity;
 }
 
-// Action simulée : création automatique d’une promotion
 export async function applyDailyOpportunity({ opportunity, merchant }) {
-  // Ici tu brancheras l’API Shopify (Discounts, Scripts, etc.)
-  // Pour l’instant, on simule une activation réussie.
-
   return {
     success: true,
     message: `La promotion IA "${opportunity.title}" a été activée pour ${merchant.name}.`,

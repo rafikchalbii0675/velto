@@ -6,12 +6,14 @@ import { useLoaderData, useFetcher } from "@remix-run/react";
 import { Page, Layout, Text } from "@shopify/polaris";
 
 import IAOpportunityCard from "~/components/IAOpportunityCard";
+
+// IMPORT CORRIGÉ (FINALEMENT LE BON)
 import {
   getDailyOpportunity,
   applyDailyOpportunity,
-} from "~/utils/ia/opportunity.server";
+} from "../utils/ai/opportunity.server";
 
-// 🔹 Loader : récupère l’opportunité IA du jour
+// ◆ Loader : récupère l’opportunité IA du jour
 export async function loader({ request }) {
   // TODO: récupérer le marchand depuis la session Shopify
   const merchant = {
@@ -21,82 +23,59 @@ export async function loader({ request }) {
 
   const stats = {}; // TODO: brancher tes stats réelles
 
+  // Appel IA (corrigé)
   const opportunity = await getDailyOpportunity({ merchant, stats });
 
   return json({ opportunity, merchant });
 }
 
-// 🔹 Action : applique l’opportunité (création promo, etc.)
+// ◆ Action : applique l’opportunité IA
 export async function action({ request }) {
   const formData = await request.formData();
-  const opportunityId = formData.get("opportunityId");
 
-  // TODO: récupérer le marchand depuis la session Shopify
-  const merchant = {
-    id: "merchant-123",
-    name: "Boutique Demo Velto",
-  };
-
-  // Dans un vrai cas, tu retrouverais l’opportunité par ID
-  const opportunity = await getDailyOpportunity({ merchant, stats: {} });
-
-  if (!opportunity || opportunity.id !== opportunityId) {
-    return json(
-      { success: false, message: "Opportunité IA introuvable." },
-      { status: 400 }
-    );
-  }
+  const opportunity = JSON.parse(formData.get("opportunity"));
+  const merchant = JSON.parse(formData.get("merchant"));
 
   const result = await applyDailyOpportunity({ opportunity, merchant });
 
   return json(result);
 }
 
-export default function IAOpportunityPage() {
+// ◆ Page React
+export default function OpportunityRoute() {
   const { opportunity, merchant } = useLoaderData();
   const fetcher = useFetcher();
-  const [localMessage, setLocalMessage] = useState(null);
 
-  const loading = fetcher.state !== "idle";
+  const [activated, setActivated] = useState(false);
 
-  const handleApply = () => {
-    setLocalMessage(null);
+  const handleActivate = () => {
     fetcher.submit(
-      { opportunityId: opportunity.id },
+      {
+        opportunity: JSON.stringify(opportunity),
+        merchant: JSON.stringify(merchant),
+      },
       { method: "post" }
     );
-  };
 
-  React.useEffect(() => {
-    if (fetcher.data?.message) {
-      setLocalMessage(fetcher.data.message);
-    }
-  }, [fetcher.data]);
+    setActivated(true);
+  };
 
   return (
     <Page title="Opportunité IA du jour">
       <Layout>
         <Layout.Section>
-          <Text as="p" variant="bodyMd" tone="subdued">
-            Marchand : {merchant.name}
-          </Text>
-        </Layout.Section>
-
-        <Layout.Section>
           <IAOpportunityCard
             opportunity={opportunity}
-            onApply={handleApply}
-            loading={loading}
+            activated={activated}
+            onActivate={handleActivate}
           />
-        </Layout.Section>
 
-        {localMessage && (
-          <Layout.Section>
-            <Text as="p" variant="bodyMd" tone="success">
-              {localMessage}
+          {fetcher.data?.success && (
+            <Text variant="bodyMd" tone="success">
+              {fetcher.data.message}
             </Text>
-          </Layout.Section>
-        )}
+          )}
+        </Layout.Section>
       </Layout>
     </Page>
   );
