@@ -1,49 +1,61 @@
-import { json } from "@remix-run/node";
+// app/routes/app.coaching.jsx
+
 import { useLoaderData } from "@remix-run/react";
+import { json } from "@remix-run/node";
 import { requireUserId } from "~/session.server";
-import { prisma } from "~/db.server";
-import { getCoachingAdvice, getActionPlan } from "~/models/iaCoaching.server";
+
+// IMPORTANT : alias "~" interdit → chemin relatif obligatoire
+import { prisma } from "../db.server";
 
 export async function loader({ request }) {
-  await requireUserId(request);
+  const userId = await requireUserId(request);
 
-  const url = new URL(request.url);
-  const shopId = url.searchParams.get("shop");
+  // Récupérer le shop du propriétaire
+  const shop = await prisma.shop.findUnique({
+    where: { ownerId: userId },
+  });
 
-  const pointsData = await prisma.iAPoints.findUnique({ where: { shopId } });
+  if (!shop) {
+    return json({
+      shopFound: false,
+      coaching: null,
+    });
+  }
 
-  const advice = getCoachingAdvice(pointsData.level);
-  const plan = getActionPlan(pointsData.level);
+  // Exemple : récupérer des données de coaching IA
+  const coaching = {
+    recommendedActions: [
+      "Optimiser les promotions",
+      "Analyser les produits à faible conversion",
+      "Améliorer les descriptions",
+    ],
+    points: shop.points,
+  };
 
-  return json({ pointsData, advice, plan });
+  return json({
+    shopFound: true,
+    coaching,
+  });
 }
 
-export default function CoachingIA() {
-  const { pointsData, advice, plan } = useLoaderData();
+export default function Coaching() {
+  const { shopFound, coaching } = useLoaderData();
+
+  if (!shopFound) {
+    return <p>Aucun shop trouvé pour cet utilisateur.</p>;
+  }
 
   return (
-    <div className="dashboard-ia">
-      <h1>Coaching IA — Votre Coach Intelligent</h1>
+    <div>
+      <h1>Coaching IA</h1>
+      <p>Points actuels : {coaching.points}</p>
 
-      <section className="coach-box">
-        <h2>Niveau : {pointsData.level.toUpperCase()}</h2>
-        <p>Points IA : {pointsData.points}</p>
-        <p>Progression : {pointsData.progress}%</p>
-      </section>
-
-      <section className="coach-section">
-        <h2>Conseils IA</h2>
-        {advice.map((a, i) => (
-          <p key={i}>• {a}</p>
+      <h2>Actions recommandées :</h2>
+      <ul>
+        {coaching.recommendedActions.map((action, i) => (
+          <li key={i}>{action}</li>
         ))}
-      </section>
-
-      <section className="coach-section">
-        <h2>Plan d’action IA (7 jours)</h2>
-        {plan.map((p, i) => (
-          <p key={i}>• {p}</p>
-        ))}
-      </section>
+      </ul>
     </div>
   );
 }
