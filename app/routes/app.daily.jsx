@@ -1,48 +1,70 @@
+// app/routes/app.daily.jsx
+
 import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { requireUserId } from "~/session.server";
-import { prisma } from "~/db.server";
-import { getDailyGreeting, getDailyPriorities, getDailyMotivation } from "~/models/iaDaily.server";
+
+// IMPORTANT : chemin relatif pour Railway
+import { prisma } from "../db.server";
 
 export async function loader({ request }) {
-  await requireUserId(request);
+  const userId = await requireUserId(request);
 
-  const url = new URL(request.url);
-  const shopId = url.searchParams.get("shop");
+  // On récupère le shop de l'utilisateur
+  const shop = await prisma.shop.findUnique({
+    where: { ownerId: userId },
+    include: {
+      logs: true,
+      products: true,
+      promotions: true,
+    },
+  });
 
-  const pointsData = await prisma.iAPoints.findUnique({ where: { shopId } });
+  if (!shop) {
+    return json({
+      shopFound: false,
+      daily: null,
+    });
+  }
 
-  const greeting = getDailyGreeting("Studio Cozy");
-  const priorities = getDailyPriorities(pointsData.level);
-  const motivation = getDailyMotivation(pointsData.level);
+  // Rapport du jour
+  const today = new Date();
+  const todayString = today.toISOString().split("T")[0];
 
-  return json({ greeting, priorities, motivation, pointsData });
+  const logsToday = shop.logs.filter(
+    (log) => log.createdAt.toISOString().split("T")[0] === todayString
+  );
+
+  return json({
+    shopFound: true,
+    daily: {
+      date: todayString,
+      name: shop.name,
+      points: shop.points,
+      productsCount: shop.products.length,
+      promotionsCount: shop.promotions.length,
+      logsTodayCount: logsToday.length,
+    },
+  });
 }
 
-export default function DailyAssistant() {
-  const { greeting, priorities, motivation, pointsData } = useLoaderData();
+export default function DailyReport() {
+  const { shopFound, daily } = useLoaderData();
+
+  if (!shopFound) {
+    return <p>Aucun shop trouvé pour cet utilisateur.</p>;
+  }
 
   return (
-    <div className="dashboard-ia">
-      <h1>Assistant du Jour</h1>
+    <div style={{ padding: "20px" }}>
+      <h1>Rapport du jour</h1>
 
-      <section className="daily-box">
-        <h2>{greeting}</h2>
-        <p>Niveau : {pointsData.level.toUpperCase()}</p>
-        <p>Progression : {pointsData.progress}%</p>
-      </section>
-
-      <section className="daily-section">
-        <h2>Priorités du jour</h2>
-        {priorities.map((p, i) => (
-          <p key={i}>• {p}</p>
-        ))}
-      </section>
-
-      <section className="daily-section">
-        <h2>Motivation du jour</h2>
-        <p>{motivation}</p>
-      </section>
+      <p><strong>Date :</strong> {daily.date}</p>
+      <p><strong>Nom du shop :</strong> {daily.name}</p>
+      <p><strong>Points :</strong> {daily.points}</p>
+      <p><strong>Produits :</strong> {daily.productsCount}</p>
+      <p><strong>Promotions :</strong> {daily.promotionsCount}</p>
+      <p><strong>Logs aujourd'hui :</strong> {daily.logsTodayCount}</p>
     </div>
   );
 }
