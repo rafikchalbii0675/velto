@@ -1,46 +1,62 @@
-import { json } from "@remix-run/node";
+// app/routes/app.wallet.jsx
+
 import { useLoaderData } from "@remix-run/react";
+import { json } from "@remix-run/node";
 import { requireUserId } from "~/session.server";
-import { prisma } from "~/db.server";
+
+// IMPORTANT : alias "~" interdit → chemin relatif obligatoire
+import { prisma } from "../db.server";
 
 export async function loader({ request }) {
-  await requireUserId(request);
+  const userId = await requireUserId(request);
 
-  const url = new URL(request.url);
-  const shopId = url.searchParams.get("shop");
-
-  const wallet = await prisma.iAWallet.findUnique({ where: { shopId } });
-  const transactions = await prisma.iATransaction.findMany({
-    where: { shopId },
-    orderBy: { createdAt: "desc" },
+  const shop = await prisma.shop.findUnique({
+    where: { ownerId: userId },
+    include: {
+      transactions: true,
+    },
   });
 
-  return json({ wallet, transactions });
+  if (!shop) {
+    return json({
+      shopFound: false,
+      wallet: null,
+    });
+  }
+
+  return json({
+    shopFound: true,
+    wallet: {
+      points: shop.points,
+      transactions: shop.transactions,
+    },
+  });
 }
 
-export default function WalletIA() {
-  const { wallet, transactions } = useLoaderData();
+export default function Wallet() {
+  const { shopFound, wallet } = useLoaderData();
+
+  if (!shopFound) {
+    return <p>Aucun shop trouvé pour cet utilisateur.</p>;
+  }
 
   return (
-    <div className="dashboard-ia">
-      <h1>IA Wallet — Portefeuille Intelligent</h1>
+    <div>
+      <h1>Wallet</h1>
+      <p>Points : {wallet.points}</p>
 
-      <section className="wallet-box">
-        <h2>Points IA : {wallet.points}</h2>
-        <h2>Récompenses : {wallet.rewards}</h2>
-      </section>
-
-      <section className="transactions-box">
-        <h2>Historique des transactions IA</h2>
-        {transactions.map((t) => (
-          <div key={t.id} className="transaction-item">
-            <strong>{t.title}</strong>
-            <p>Type : {t.type}</p>
-            <p>Montant : {t.amount}</p>
-            <p>Date : {new Date(t.createdAt).toLocaleString()}</p>
-          </div>
-        ))}
-      </section>
+      <h2>Transactions</h2>
+      {wallet.transactions.length === 0 ? (
+        <p>Aucune transaction.</p>
+      ) : (
+        <ul>
+          {wallet.transactions.map((t) => (
+            <li key={t.id}>
+              {t.type} — {t.amount} points — {new Date(t.createdAt).toLocaleDateString()}
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }
