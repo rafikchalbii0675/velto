@@ -1,57 +1,36 @@
-import { json } from "@remix-run/node";
+// app/routes/app.system.jsx
+
 import { useLoaderData } from "@remix-run/react";
+import { json } from "@remix-run/node";
 import { requireUserId } from "~/session.server";
+
+// IMPORTANT : importer le module serveur dans le loader (serveur)
 import { getSystemStatus } from "~/models/system.server";
 
 export async function loader({ request }) {
-  await requireUserId(request);
+  const userId = await requireUserId(request);
 
-  const url = new URL(request.url);
-  const shopId = url.searchParams.get("shop");
+  const result = await getSystemStatus(userId);
 
-  const stats = await getSystemStats(shopId);
-
-  return json({ stats });
+  return json(result);
 }
 
-export default function SystemIA() {
-  const { stats } = useLoaderData();
+export default function System() {
+  const { shopFound, system } = useLoaderData();
+
+  if (!shopFound) {
+    return <p>Aucun shop trouvé pour cet utilisateur.</p>;
+  }
 
   return (
-    <div className="dashboard-ia">
-      <h1>Système IA — Monitoring interne</h1>
-
-      <section className="system-grid">
-        <div className="system-card">
-          <h3>Points IA</h3>
-          <p>{stats.totalPoints}</p>
-        </div>
-
-        <div className="system-card">
-          <h3>Transactions Crypto</h3>
-          <p>{stats.totalCrypto}</p>
-        </div>
-
-        <div className="system-card">
-          <h3>Alertes IA</h3>
-          <p>{stats.totalAlerts}</p>
-        </div>
-
-        <div className="system-card">
-          <h3>Logs Sécurité</h3>
-          <p>{stats.totalSecurityLogs}</p>
-        </div>
-
-        <div className="system-card">
-          <h3>Produits</h3>
-          <p>{stats.totalProducts}</p>
-        </div>
-
-        <div className="system-card health">
-          <h3>Santé IA</h3>
-          <p>{stats.healthScore} / 100</p>
-        </div>
-      </section>
+    <div>
+      <h1>Système</h1>
+      <p>Nom : {system.name}</p>
+      <p>Points : {system.points}</p>
+      <p>Logs : {system.logsCount}</p>
+      <p>Produits : {system.productsCount}</p>
+      <p>Promotions : {system.promotionsCount}</p>
+      <p>Créé le : {new Date(system.createdAt).toLocaleDateString()}</p>
     </div>
   );
 }
