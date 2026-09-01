@@ -1,41 +1,93 @@
-// app/routes/app.ai.jsx
+// app/routes/register.jsx
 
 import { json } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
-import { requireUserId } from "~/session.server";
+import { useActionData, Form } from "@remix-run/react";
 
-// IMPORT SERVEUR → autorisé uniquement dans le loader
-import { getAIInsights } from "../models/insights.server";
+import { prisma } from "../db.server";
+import { createUser } from "~/models/user.server";
+import { createUserSession } from "~/session.server";
 
-export async function loader({ request }) {
-  const userId = await requireUserId(request);
+export async function action({ request }) {
+  const formData = await request.formData();
 
-  const result = await getAIInsights(userId);
+  const email = formData.get("email");
+  const password = formData.get("password");
 
-  return json(result);
-}
-
-export default function AIInsightsRoute() {
-  const data = useLoaderData();
-
-  if (!data.shopFound) {
-    return <p>Aucun shop trouvé pour cet utilisateur.</p>;
+  if (!email || !password) {
+    return json(
+      { error: "Tous les champs sont obligatoires." },
+      { status: 400 }
+    );
   }
 
-  const ai = data.ai;
+  // Vérifier si l'utilisateur existe déjà
+  const existingUser = await prisma.user.findUnique({
+    where: { email },
+  });
+
+  if (existingUser) {
+    return json(
+      { error: "Un utilisateur avec cet email existe déjà." },
+      { status: 400 }
+    );
+  }
+
+  // Créer l'utilisateur
+  const user = await createUser(email, password);
+
+  // Créer la session et rediriger
+  return createUserSession({
+    request,
+    userId: user.id,
+    redirectTo: "/app",
+  });
+}
+
+export default function RegisterRoute() {
+  const actionData = useActionData();
 
   return (
     <div style={{ padding: "20px" }}>
-      <h1>Insights IA</h1>
+      <h1>Créer un compte</h1>
 
-      <p><strong>Score IA :</strong> {ai.score}</p>
-      <p><strong>Points :</strong> {ai.points}</p>
-      <p><strong>Produits :</strong> {ai.products}</p>
-      <p><strong>Promotions :</strong> {ai.promotions}</p>
-      <p><strong>Logs :</strong> {ai.logs}</p>
+      {actionData?.error && (
+        <p style={{ color: "red" }}>{actionData.error}</p>
+      )}
 
-      <h2>Recommandation IA</h2>
-      <p>{ai.recommendation}</p>
+      <Form method="post">
+        <div style={{ marginBottom: "10px" }}>
+          <label>Email</label>
+          <input
+            type="email"
+            name="email"
+            required
+            style={{ display: "block", width: "100%", padding: "8px" }}
+          />
+        </div>
+
+        <div style={{ marginBottom: "10px" }}>
+          <label>Mot de passe</label>
+          <input
+            type="password"
+            name="password"
+            required
+            style={{ display: "block", width: "100%", padding: "8px" }}
+          />
+        </div>
+
+        <button
+          type="submit"
+          style={{
+            padding: "10px 20px",
+            backgroundColor: "#2563eb",
+            color: "white",
+            border: "none",
+            borderRadius: "4px",
+          }}
+        >
+          Créer mon compte
+        </button>
+      </Form>
     </div>
   );
 }
