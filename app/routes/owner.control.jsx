@@ -1,49 +1,52 @@
-import { json } from "@remix-run/node";
+// app/routes/owner.control.jsx
+
 import { useLoaderData } from "@remix-run/react";
+import { json } from "@remix-run/node";
 import { requireUserId } from "~/session.server";
-import { prisma } from "~/db.server";
+
+// IMPORTANT : alias "~" interdit → chemin relatif obligatoire
+import { prisma } from "../db.server";
 
 export async function loader({ request }) {
   const userId = await requireUserId(request);
 
-  const ownerPoints = await prisma.ownerPoints.findUnique({
-    where: { ownerId: userId }
+  // Récupérer le shop du propriétaire
+  const shop = await prisma.shop.findUnique({
+    where: { ownerId: userId },
   });
 
-  const modules = await prisma.module.findMany();
-  const merchants = await prisma.merchant.findMany();
-  const partners = await prisma.partner.findMany();
+  if (!shop) {
+    return json({
+      shopFound: false,
+      owner: null,
+    });
+  }
 
-  return json({ ownerPoints, modules, merchants, partners });
+  return json({
+    shopFound: true,
+    owner: {
+      id: shop.id,
+      name: shop.name,
+      points: shop.points,
+      createdAt: shop.createdAt,
+    },
+  });
 }
 
-export default function OwnerControlPanel() {
-  const { ownerPoints, modules, merchants, partners } = useLoaderData();
+export default function OwnerControl() {
+  const { shopFound, owner } = useLoaderData();
+
+  if (!shopFound) {
+    return <p>Aucun shop trouvé pour cet utilisateur.</p>;
+  }
 
   return (
-    <div className="owner-control">
-      <h1>Owner Control Panel — Studio Cozy Founder</h1>
-
-      <section className="owner-box">
-        <h2>Niveau : {ownerPoints.level}</h2>
-        <p>Points : {ownerPoints.points}</p>
-        <p>Progression : {ownerPoints.progress}%</p>
-      </section>
-
-      <section className="owner-section">
-        <h2>Modules IA</h2>
-        {modules.map((m, i) => <p key={i}>• {m.name}</p>)}
-      </section>
-
-      <section className="owner-section">
-        <h2>Marchands</h2>
-        {merchants.map((m, i) => <p key={i}>• {m.shopName}</p>)}
-      </section>
-
-      <section className="owner-section">
-        <h2>Partenaires IA</h2>
-        {partners.map((p, i) => <p key={i}>• {p.name}</p>)}
-      </section>
+    <div>
+      <h1>Contrôle du propriétaire</h1>
+      <p>Nom du shop : {owner.name}</p>
+      <p>ID : {owner.id}</p>
+      <p>Points : {owner.points}</p>
+      <p>Créé le : {new Date(owner.createdAt).toLocaleDateString()}</p>
     </div>
   );
 }
