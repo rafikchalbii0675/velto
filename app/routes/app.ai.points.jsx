@@ -1,64 +1,44 @@
-import { json } from "@remix-run/node";
+// app/routes/app.ai.points.jsx
+
 import { useLoaderData } from "@remix-run/react";
+import { json } from "@remix-run/node";
 import { requireUserId } from "~/session.server";
-import { prisma } from "~/db.server";
-import { getRewardsForLevel, getPartnerOffers } from "~/models/iaRewards.server";
-import { getSuggestions } from "~/models/iaSuggestions.server";
+
+// IMPORTANT : alias "~" interdit → chemin relatif obligatoire
+import { prisma } from "../db.server";
 
 export async function loader({ request }) {
-  await requireUserId(request);
+  const userId = await requireUserId(request);
 
-  const url = new URL(request.url);
-  const shopId = url.searchParams.get("shop");
+  // Récupérer les points du shop
+  const shop = await prisma.shop.findUnique({
+    where: { ownerId: userId },
+  });
 
-  const data = await prisma.iAPoints.findUnique({ where: { shopId } });
+  if (!shop) {
+    return json({
+      points: 0,
+      shopFound: false,
+    });
+  }
 
-  const rewards = await getRewardsForLevel(data.level);
-  const offers = await getPartnerOffers(data.level);
-  const suggestions = getSuggestions(data.level);
-
-  return json({ data, rewards, offers, suggestions });
+  return json({
+    points: shop.points,
+    shopFound: true,
+  });
 }
 
-export default function IAPoints() {
-  const { data, rewards, offers, suggestions } = useLoaderData();
+export default function AiPoints() {
+  const { points, shopFound } = useLoaderData();
+
+  if (!shopFound) {
+    return <p>Aucun shop trouvé pour cet utilisateur.</p>;
+  }
 
   return (
-    <div className="dashboard-ia">
-      <h1>Points & Récompenses IA</h1>
-
-      <section className="points-box">
-        <h2>Niveau : {data.level.toUpperCase()}</h2>
-        <p>{data.points} points</p>
-        <p>Progression : {data.progress}%</p>
-      </section>
-
-      <section className="rewards-box">
-        <h2>Récompenses débloquées</h2>
-        {rewards.map((r) => (
-          <div key={r.id} className="reward-item">
-            <strong>{r.title}</strong>
-            <p>{r.description}</p>
-          </div>
-        ))}
-      </section>
-
-      <section className="offers-box">
-        <h2>Offres partenaires</h2>
-        {offers.map((o) => (
-          <div key={o.id} className="offer-item">
-            <strong>{o.partnerName}</strong>
-            <p>{o.offerTitle}</p>
-          </div>
-        ))}
-      </section>
-
-      <section className="suggestions-box">
-        <h2>Suggestions IA pour progresser</h2>
-        {suggestions.map((s, i) => (
-          <p key={i}>{s}</p>
-        ))}
-      </section>
+    <div>
+      <h1>Points IA</h1>
+      <p>Total des points : {points}</p>
     </div>
   );
 }
