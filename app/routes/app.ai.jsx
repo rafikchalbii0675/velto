@@ -1,56 +1,90 @@
-import { json } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
-import { requireUserId } from "~/session.server";
-import { getAIInsights } from "~/models/insights.server";
+// app/models/insights.server.js
 
-export async function loader({ request }) {
-  await requireUserId(request);
+// IMPORTANT : alias "~" interdit → chemin relatif obligatoire
+import { prisma } from "../db.server";
 
-  const url = new URL(request.url);
-  const shopId = url.searchParams.get("shop");
+/**
+ * Insights généraux du shop
+ */
+export async function getInsights(shopId) {
+  const shop = await prisma.shop.findUnique({
+    where: { id: shopId },
+    include: {
+      products: true,
+      promotions: true,
+      logs: true,
+    },
+  });
 
-  const data = await getAIInsights(shopId);
+  if (!shop) {
+    return {
+      shopFound: false,
+      insights: null,
+    };
+  }
 
-  return json(data);
+  return {
+    shopFound: true,
+    insights: {
+      name: shop.name,
+      points: shop.points,
+      productsCount: shop.products.length,
+      promotionsCount: shop.promotions.length,
+      logsCount: shop.logs.length,
+      createdAt: shop.createdAt,
+    },
+  };
 }
 
-export default function AIGlobal() {
-  const { insights, stats } = useLoaderData();
+/**
+ * Insights IA pour la page app.ai.jsx
+ * Analyse simple basée sur les données du shop
+ */
+export async function getAIInsights(shopId) {
+  const shop = await prisma.shop.findUnique({
+    where: { id: shopId },
+    include: {
+      products: true,
+      promotions: true,
+      logs: true,
+    },
+  });
 
-  return (
-    <div className="dashboard-ia">
-      <h1>Vue d’ensemble IA</h1>
+  if (!shop) {
+    return {
+      shopFound: false,
+      ai: null,
+    };
+  }
 
-      {/* Résumé IA */}
-      <section className="ai-summary">
-        <h2>Résumé IA</h2>
-        <p>
-          L’IA a analysé votre boutique et détecté :
-          <br />
-          <strong>{stats.totalSales}</strong> transactions crypto,
-          <br />
-          <strong>{stats.totalProducts}</strong> produits,
-          <br />
-          <strong>{stats.highAlerts}</strong> alertes critiques,
-          <br />
-          <strong>{stats.mediumAlerts}</strong> alertes moyennes,
-          <br />
-          <strong>{stats.logs}</strong> logs sécurité.
-        </p>
-      </section>
+  // Analyse IA simple
+  const score =
+    shop.products.length * 2 +
+    shop.promotions.length * 3 +
+    shop.logs.length * 1 +
+    shop.points / 10;
 
-      {/* Insights IA */}
-      <section className="ai-insights">
-        <h2>Insights IA</h2>
+  let recommendation = "Continue comme ça !";
 
-        {insights.length === 0 && <p>Aucun insight IA pour le moment.</p>}
+  if (score < 20) {
+    recommendation = "Ajoute plus de produits pour augmenter ton impact.";
+  } else if (score < 50) {
+    recommendation =
+      "Active plus de promotions pour booster ton engagement.";
+  } else if (score > 100) {
+    recommendation =
+      "Ton shop est très actif ! Pense à automatiser certaines tâches.";
+  }
 
-        {insights.map((i, index) => (
-          <div key={index} className="insight-item">
-            {i}
-          </div>
-        ))}
-      </section>
-    </div>
-  );
+  return {
+    shopFound: true,
+    ai: {
+      score,
+      recommendation,
+      products: shop.products.length,
+      promotions: shop.promotions.length,
+      logs: shop.logs.length,
+      points: shop.points,
+    },
+  };
 }
