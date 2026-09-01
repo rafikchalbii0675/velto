@@ -1,90 +1,41 @@
-// app/models/insights.server.js
+// app/routes/app.ai.jsx
 
-// IMPORTANT : alias "~" interdit → chemin relatif obligatoire
-import { prisma } from "../db.server";
+import { json } from "@remix-run/node";
+import { useLoaderData } from "@remix-run/react";
+import { requireUserId } from "~/session.server";
 
-/**
- * Insights généraux du shop
- */
-export async function getInsights(shopId) {
-  const shop = await prisma.shop.findUnique({
-    where: { id: shopId },
-    include: {
-      products: true,
-      promotions: true,
-      logs: true,
-    },
-  });
+// IMPORT SERVEUR → autorisé uniquement dans le loader
+import { getAIInsights } from "../models/insights.server";
 
-  if (!shop) {
-    return {
-      shopFound: false,
-      insights: null,
-    };
-  }
+export async function loader({ request }) {
+  const userId = await requireUserId(request);
 
-  return {
-    shopFound: true,
-    insights: {
-      name: shop.name,
-      points: shop.points,
-      productsCount: shop.products.length,
-      promotionsCount: shop.promotions.length,
-      logsCount: shop.logs.length,
-      createdAt: shop.createdAt,
-    },
-  };
+  const result = await getAIInsights(userId);
+
+  return json(result);
 }
 
-/**
- * Insights IA pour la page app.ai.jsx
- * Analyse simple basée sur les données du shop
- */
-export async function getAIInsights(shopId) {
-  const shop = await prisma.shop.findUnique({
-    where: { id: shopId },
-    include: {
-      products: true,
-      promotions: true,
-      logs: true,
-    },
-  });
+export default function AIInsightsRoute() {
+  const data = useLoaderData();
 
-  if (!shop) {
-    return {
-      shopFound: false,
-      ai: null,
-    };
+  if (!data.shopFound) {
+    return <p>Aucun shop trouvé pour cet utilisateur.</p>;
   }
 
-  // Analyse IA simple
-  const score =
-    shop.products.length * 2 +
-    shop.promotions.length * 3 +
-    shop.logs.length * 1 +
-    shop.points / 10;
+  const ai = data.ai;
 
-  let recommendation = "Continue comme ça !";
+  return (
+    <div style={{ padding: "20px" }}>
+      <h1>Insights IA</h1>
 
-  if (score < 20) {
-    recommendation = "Ajoute plus de produits pour augmenter ton impact.";
-  } else if (score < 50) {
-    recommendation =
-      "Active plus de promotions pour booster ton engagement.";
-  } else if (score > 100) {
-    recommendation =
-      "Ton shop est très actif ! Pense à automatiser certaines tâches.";
-  }
+      <p><strong>Score IA :</strong> {ai.score}</p>
+      <p><strong>Points :</strong> {ai.points}</p>
+      <p><strong>Produits :</strong> {ai.products}</p>
+      <p><strong>Promotions :</strong> {ai.promotions}</p>
+      <p><strong>Logs :</strong> {ai.logs}</p>
 
-  return {
-    shopFound: true,
-    ai: {
-      score,
-      recommendation,
-      products: shop.products.length,
-      promotions: shop.promotions.length,
-      logs: shop.logs.length,
-      points: shop.points,
-    },
-  };
+      <h2>Recommandation IA</h2>
+      <p>{ai.recommendation}</p>
+    </div>
+  );
 }
