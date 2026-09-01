@@ -1,7 +1,7 @@
 import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { requireUserId } from "~/session.server";
-import { getSystemStats } from "~/models/system.server";
+import { getSystemStatus } from "~/models/system.server";
 
 export async function loader({ request }) {
   await requireUserId(request);
