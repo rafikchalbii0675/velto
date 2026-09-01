@@ -1,20 +1,34 @@
-import { prisma } from "~/db.server";
+// app/models/dashboard.server.js
+
+// IMPORTANT : alias "~" interdit → chemin relatif obligatoire
+import { prisma } from "../db.server";
 
 export async function getDashboardData(shopId) {
-  const points = await prisma.points.findUnique({
-    where: { shopId },
+  const shop = await prisma.shop.findUnique({
+    where: { id: shopId },
+    include: {
+      products: true,
+      promotions: true,
+      logs: true,
+    },
   });
 
-  const logs = await prisma.logs.findMany({
-    orderBy: { date: "desc" },
-    take: 20,
-  });
+  if (!shop) {
+    return {
+      shopFound: false,
+      data: null,
+    };
+  }
 
-  const crypto = await prisma.cryptoSale.findMany({
-    where: { shopId },
-    orderBy: { createdAt: "desc" },
-    take: 20,
-  });
-
-  return { points, logs, crypto };
+  return {
+    shopFound: true,
+    data: {
+      name: shop.name,
+      points: shop.points,
+      productsCount: shop.products.length,
+      promotionsCount: shop.promotions.length,
+      logsCount: shop.logs.length,
+      createdAt: shop.createdAt,
+    },
+  };
 }
