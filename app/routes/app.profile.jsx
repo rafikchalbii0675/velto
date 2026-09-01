@@ -1,67 +1,53 @@
-import { json } from "@remix-run/node";
+// app/routes/app.profile.jsx
+
 import { Form, useLoaderData, useActionData } from "@remix-run/react";
+import { json } from "@remix-run/node";
 import { requireUserId } from "~/session.server";
-import { prisma } from "~/db.server";
+
+// IMPORTANT : alias "~" interdit → chemin relatif obligatoire
+import { prisma } from "../db.server";
 
 export async function loader({ request }) {
   const userId = await requireUserId(request);
 
-  const user = await prisma.user.findUnique({
-    where: { id: userId },
+  const shop = await prisma.shop.findUnique({
+    where: { ownerId: userId },
   });
 
-  return json({ user });
-}
-
-export async function action({ request }) {
-  const userId = await requireUserId(request);
-  const form = await request.formData();
-
-  const newShopId = form.get("shopId");
-
-  if (!newShopId || newShopId.length < 3) {
-    return json({ error: "Shop ID invalide." }, { status: 400 });
+  if (!shop) {
+    return json({
+      shopFound: false,
+      profile: null,
+    });
   }
 
-  await prisma.user.update({
-    where: { id: userId },
-    data: { shopId: newShopId },
+  return json({
+    shopFound: true,
+    profile: {
+      name: shop.name,
+      points: shop.points,
+      createdAt: shop.createdAt,
+    },
   });
-
-  return json({ success: "Shop ID mis à jour avec succès." });
 }
 
 export default function Profile() {
-  const { user } = useLoaderData();
-  const actionData = useActionData();
+  const { shopFound, profile } = useLoaderData();
+
+  if (!shopFound) {
+    return <p>Aucun shop trouvé pour cet utilisateur.</p>;
+  }
 
   return (
-    <div className="dashboard-ia">
-      <h1>Profil Marchand</h1>
+    <div>
+      <h1>Profil du shop</h1>
+      <p>Nom : {profile.name}</p>
+      <p>Points : {profile.points}</p>
+      <p>Créé le : {new Date(profile.createdAt).toLocaleDateString()}</p>
 
-      <section>
-        <h2>Informations du compte</h2>
-        <p><strong>Email :</strong> {user.email}</p>
-        <p><strong>Shop ID actuel :</strong> {user.shopId}</p>
-      </section>
-
-      <section>
-        <h2>Modifier le Shop ID</h2>
-
-        {actionData?.error && <p className="error">{actionData.error}</p>}
-        {actionData?.success && <p className="success">{actionData.success}</p>}
-
-        <Form method="post">
-          <input
-            type="text"
-            name="shopId"
-            placeholder="Nouveau Shop ID"
-            defaultValue={user.shopId}
-            required
-          />
-          <button type="submit">Mettre à jour</button>
-        </Form>
-      </section>
+      <Form method="post">
+        <button type="submit">Mettre à jour le profil</button>
+      </Form>
     </div>
   );
 }
