@@ -1,36 +1,49 @@
-import { json } from "@remix-run/node";
+// app/routes/app.success.jsx
+
 import { useLoaderData } from "@remix-run/react";
+import { json } from "@remix-run/node";
 import { requireUserId } from "~/session.server";
-import { prisma } from "~/db.server";
+
+// IMPORTANT : alias "~" interdit → chemin relatif obligatoire
+import { prisma } from "../db.server";
 
 export async function loader({ request }) {
-  await requireUserId(request);
+  const userId = await requireUserId(request);
 
-  const url = new URL(request.url);
-  const shopId = url.searchParams.get("shop");
-
-  const successes = await prisma.iASuccess.findMany({
-    where: { shopId },
-    orderBy: { createdAt: "desc" },
+  const shop = await prisma.shop.findUnique({
+    where: { ownerId: userId },
   });
 
-  return json({ successes });
+  if (!shop) {
+    return json({
+      shopFound: false,
+      success: null,
+    });
+  }
+
+  return json({
+    shopFound: true,
+    success: {
+      name: shop.name,
+      points: shop.points,
+      createdAt: shop.createdAt,
+    },
+  });
 }
 
-export default function SuccessIA() {
-  const { successes } = useLoaderData();
+export default function Success() {
+  const { shopFound, success } = useLoaderData();
+
+  if (!shopFound) {
+    return <p>Aucun shop trouvé pour cet utilisateur.</p>;
+  }
 
   return (
-    <div className="dashboard-ia">
-      <h1>IA Success — Vos Succès & Trophées</h1>
-
-      {successes.map((s) => (
-        <div key={s.id} className="success-item">
-          <h3>{s.title}</h3>
-          <p>{s.description}</p>
-          <small>{new Date(s.createdAt).toLocaleString()}</small>
-        </div>
-      ))}
+    <div>
+      <h1>Succès !</h1>
+      <p>Votre shop <strong>{success.name}</strong> a été créé avec succès.</p>
+      <p>Points : {success.points}</p>
+      <p>Créé le : {new Date(success.createdAt).toLocaleDateString()}</p>
     </div>
   );
 }
