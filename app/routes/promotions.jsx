@@ -5,7 +5,8 @@ import {
   Form,
 } from "@remix-run/react";
 import VeltoLayout from "../components/velto/VeltoLayout";
-import { shopify } from "../shopify.server";
+import shopify from "../shopify.server";
+
 import {
   Card,
   Page,
