@@ -1,55 +1,57 @@
-import { json } from "@remix-run/node";
+// app/routes/app.partners.jsx
+
 import { useLoaderData } from "@remix-run/react";
+import { json } from "@remix-run/node";
 import { requireUserId } from "~/session.server";
-import { prisma } from "~/db.server";
-import { getPartnerOffersForLevel, negotiatePartnerOffer } from "~/models/iaPartners.server";
+
+// IMPORTANT : alias "~" interdit → chemin relatif obligatoire
+import { prisma } from "../db.server";
 
 export async function loader({ request }) {
-  await requireUserId(request);
+  const userId = await requireUserId(request);
 
-  const url = new URL(request.url);
-  const shopId = url.searchParams.get("shop");
+  // Récupérer le shop du propriétaire
+  const shop = await prisma.shop.findUnique({
+    where: { ownerId: userId },
+  });
 
-  const pointsData = await prisma.iAPoints.findUnique({ where: { shopId } });
+  if (!shop) {
+    return json({
+      shopFound: false,
+      partners: [],
+    });
+  }
 
-  const offers = await getPartnerOffersForLevel(pointsData.level);
-  const negotiated = await negotiatePartnerOffer(pointsData.level, pointsData.points);
+  // Exemple : récupérer des partenaires
+  const partners = await prisma.partner.findMany({
+    where: { shopId: shop.id },
+    orderBy: { createdAt: "desc" },
+  });
 
-  return json({ offers, negotiated, pointsData });
+  return json({
+    shopFound: true,
+    partners,
+  });
 }
 
-export default function PartnersIA() {
-  const { offers, negotiated, pointsData } = useLoaderData();
+export default function Partners() {
+  const { shopFound, partners } = useLoaderData();
+
+  if (!shopFound) {
+    return <p>Aucun shop trouvé pour cet utilisateur.</p>;
+  }
 
   return (
-    <div className="dashboard-ia">
-      <h1>Partenaires IA & Récompenses Premium</h1>
-
-      <section className="points-box">
-        <h2>Niveau : {pointsData.level.toUpperCase()}</h2>
-        <p>{pointsData.points} points</p>
-        <p>Progression : {pointsData.progress}%</p>
-      </section>
-
-      <section className="offers-box">
-        <h2>Offres partenaires disponibles</h2>
-        {offers.map((o) => (
-          <div key={o.id} className="offer-item">
-            <strong>{o.title}</strong>
-            <p>{o.description}</p>
-            <p>Partenaire : {o.partner.name}</p>
-          </div>
-        ))}
-      </section>
-
-      {negotiated && (
-        <section className="negotiated-box">
-          <h2>Récompense IA Premium négociée</h2>
-          <div className="offer-item premium">
-            <strong>{negotiated.title}</strong>
-            <p>{negotiated.description}</p>
-          </div>
-        </section>
+    <div>
+      <h1>Partenaires</h1>
+      {partners.length === 0 ? (
+        <p>Aucun partenaire pour le moment.</p>
+      ) : (
+        <ul>
+          {partners.map((p) => (
+            <li key={p.id}>{p.name}</li>
+          ))}
+        </ul>
       )}
     </div>
   );
