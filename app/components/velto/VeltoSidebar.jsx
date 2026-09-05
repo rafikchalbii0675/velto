@@ -15,47 +15,15 @@ export default function VeltoSidebar() {
     >
       <h2 style={{ marginBottom: "30px" }}>Velto</h2>
 
-      {/* Dashboard */}
-      <Link to="/dashboard" style={linkStyle}>
-        Dashboard
-      </Link>
+      <Link to="/dashboard" style={linkStyle}>Dashboard</Link>
+      <Link to="/products" style={linkStyle}>Produits</Link>
+      <Link to="/promotions" style={linkStyle}>Promotions</Link>
+      <Link to="/notifications" style={linkStyle}>Notifications intelligentes</Link>
+      <Link to="/hot-products" style={linkStyle}>Hot Products</Link>
+      <Link to="/crypto" style={linkStyle}>Crypto</Link>
+      <Link to="/rewards" style={linkStyle}>Points de récompenses</Link>
+      <Link to="/history" style={linkStyle}>Historique</Link>
 
-      {/* Produits */}
-      <Link to="/products" style={linkStyle}>
-        Produits
-      </Link>
-
-      {/* Promotions */}
-      <Link to="/promotions" style={linkStyle}>
-        Promotions
-      </Link>
-
-      {/* Notifications intelligentes */}
-      <Link to="/notifications" style={linkStyle}>
-        Notifications intelligentes
-      </Link>
-
-      {/* Hot Products */}
-      <Link to="/hot-products" style={linkStyle}>
-        Hot Products
-      </Link>
-
-      {/* Crypto */}
-      <Link to="/crypto" style={linkStyle}>
-        Crypto
-      </Link>
-
-      {/* Wallet / Rewards */}
-      <Link to="/rewards" style={linkStyle}>
-        Points de récompenses
-      </Link>
-
-      {/* Historique */}
-      <Link to="/history" style={linkStyle}>
-        Historique
-      </Link>
-
-      {/* Ligne séparatrice */}
       <div
         style={{
           margin: "30px 0",
@@ -64,7 +32,6 @@ export default function VeltoSidebar() {
         }}
       />
 
-      {/* Bouton Premium */}
       <Link
         to="/premium"
         style={{
