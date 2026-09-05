@@ -1,73 +1,93 @@
+import { Link } from "@remix-run/react";
+
 export default function VeltoSidebar() {
   return (
-    <aside
+    <div
       style={{
         width: "260px",
-        backgroundColor: "#f3e8dc",
-        padding: "24px",
-        borderRadius: "16px",
-        boxShadow: "0px 4px 12px rgba(0,0,0,0.06)",
-        height: "fit-content",
+        background: "#f7f3ef",
+        height: "100vh",
+        padding: "20px",
+        borderRight: "1px solid #e0d8d1",
+        display: "flex",
+        flexDirection: "column"
       }}
     >
-      <h2
-        style={{
-          marginBottom: "16px",
-          fontSize: "20px",
-          fontWeight: "700",
-          color: "#3a2f28",
-        }}
-      >
-        Velto Sidebar
-      </h2>
+      <h2 style={{ marginBottom: "30px" }}>Velto</h2>
 
-      <p style={{ color: "#4a4a4a", marginBottom: "16px" }}>
-        Espace latéral pour modules IA, crypto, historique, etc.
-      </p>
+      {/* Dashboard */}
+      <Link to="/dashboard" style={linkStyle}>
+        Dashboard
+      </Link>
 
+      {/* Produits */}
+      <Link to="/products" style={linkStyle}>
+        Produits
+      </Link>
+
+      {/* Promotions */}
+      <Link to="/promotions" style={linkStyle}>
+        Promotions
+      </Link>
+
+      {/* Notifications intelligentes */}
+      <Link to="/notifications" style={linkStyle}>
+        Notifications intelligentes
+      </Link>
+
+      {/* Hot Products */}
+      <Link to="/hot-products" style={linkStyle}>
+        Hot Products
+      </Link>
+
+      {/* Crypto */}
+      <Link to="/crypto" style={linkStyle}>
+        Crypto
+      </Link>
+
+      {/* Wallet / Rewards */}
+      <Link to="/rewards" style={linkStyle}>
+        Points de récompenses
+      </Link>
+
+      {/* Historique */}
+      <Link to="/history" style={linkStyle}>
+        Historique
+      </Link>
+
+      {/* Ligne séparatrice */}
       <div
         style={{
-          padding: "12px",
-          backgroundColor: "#fff",
-          borderRadius: "12px",
-          border: "1px solid #e1e3e5",
-          marginBottom: "12px",
+          margin: "30px 0",
+          height: "1px",
+          background: "#d6ccc4"
         }}
-      >
-        <strong>Module IA</strong>
-        <p style={{ fontSize: "14px", color: "#4a4a4a" }}>
-          Suggestions, analyses, prédictions.
-        </p>
-      </div>
+      />
 
-      <div
+      {/* Bouton Premium */}
+      <Link
+        to="/premium"
         style={{
-          padding: "12px",
-          backgroundColor: "#fff",
-          borderRadius: "12px",
-          border: "1px solid #e1e3e5",
-          marginBottom: "12px",
+          padding: "12px 16px",
+          background: "#ff9900",
+          color: "#fff",
+          borderRadius: "8px",
+          textDecoration: "none",
+          textAlign: "center",
+          fontWeight: "bold"
         }}
       >
-        <strong>Crypto</strong>
-        <p style={{ fontSize: "14px", color: "#4a4a4a" }}>
-          Marché, tendances, paiements.
-        </p>
-      </div>
-
-      <div
-        style={{
-          padding: "12px",
-          backgroundColor: "#fff",
-          borderRadius: "12px",
-          border: "1px solid #e1e3e5",
-        }}
-      >
-        <strong>Historique</strong>
-        <p style={{ fontSize: "14px", color: "#4a4a4a" }}>
-          Actions, promotions, transactions.
-        </p>
-      </div>
-    </aside>
+        Passer à Velto Premium
+      </Link>
+    </div>
   );
 }
+
+const linkStyle = {
+  marginBottom: "16px",
+  textDecoration: "none",
+  color: "#4a3f35",
+  fontSize: "16px",
+  padding: "8px 0",
+  display: "block"
+};
