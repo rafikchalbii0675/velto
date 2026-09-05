@@ -1,8 +1,6 @@
 {
   "name": "velto",
   "private": true,
-  "name": "velto",
-  "private": true,
   "scripts": {
     "build": "remix vite:build",
     "dev": "shopify app dev",
