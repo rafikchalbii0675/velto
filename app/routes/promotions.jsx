@@ -5,7 +5,7 @@ import {
   Form,
 } from "@remix-run/react";
 import VeltoLayout from "../components/velto/VeltoLayout";
-import shopify from "../shopify.server";
+import { authenticate } from "../shopify.server";
 
 import {
   Card,
@@ -19,7 +19,7 @@ import {
 
 /* LOADER : produits Shopify */
 export async function loader({ request }) {
-  const admin = shopify.admin(request);
+  const { admin } = await authenticate.admin(request);
   const productsResponse = await admin.rest.Product.all({ limit: 50 });
   const products = productsResponse.products || productsResponse;
   return json({ products });
@@ -27,7 +27,7 @@ export async function loader({ request }) {
 
 /* ACTION : création promotion */
 export async function action({ request }) {
-  const admin = shopify.admin(request);
+  const { admin } = await authenticate.admin(request);
   const formData = await request.formData();
 
   const title = formData.get("title");
