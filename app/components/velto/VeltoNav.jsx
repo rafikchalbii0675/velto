@@ -1,53 +1,60 @@
 import { Link } from "@remix-run/react";
 
-export default function VeltoNav() {
-  const linkStyle = {
-    display: "block",
-    padding: "12px 16px",
-    marginBottom: "8px",
-    borderRadius: "10px",
-    backgroundColor: "#f3e8dc",
-    color: "#3a2f28",
-    fontWeight: "600",
-    textDecoration: "none",
-    boxShadow: "0px 2px 6px rgba(0,0,0,0.05)",
-  };
-
+export default function VeltoSidebar() {
   return (
-    <nav
+    <div
       style={{
-        width: "220px",
+        width: "260px",
+        background: "#f7f3ef",
+        height: "100vh",
+        padding: "20px",
+        borderRight: "1px solid #e0d8d1",
         display: "flex",
-        flexDirection: "column",
+        flexDirection: "column"
       }}
     >
-      <Link to="/app/dashboard" style={linkStyle}>
-        Dashboard
-      </Link>
+      <h2 style={{ marginBottom: "30px" }}>Velto</h2>
 
-      <Link to="/app/products" style={linkStyle}>
-        Produits
-      </Link>
+      <Link to="/dashboard" style={linkStyle}>Dashboard</Link>
+      <Link to="/products" style={linkStyle}>Produits</Link>
+      <Link to="/promotions" style={linkStyle}>Promotions</Link>
+      <Link to="/notifications" style={linkStyle}>Notifications intelligentes</Link>
+      <Link to="/hot-products" style={linkStyle}>Hot Products</Link>
+      <Link to="/crypto" style={linkStyle}>Crypto</Link>
+      <Link to="/rewards" style={linkStyle}>Points de récompenses</Link>
+      <Link to="/history" style={linkStyle}>Historique</Link>
 
-      <Link to="/app/promotions" style={linkStyle}>
-        Promotions
-      </Link>
+      <div
+        style={{
+          margin: "30px 0",
+          height: "1px",
+          background: "#d6ccc4"
+        }}
+      />
 
-      <Link to="/app/alerts" style={linkStyle}>
-        Alertes
+      <Link
+        to="/premium"
+        style={{
+          padding: "12px 16px",
+          background: "#ff9900",
+          color: "#fff",
+          borderRadius: "8px",
+          textDecoration: "none",
+          textAlign: "center",
+          fontWeight: "bold"
+        }}
+      >
+        Passer à Velto Premium
       </Link>
-
-      <Link to="/app/hot-products" style={linkStyle}>
-        Hot Products 
-      </Link>
-
-      <Link to="/app/crypto" style={linkStyle}>
-        Crypto 
-      </Link>
-
-      <Link to="/app/wallet" style={linkStyle}>
-        Wallet 
-      </Link>
-    </nav>
+    </div>
   );
 }
+
+const linkStyle = {
+  marginBottom: "16px",
+  textDecoration: "none",
+  color: "#4a3f35",
+  fontSize: "16px",
+  padding: "8px 0",
+  display: "block"
+};
