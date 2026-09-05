@@ -43,19 +43,19 @@ export default function AppIndex() {
         <ul style={{ listStyle: "none", padding: 0 }}>
           <li style={{ marginBottom: "12px" }}>
              <Link to="/app/promotions" style={{ fontSize: "18px", color: "#8b5e3c" }}>
-              👉 Promotions intelligentes
+               Promotions intelligentes
             </Link>
           </li>
 
           <li style={{ marginBottom: "12px" }}>
             <Link to="/crypto" style={{ fontSize: "18px", color: "#8b5e3c" }}>
-              👉 Crypto-commerce
+               Crypto-commerce
             </Link>
           </li>
 
           <li style={{ marginBottom: "12px" }}>
             <Link to="/dashboard" style={{ fontSize: "18px", color: "#8b5e3c" }}>
-              👉 Tableau de bord Cozy
+               Tableau de bord Cozy
             </Link>
           </li>
         </ul>

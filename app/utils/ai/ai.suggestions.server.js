@@ -1,6 +1,6 @@
 // app/utils/ai/ai.suggestions.server.js
 
-// IMPORTANT : aucune dépendance "~" → chemins relatifs uniquement
+// IMPORTANT : aucune dépendance "~"  chemins relatifs uniquement
 import { prisma } from "../../db.server";
 
 // Génération d’une promotion simple (Cozy)

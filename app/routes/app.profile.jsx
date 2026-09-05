@@ -4,7 +4,7 @@ import { Form, useLoaderData, useActionData } from "@remix-run/react";
 import { json } from "@remix-run/node";
 import { requireUserId } from "~/session.server";
 
-// IMPORTANT : alias "~" interdit → chemin relatif obligatoire
+// IMPORTANT : alias "~" interdit  chemin relatif obligatoire
 import { prisma } from "../db.server";
 
 export async function loader({ request }) {

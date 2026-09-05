@@ -11,7 +11,7 @@ export default function Settings() {
     <VeltoLayout title="Paramètres Velto">
       <div style={pageContainer}>
 
-        {/* ⭐ INTRO */}
+        {/*  INTRO */}
         <div style={introCard}>
           <h2 style={sectionTitle}>Configuration générale</h2>
           <p style={sectionText}>
@@ -20,7 +20,7 @@ export default function Settings() {
           </p>
         </div>
 
-        {/* ⭐ MODULE IA */}
+        {/*  MODULE IA */}
         <div style={cardPremium}>
           <h3 style={sectionTitle}>Intelligence artificielle Cozy Warm</h3>
 
@@ -39,7 +39,7 @@ export default function Settings() {
           </p>
         </div>
 
-        {/* ⭐ MODULE SAISONNIER */}
+        {/*  MODULE SAISONNIER */}
         <div style={cardPremium}>
           <h3 style={sectionTitle}>Promotions saisonnières</h3>
 
@@ -58,7 +58,7 @@ export default function Settings() {
           </p>
         </div>
 
-        {/* ⭐ MODULE CRYPTO */}
+        {/*  MODULE CRYPTO */}
         <div style={cardPremium}>
           <h3 style={sectionTitle}>Crypto‑commerce</h3>
 
@@ -77,7 +77,7 @@ export default function Settings() {
           </p>
         </div>
 
-        {/* ⭐ PROMOTIONS AUTOMATIQUES */}
+        {/*  PROMOTIONS AUTOMATIQUES */}
         <div style={cardPremium}>
           <h3 style={sectionTitle}>Promotions automatiques</h3>
 
@@ -101,7 +101,7 @@ export default function Settings() {
   );
 }
 
-/* ⭐ Styles Premium */
+/*  Styles Premium */
 const pageContainer = {
   maxWidth: "900px",
   margin: "0 auto",

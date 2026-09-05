@@ -1,6 +1,6 @@
 // app/models/iaPartners.server.js
 
-// IMPORTANT : alias "~" casse dans Railway → chemin relatif 100% fiable
+// IMPORTANT : alias "~" casse dans Railway  chemin relatif 100% fiable
 import { prisma } from "../db.server";
 
 // Récupérer les offres partenaires selon le niveau IA

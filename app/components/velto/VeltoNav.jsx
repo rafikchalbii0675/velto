@@ -38,15 +38,15 @@ export default function VeltoNav() {
       </Link>
 
       <Link to="/app/hot-products" style={linkStyle}>
-        Hot Products 🔥
+        Hot Products 
       </Link>
 
       <Link to="/app/crypto" style={linkStyle}>
-        Crypto 🪙
+        Crypto 
       </Link>
 
       <Link to="/app/wallet" style={linkStyle}>
-        Wallet 💳
+        Wallet 
       </Link>
     </nav>
   );

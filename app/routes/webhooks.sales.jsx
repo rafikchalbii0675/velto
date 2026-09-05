@@ -16,7 +16,7 @@ export async function action({ request }) {
   const currency = body.currency;
   const txId = body.id;
 
-  // Protection : si amount ou currency manquent → ne pas planter
+  // Protection : si amount ou currency manquent  ne pas planter
   if (!amount || !currency) {
     return json({ ok: true });
   }

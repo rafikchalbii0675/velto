@@ -16,7 +16,7 @@ export default function Step3Finish({ priority }) {
       <Checkmark />
 
       <h2 style={{ color: "#3a2f28", marginBottom: "16px" }}>
-        Onboarding terminé 🎉
+        Onboarding terminé 
       </h2>
 
       <p style={{ color: "#6b5a4a", marginBottom: "16px" }}>

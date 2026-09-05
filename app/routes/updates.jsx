@@ -1,6 +1,6 @@
 import VeltoLayout from "../components/velto/VeltoLayout";
 
-/* ⭐ Fake Release Notes (à remplacer par DB plus tard) */
+/*  Fake Release Notes (à remplacer par DB plus tard) */
 const updates = [
   {
     version: "1.0.4",
@@ -66,7 +66,7 @@ export default function Updates() {
     <VeltoLayout title="Mises à jour • Velto Cozy Warm">
       <div style={pageContainer}>
 
-        {/* ⭐ INTRO */}
+        {/*  INTRO */}
         <div style={introCard}>
           <h2 style={sectionTitle}>Notes de mise à jour</h2>
           <p style={sectionText}>
@@ -76,7 +76,7 @@ export default function Updates() {
           </p>
         </div>
 
-        {/* ⭐ LISTE DES UPDATES */}
+        {/*  LISTE DES UPDATES */}
         <div style={updatesContainer}>
           {updates.map((update, index) => (
             <div key={index} style={updateCard}>
@@ -113,7 +113,7 @@ export default function Updates() {
   );
 }
 
-/* ⭐ Styles Premium */
+/*  Styles Premium */
 const pageContainer = {
   maxWidth: "900px",
   margin: "0 auto",

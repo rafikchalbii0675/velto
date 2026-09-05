@@ -11,7 +11,7 @@ export default function VeltoWallet() {
           boxShadow: "0px 4px 12px rgba(0,0,0,0.06)",
         }}
       >
-        <h1 style={{ marginBottom: "16px" }}>Wallet 💳</h1>
+        <h1 style={{ marginBottom: "16px" }}>Wallet </h1>
 
         <p style={{ marginBottom: "24px", color: "#4a4a4a" }}>
           Gestion des paiements, transactions et crypto‑commerce.

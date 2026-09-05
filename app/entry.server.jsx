@@ -46,7 +46,7 @@ function handleBotRequest(
         onAllReady() {
           responseHeaders.set("Content-Type", "text/html");
 
-          // 🔥 Correction Shopify iframe
+          //  Correction Shopify iframe
           responseHeaders.delete("X-Frame-Options");
           responseHeaders.set(
             "Content-Security-Policy",
@@ -96,7 +96,7 @@ function handleBrowserRequest(
         onShellReady() {
           responseHeaders.set("Content-Type", "text/html");
 
-          // 🔥 Correction Shopify iframe
+          //  Correction Shopify iframe
           responseHeaders.delete("X-Frame-Options");
           responseHeaders.set(
             "Content-Security-Policy",

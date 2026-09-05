@@ -1,6 +1,6 @@
 import VeltoLayout from "../components/velto/VeltoLayout";
 
-/* ⭐ Fake Data Crypto (à remplacer plus tard par API réelle) */
+/*  Fake Data Crypto (à remplacer plus tard par API réelle) */
 const cryptoData = {
   btc: { price: 64200, change24h: 2.4, trend: "up" },
   eth: { price: 3200, change24h: -1.2, trend: "down" },
@@ -8,7 +8,7 @@ const cryptoData = {
   matic: { price: 0.78, change24h: -0.4, trend: "neutral" },
 };
 
-/* ⭐ IA Crypto */
+/*  IA Crypto */
 function cryptoAI(cryptoData) {
   const btc = cryptoData.btc;
   const eth = cryptoData.eth;
@@ -30,7 +30,7 @@ Stratégie Cozy Warm :
   return message;
 }
 
-/* ⭐ Recommandations IA Crypto */
+/*  Recommandations IA Crypto */
 function cryptoRecommendations(cryptoData) {
   return `
 Recommandations Cozy Warm Crypto :
@@ -50,7 +50,7 @@ export default function Crypto() {
     <VeltoLayout title="Crypto‑commerce Premium">
       <div style={pageContainer}>
 
-        {/* ⭐ GRID CRYPTO */}
+        {/*  GRID CRYPTO */}
         <div style={cryptoGrid}>
 
           {/* BTC */}
@@ -91,13 +91,13 @@ export default function Crypto() {
 
         </div>
 
-        {/* ⭐ Analyse IA */}
+        {/*  Analyse IA */}
         <div style={cardPremium}>
           <h3>Analyse IA Crypto Cozy Warm</h3>
           <p style={{ whiteSpace: "pre-line" }}>{aiMessage}</p>
         </div>
 
-        {/* ⭐ Recommandations IA */}
+        {/*  Recommandations IA */}
         <div style={cardPremium}>
           <h3>Recommandations IA Crypto</h3>
           <p style={{ whiteSpace: "pre-line" }}>{recoMessage}</p>
@@ -108,7 +108,7 @@ export default function Crypto() {
   );
 }
 
-/* ⭐ Styles Premium */
+/*  Styles Premium */
 const pageContainer = {
   maxWidth: "1000px",
   margin: "0 auto",

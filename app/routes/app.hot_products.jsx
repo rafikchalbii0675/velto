@@ -19,7 +19,7 @@ export default function HotProducts() {
 
   return (
     <div className="dashboard-ia">
-      <h1>Produits Chauds 🔥</h1>
+      <h1>Produits Chauds </h1>
 
       <section>
         {products.length === 0 && <p>Aucun produit chaud.</p>}

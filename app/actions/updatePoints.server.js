@@ -1,6 +1,6 @@
 // app/actions/updatePoints.server.js
 
-// IMPORTANT : alias "~" casse dans Railway → chemin relatif obligatoire
+// IMPORTANT : alias "~" casse dans Railway  chemin relatif obligatoire
 import { prisma } from "../db.server";
 
 // Calcul des points gagnés selon le type de vente

@@ -5,7 +5,7 @@ export default function AI() {
     <VeltoLayout title="Velto AI Engine • Comment ça marche">
       <div style={pageContainer}>
 
-        {/* ⭐ INTRO */}
+        {/*  INTRO */}
         <div style={introCard}>
           <h2 style={sectionTitle}>Le moteur IA Cozy Warm</h2>
           <p style={sectionText}>
@@ -16,7 +16,7 @@ export default function AI() {
           </p>
         </div>
 
-        {/* ⭐ ARCHITECTURE */}
+        {/*  ARCHITECTURE */}
         <div style={cardPremium}>
           <h3 style={sectionTitle}>Architecture IA</h3>
           <p style={sectionText}>
@@ -24,10 +24,10 @@ export default function AI() {
           </p>
 
           <ul style={listStyle}>
-            <li>🧠 <strong>Analyse produits</strong> — ventes, popularité, faiblesse</li>
-            <li>👥 <strong>Analyse clients</strong> — nouveaux, VIP, inactifs</li>
-            <li>🍂 <strong>Analyse saisonnière</strong> — Noël, Automne, Été, Printemps</li>
-            <li>⚡ <strong>Analyse dynamique</strong> — tendances du jour et de la semaine</li>
+            <li> <strong>Analyse produits</strong> — ventes, popularité, faiblesse</li>
+            <li> <strong>Analyse clients</strong> — nouveaux, VIP, inactifs</li>
+            <li> <strong>Analyse saisonnière</strong> — Noël, Automne, Été, Printemps</li>
+            <li> <strong>Analyse dynamique</strong> — tendances du jour et de la semaine</li>
           </ul>
 
           <p style={sectionText}>
@@ -36,7 +36,7 @@ export default function AI() {
           </p>
         </div>
 
-        {/* ⭐ COMMENT L’IA DÉCIDE */}
+        {/*  COMMENT L’IA DÉCIDE */}
         <div style={cardPremium}>
           <h3 style={sectionTitle}>Comment l’IA prend ses décisions</h3>
 
@@ -58,20 +58,20 @@ export default function AI() {
           </p>
         </div>
 
-        {/* ⭐ MODULES IA */}
+        {/*  MODULES IA */}
         <div style={cardPremium}>
           <h3 style={sectionTitle}>Modules IA actifs</h3>
 
           <ul style={listStyle}>
-            <li>✨ <strong>Promotions IA</strong> — création automatique de promotions</li>
-            <li>📊 <strong>Dashboard IA</strong> — analyse produits & clients</li>
-            <li>🪙 <strong>Crypto IA</strong> — analyse BTC, ETH, SOL, MATIC</li>
-            <li>🍂 <strong>Saisonnier IA</strong> — promotions selon la saison</li>
-            <li>⚡ <strong>Dynamique IA</strong> — tendances du jour et de la semaine</li>
+            <li> <strong>Promotions IA</strong> — création automatique de promotions</li>
+            <li> <strong>Dashboard IA</strong> — analyse produits & clients</li>
+            <li> <strong>Crypto IA</strong> — analyse BTC, ETH, SOL, MATIC</li>
+            <li> <strong>Saisonnier IA</strong> — promotions selon la saison</li>
+            <li> <strong>Dynamique IA</strong> — tendances du jour et de la semaine</li>
           </ul>
         </div>
 
-        {/* ⭐ POURQUOI COZY WARM */}
+        {/*  POURQUOI COZY WARM */}
         <div style={cardPremium}>
           <h3 style={sectionTitle}>Pourquoi “Cozy Warm” ?</h3>
           <p style={sectionText}>
@@ -80,11 +80,11 @@ export default function AI() {
           </p>
 
           <ul style={listStyle}>
-            <li>🌿 douce</li>
-            <li>🤝 humaine</li>
-            <li>🎨 esthétique</li>
-            <li>📈 orientée résultats</li>
-            <li>💛 respectueuse du client</li>
+            <li> douce</li>
+            <li> humaine</li>
+            <li> esthétique</li>
+            <li> orientée résultats</li>
+            <li> respectueuse du client</li>
           </ul>
 
           <p style={sectionText}>
@@ -93,7 +93,7 @@ export default function AI() {
           </p>
         </div>
 
-        {/* ⭐ TRANSPARENCE */}
+        {/*  TRANSPARENCE */}
         <div style={cardPremium}>
           <h3 style={sectionTitle}>Transparence IA</h3>
           <p style={sectionText}>
@@ -119,7 +119,7 @@ export default function AI() {
   );
 }
 
-/* ⭐ Styles Premium */
+/*  Styles Premium */
 const pageContainer = {
   maxWidth: "900px",
   margin: "0 auto",

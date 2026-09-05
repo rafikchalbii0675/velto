@@ -1,6 +1,6 @@
 // app/models/scheduler.server.js
 
-// IMPORTANT : alias "~" casse dans Railway → chemins relatifs 100% fiables
+// IMPORTANT : alias "~" casse dans Railway  chemins relatifs 100% fiables
 import { prisma } from "../db.server";
 import { runAutopilot } from "./aiAutopilot.server";
 import { addSecurityLog } from "./securityLogs.server";

@@ -4,7 +4,7 @@ import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { requireUserId } from "~/session.server";
 
-// IMPORT SERVEUR → autorisé uniquement dans le loader
+// IMPORT SERVEUR  autorisé uniquement dans le loader
 import { getAIInsights } from "../models/insights.server";
 
 export async function loader({ request }) {

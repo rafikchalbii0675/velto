@@ -5,7 +5,7 @@ export default function About() {
     <VeltoLayout title="À propos — Velto Studio Cozy">
       <div style={pageContainer}>
 
-        {/* ⭐ INTRO */}
+        {/*  INTRO */}
         <div style={introCard}>
           <h2 style={sectionTitle}>Velto — Cozy Warm Edition</h2>
           <p style={sectionText}>
@@ -15,7 +15,7 @@ export default function About() {
           </p>
         </div>
 
-        {/* ⭐ MISSION */}
+        {/*  MISSION */}
         <div style={cardPremium}>
           <h3 style={sectionTitle}>Notre mission</h3>
           <p style={sectionText}>
@@ -25,7 +25,7 @@ export default function About() {
           </p>
         </div>
 
-        {/* ⭐ VISION */}
+        {/*  VISION */}
         <div style={cardPremium}>
           <h3 style={sectionTitle}>Notre vision</h3>
           <p style={sectionText}>
@@ -34,21 +34,21 @@ export default function About() {
           </p>
         </div>
 
-        {/* ⭐ FONCTIONNALITÉS */}
+        {/*  FONCTIONNALITÉS */}
         <div style={cardPremium}>
           <h3 style={sectionTitle}>Fonctionnalités principales</h3>
           <ul style={listStyle}>
-            <li>✨ Promotions intelligentes IA</li>
-            <li>📊 Dashboard Cozy Warm</li>
-            <li>💎 Analyse produits & clients</li>
-            <li>🍂 Promotions saisonnières</li>
-            <li>⚡ Promotions dynamiques</li>
-            <li>🪙 Crypto‑commerce Premium</li>
-            <li>🎨 Design Cozy Warm Or</li>
+            <li> Promotions intelligentes IA</li>
+            <li> Dashboard Cozy Warm</li>
+            <li> Analyse produits & clients</li>
+            <li> Promotions saisonnières</li>
+            <li> Promotions dynamiques</li>
+            <li> Crypto‑commerce Premium</li>
+            <li> Design Cozy Warm Or</li>
           </ul>
         </div>
 
-        {/* ⭐ TECHNOLOGIE */}
+        {/*  TECHNOLOGIE */}
         <div style={cardPremium}>
           <h3 style={sectionTitle}>Technologie Velto</h3>
           <p style={sectionText}>
@@ -57,7 +57,7 @@ export default function About() {
           </p>
         </div>
 
-        {/* ⭐ FONDATEUR */}
+        {/*  FONDATEUR */}
         <div style={cardPremium}>
           <h3 style={sectionTitle}>À propos du fondateur</h3>
           <p style={sectionText}>
@@ -72,7 +72,7 @@ export default function About() {
   );
 }
 
-/* ⭐ Styles Premium */
+/*  Styles Premium */
 const pageContainer = {
   maxWidth: "900px",
   margin: "0 auto",

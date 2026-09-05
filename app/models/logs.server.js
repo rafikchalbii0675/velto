@@ -1,6 +1,6 @@
 // app/models/logs.server.js
 
-// IMPORTANT : alias "~" interdit → chemin relatif obligatoire
+// IMPORTANT : alias "~" interdit  chemin relatif obligatoire
 import { prisma } from "../db.server";
 
 // Ajouter un log dans la base

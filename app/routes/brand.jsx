@@ -5,7 +5,7 @@ export default function Brand() {
     <VeltoLayout title="Velto Studio Cozy — Identité & Valeurs">
       <div style={pageContainer}>
 
-        {/* ⭐ INTRO */}
+        {/*  INTRO */}
         <div style={introCard}>
           <h2 style={sectionTitle}>L’âme de Velto</h2>
           <p style={sectionText}>
@@ -15,7 +15,7 @@ export default function Brand() {
           </p>
         </div>
 
-        {/* ⭐ IDENTITÉ */}
+        {/*  IDENTITÉ */}
         <div style={cardPremium}>
           <h3 style={sectionTitle}>Identité Cozy Warm Or</h3>
           <p style={sectionText}>
@@ -23,9 +23,9 @@ export default function Brand() {
           </p>
 
           <ul style={listStyle}>
-            <li>🌿 <strong>Cozy</strong> — une douceur visuelle, une approche humaine</li>
-            <li>🔥 <strong>Warm</strong> — une chaleur dans les couleurs, les mots, les décisions</li>
-            <li>💛 <strong>Or</strong> — une élégance, une finesse, une qualité premium</li>
+            <li> <strong>Cozy</strong> — une douceur visuelle, une approche humaine</li>
+            <li> <strong>Warm</strong> — une chaleur dans les couleurs, les mots, les décisions</li>
+            <li> <strong>Or</strong> — une élégance, une finesse, une qualité premium</li>
           </ul>
 
           <p style={sectionText}>
@@ -33,19 +33,19 @@ export default function Brand() {
           </p>
         </div>
 
-        {/* ⭐ VALEURS */}
+        {/*  VALEURS */}
         <div style={cardPremium}>
           <h3 style={sectionTitle}>Valeurs Studio Cozy</h3>
           <ul style={listStyle}>
-            <li>🤝 <strong>Humanité</strong> — Velto respecte le marchand et ses clients</li>
-            <li>🎨 <strong>Esthétique</strong> — un design doux, premium, cohérent</li>
-            <li>📈 <strong>Clarté</strong> — des analyses IA simples à comprendre</li>
-            <li>🔒 <strong>Confiance</strong> — transparence totale dans les actions IA</li>
-            <li>💡 <strong>Créativité</strong> — des promotions intelligentes et inspirées</li>
+            <li> <strong>Humanité</strong> — Velto respecte le marchand et ses clients</li>
+            <li> <strong>Esthétique</strong> — un design doux, premium, cohérent</li>
+            <li> <strong>Clarté</strong> — des analyses IA simples à comprendre</li>
+            <li> <strong>Confiance</strong> — transparence totale dans les actions IA</li>
+            <li> <strong>Créativité</strong> — des promotions intelligentes et inspirées</li>
           </ul>
         </div>
 
-        {/* ⭐ HISTOIRE */}
+        {/*  HISTOIRE */}
         <div style={cardPremium}>
           <h3 style={sectionTitle}>L’histoire de Velto</h3>
           <p style={sectionText}>
@@ -61,7 +61,7 @@ export default function Brand() {
           </p>
         </div>
 
-        {/* ⭐ PROMESSE */}
+        {/*  PROMESSE */}
         <div style={cardPremium}>
           <h3 style={sectionTitle}>La promesse Velto</h3>
           <p style={sectionText}>
@@ -69,15 +69,15 @@ export default function Brand() {
           </p>
 
           <ul style={listStyle}>
-            <li>✨ <strong>Simple</strong> — facile à utiliser</li>
-            <li>💛 <strong>Chaleureux</strong> — jamais agressif</li>
-            <li>🎯 <strong>Précis</strong> — analyses IA utiles et claires</li>
-            <li>🎨 <strong>Beau</strong> — design premium Cozy Warm Or</li>
-            <li>🧠 <strong>Intelligent</strong> — IA qui comprend le marchand</li>
+            <li> <strong>Simple</strong> — facile à utiliser</li>
+            <li> <strong>Chaleureux</strong> — jamais agressif</li>
+            <li> <strong>Précis</strong> — analyses IA utiles et claires</li>
+            <li> <strong>Beau</strong> — design premium Cozy Warm Or</li>
+            <li> <strong>Intelligent</strong> — IA qui comprend le marchand</li>
           </ul>
         </div>
 
-        {/* ⭐ CRÉATEUR */}
+        {/*  CRÉATEUR */}
         <div style={cardPremium}>
           <h3 style={sectionTitle}>Le créateur</h3>
           <p style={sectionText}>
@@ -99,7 +99,7 @@ export default function Brand() {
   );
 }
 
-/* ⭐ Styles Premium */
+/*  Styles Premium */
 const pageContainer = {
   maxWidth: "900px",
   margin: "0 auto",

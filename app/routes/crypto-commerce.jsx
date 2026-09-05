@@ -12,10 +12,10 @@ export default function CryptoCommerce() {
         </p>
 
         <ul style={{ marginTop: "20px", color: "#3a2f28", fontSize: "18px", lineHeight: "32px" }}>
-          <li>🔥 Paiements crypto</li>
-          <li>🔥 Portefeuilles intégrés</li>
-          <li>🔥 Récompenses blockchain</li>
-          <li>🔥 Promotions crypto intelligentes</li>
+          <li> Paiements crypto</li>
+          <li> Portefeuilles intégrés</li>
+          <li> Récompenses blockchain</li>
+          <li> Promotions crypto intelligentes</li>
         </ul>
       </div>
     </VeltoLayout>

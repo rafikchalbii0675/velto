@@ -1,6 +1,6 @@
 // app/models/securityLogs.server.js
 
-// IMPORTANT : alias "~" casse dans Railway → chemin relatif 100% fiable
+// IMPORTANT : alias "~" casse dans Railway  chemin relatif 100% fiable
 import { prisma } from "../db.server";
 
 // Ajouter un log de sécurité

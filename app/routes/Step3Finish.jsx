@@ -9,7 +9,7 @@ import {
 export default function Step3Finish() {
   return (
     <main style={{ padding: "32px" }}>
-      <h1 style={{ marginBottom: "16px" }}>Onboarding terminé 🎉</h1>
+      <h1 style={{ marginBottom: "16px" }}>Onboarding terminé </h1>
 
       <p style={{ marginBottom: "24px", fontSize: "18px" }}>
         Votre configuration initiale est prête.  

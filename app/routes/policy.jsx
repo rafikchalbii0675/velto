@@ -5,7 +5,7 @@ export default function Policy() {
     <VeltoLayout title="Conditions & Confidentialité — Velto">
       <div style={pageContainer}>
 
-        {/* ⭐ INTRO */}
+        {/*  INTRO */}
         <div style={cardPremium}>
           <h2 style={sectionTitle}>Conditions d’utilisation</h2>
           <p style={sectionText}>
@@ -15,7 +15,7 @@ export default function Policy() {
           </p>
         </div>
 
-        {/* ⭐ CONFIDENTIALITÉ */}
+        {/*  CONFIDENTIALITÉ */}
         <div style={cardPremium}>
           <h3 style={sectionTitle}>Confidentialité</h3>
           <p style={sectionText}>
@@ -25,13 +25,13 @@ export default function Policy() {
           </p>
 
           <ul style={listStyle}>
-            <li>🔒 Aucune donnée n’est vendue ou partagée.</li>
-            <li>🔒 Les données sont utilisées uniquement pour les fonctionnalités Velto.</li>
-            <li>🔒 Vous pouvez demander la suppression de vos données à tout moment.</li>
+            <li> Aucune donnée n’est vendue ou partagée.</li>
+            <li> Les données sont utilisées uniquement pour les fonctionnalités Velto.</li>
+            <li> Vous pouvez demander la suppression de vos données à tout moment.</li>
           </ul>
         </div>
 
-        {/* ⭐ DONNÉES UTILISÉES */}
+        {/*  DONNÉES UTILISÉES */}
         <div style={cardPremium}>
           <h3 style={sectionTitle}>Données utilisées par Velto</h3>
           <p style={sectionText}>
@@ -46,7 +46,7 @@ export default function Policy() {
           </ul>
         </div>
 
-        {/* ⭐ RESPONSABILITÉ */}
+        {/*  RESPONSABILITÉ */}
         <div style={cardPremium}>
           <h3 style={sectionTitle}>Responsabilité</h3>
           <p style={sectionText}>
@@ -56,7 +56,7 @@ export default function Policy() {
           </p>
         </div>
 
-        {/* ⭐ SÉCURITÉ */}
+        {/*  SÉCURITÉ */}
         <div style={cardPremium}>
           <h3 style={sectionTitle}>Sécurité</h3>
           <p style={sectionText}>
@@ -65,7 +65,7 @@ export default function Policy() {
           </p>
         </div>
 
-        {/* ⭐ CONTACT */}
+        {/*  CONTACT */}
         <div style={cardPremium}>
           <h3 style={sectionTitle}>Contact</h3>
           <p style={sectionText}>
@@ -73,8 +73,8 @@ export default function Policy() {
           </p>
 
           <ul style={listStyle}>
-            <li>📧 Email : <strong>support@studiocozy.ca</strong></li>
-            <li>🛠️ Assistance technique : <strong>dev@studiocozy.ca</strong></li>
+            <li> Email : <strong>support@studiocozy.ca</strong></li>
+            <li> Assistance technique : <strong>dev@studiocozy.ca</strong></li>
           </ul>
         </div>
 
@@ -83,7 +83,7 @@ export default function Policy() {
   );
 }
 
-/* ⭐ Styles Premium */
+/*  Styles Premium */
 const pageContainer = {
   maxWidth: "900px",
   margin: "0 auto",

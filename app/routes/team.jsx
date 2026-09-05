@@ -5,7 +5,7 @@ export default function Team() {
     <VeltoLayout title="Velto Team • Studio Cozy">
       <div style={pageContainer}>
 
-        {/* ⭐ INTRO */}
+        {/*  INTRO */}
         <div style={introCard}>
           <h2 style={sectionTitle}>Derrière Velto</h2>
           <p style={sectionText}>
@@ -16,7 +16,7 @@ export default function Team() {
           </p>
         </div>
 
-        {/* ⭐ FONDATEUR */}
+        {/*  FONDATEUR */}
         <div style={cardPremium}>
           <h3 style={sectionTitle}>Le créateur</h3>
           <p style={sectionText}>
@@ -31,7 +31,7 @@ export default function Team() {
           </p>
         </div>
 
-        {/* ⭐ STUDIO COZY */}
+        {/*  STUDIO COZY */}
         <div style={cardPremium}>
           <h3 style={sectionTitle}>Studio Cozy</h3>
           <p style={sectionText}>
@@ -41,15 +41,15 @@ export default function Team() {
           </p>
 
           <ul style={listStyle}>
-            <li>🎨 Design élégant</li>
-            <li>💛 Ambiance Cozy Warm</li>
-            <li>🧠 Intelligence douce</li>
-            <li>📈 Vision long terme</li>
-            <li>🌿 Respect du marchand</li>
+            <li> Design élégant</li>
+            <li> Ambiance Cozy Warm</li>
+            <li> Intelligence douce</li>
+            <li> Vision long terme</li>
+            <li> Respect du marchand</li>
           </ul>
         </div>
 
-        {/* ⭐ PHILOSOPHIE */}
+        {/*  PHILOSOPHIE */}
         <div style={cardPremium}>
           <h3 style={sectionTitle}>Philosophie de création</h3>
           <p style={sectionText}>
@@ -57,11 +57,11 @@ export default function Team() {
           </p>
 
           <ul style={listStyle}>
-            <li>🌿 La technologie doit être douce</li>
-            <li>💛 Le design doit être chaleureux</li>
-            <li>🎨 L’expérience doit être élégante</li>
-            <li>📈 L’IA doit être compréhensible</li>
-            <li>🤝 Le marchand doit se sentir accompagné</li>
+            <li> La technologie doit être douce</li>
+            <li> Le design doit être chaleureux</li>
+            <li> L’expérience doit être élégante</li>
+            <li> L’IA doit être compréhensible</li>
+            <li> Le marchand doit se sentir accompagné</li>
           </ul>
 
           <p style={sectionText}>
@@ -70,7 +70,7 @@ export default function Team() {
           </p>
         </div>
 
-        {/* ⭐ MISSION */}
+        {/*  MISSION */}
         <div style={cardPremium}>
           <h3 style={sectionTitle}>Notre mission</h3>
           <p style={sectionText}>
@@ -79,7 +79,7 @@ export default function Team() {
           </p>
         </div>
 
-        {/* ⭐ MESSAGE */}
+        {/*  MESSAGE */}
         <div style={cardPremium}>
           <h3 style={sectionTitle}>Message du créateur</h3>
           <p style={sectionText}>
@@ -99,7 +99,7 @@ export default function Team() {
   );
 }
 
-/* ⭐ Styles Premium */
+/*  Styles Premium */
 const pageContainer = {
   maxWidth: "900px",
   margin: "0 auto",

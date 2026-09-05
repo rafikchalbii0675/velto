@@ -1,6 +1,6 @@
 // app/models/system.server.js
 
-// IMPORTANT : alias "~" interdit → chemin relatif obligatoire
+// IMPORTANT : alias "~" interdit  chemin relatif obligatoire
 import { prisma } from "../db.server";
 
 export async function getSystemStatus(shopId) {

@@ -5,7 +5,7 @@ export default function Support() {
     <VeltoLayout title="Support • Velto Studio Cozy">
       <div style={pageContainer}>
 
-        {/* ⭐ SECTION SUPPORT */}
+        {/*  SECTION SUPPORT */}
         <div style={cardPremium}>
           <h2 style={sectionTitle}>Support Velto</h2>
           <p style={sectionText}>
@@ -14,7 +14,7 @@ export default function Support() {
           </p>
         </div>
 
-        {/* ⭐ SECTION CONTACT */}
+        {/*  SECTION CONTACT */}
         <div style={cardPremium}>
           <h3 style={sectionTitle}>Contact</h3>
           <p style={sectionText}>
@@ -22,13 +22,13 @@ export default function Support() {
           </p>
 
           <ul style={listStyle}>
-            <li>📧 Email : <strong>support@studiocozy.ca</strong></li>
-            <li>💬 Assistance IA intégrée dans Velto</li>
-            <li>🛠️ Aide technique : <strong>dev@studiocozy.ca</strong></li>
+            <li> Email : <strong>support@studiocozy.ca</strong></li>
+            <li> Assistance IA intégrée dans Velto</li>
+            <li> Aide technique : <strong>dev@studiocozy.ca</strong></li>
           </ul>
         </div>
 
-        {/* ⭐ SECTION FAQ */}
+        {/*  SECTION FAQ */}
         <div style={cardPremium}>
           <h3 style={sectionTitle}>FAQ — Questions fréquentes</h3>
 
@@ -71,7 +71,7 @@ export default function Support() {
   );
 }
 
-/* ⭐ Styles Premium */
+/*  Styles Premium */
 const pageContainer = {
   maxWidth: "900px",
   margin: "0 auto",
