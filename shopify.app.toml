@@ -2,7 +2,7 @@
 
 client_id = "f99b070bef6dec2b4386313ebe0af234"
 name = "Velto"
-application_url = "https://example.com"
+application_url = "https://velto-production.up.railway.app"
 embedded = true
 
 [webhooks]
@@ -17,7 +17,7 @@ api_version = "2026-07"
 scopes = "read_orders,write_orders"
 
 [auth]
-redirect_urls = [ "https://example.com/api/auth" ]
+redirect_urls = [ "https://velto-production.up.railway.app/api/auth" ]
 
 [build]
 automatically_update_urls_on_dev = true
