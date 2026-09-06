@@ -3,12 +3,11 @@ import { authenticate } from "~/shopify.server";
 import prisma from "~/db.server";
 
 export async function action({ request }) {
-  // authenticate.webhook() vérifie le HMAC ET identifie le topic automatiquement
   const { topic, shop, payload } = await authenticate.webhook(request);
 
   switch (topic) {
     case "CUSTOMERS_DATA_REQUEST": {
-      const { customer, orders_requested } = payload;
+      const { customer } = payload;
 
       await prisma.gdprRequest.create({
         data: {
@@ -24,18 +23,14 @@ export async function action({ request }) {
     }
 
     case "CUSTOMERS_REDACT": {
-      const { customer, orders_to_redact } = payload;
-
-      await prisma.cryptoPayment.updateMany({
-        where: { externalOrderId: { in: (orders_to_redact || []).map(String) } },
-        data: { customerEmail: null, customerName: null },
-      });
+      const { customer } = payload;
 
       await prisma.gdprRequest.create({
         data: {
           type: "CUSTOMER_REDACT",
           shopDomain: shop,
           customerId: String(customer.id),
+          customerEmail: customer.email,
           payload: JSON.stringify(payload),
           status: "COMPLETED",
         },
@@ -44,18 +39,27 @@ export async function action({ request }) {
     }
 
     case "SHOP_REDACT": {
-      const shopRecord = await prisma.shop.findUnique({ where: { domain: shop } });
+      const shopRecord = await prisma.shop.findUnique({
+        where: { shopId: shop },
+      });
 
       if (shopRecord) {
-        await prisma.cryptoPayment.deleteMany({ where: { shopId: shopRecord.id } });
-        await prisma.wallet.deleteMany({ where: { shopId: shopRecord.id } });
         await prisma.shop.delete({ where: { id: shopRecord.id } });
       }
+
+      await prisma.gdprRequest.create({
+        data: {
+          type: "SHOP_REDACT",
+          shopDomain: shop,
+          payload: JSON.stringify(payload),
+          status: "COMPLETED",
+        },
+      });
       break;
     }
 
     default:
-      console.warn(`Topic GDPR non géré: ${topic}`);
+      console.warn(`Topic GDPR non gere: ${topic}`);
   }
 
   return json({ ok: true });

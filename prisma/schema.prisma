@@ -211,3 +211,13 @@ model Session {
   expiresAt   DateTime?
   accessToken String?
 }
+model GdprRequest {
+  id            String   @id @default(cuid())
+  type          String   // "DATA_REQUEST" | "CUSTOMER_REDACT" | "SHOP_REDACT"
+  shopDomain    String
+  customerId    String?
+  customerEmail String?
+  payload       String
+  status        String   @default("PENDING") // "PENDING" | "COMPLETED"
+  createdAt     DateTime @default(now())
+}
