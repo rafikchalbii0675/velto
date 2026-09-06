@@ -1,7 +1,7 @@
 import { Link } from "@remix-run/react";
 
 export default function VeltoNav() {
-return (
+  return (
     <div
       style={{
         width: "260px",
@@ -15,14 +15,14 @@ return (
     >
       <h2 style={{ marginBottom: "30px" }}>Velto</h2>
 
-      <Link to="/dashboard" style={linkStyle}>Dashboard</Link>
-      <Link to="/products" style={linkStyle}>Produits</Link>
+      <Link to="/app/dashboard" style={linkStyle}>Dashboard</Link>
+      <Link to="/app/products" style={linkStyle}>Produits</Link>
       <Link to="/promotions" style={linkStyle}>Promotions</Link>
-      <Link to="/notifications" style={linkStyle}>Notifications intelligentes</Link>
-      <Link to="/hot-products" style={linkStyle}>Hot Products</Link>
+      <Link to="/app/notifications" style={linkStyle}>Notifications intelligentes</Link>
+      <Link to="/app/hot_products" style={linkStyle}>Hot Products</Link>
       <Link to="/crypto" style={linkStyle}>Crypto</Link>
       <Link to="/rewards" style={linkStyle}>Points de récompenses</Link>
-      <Link to="/history" style={linkStyle}>Historique</Link>
+      <Link to="/promotions/history" style={linkStyle}>Historique</Link>
 
       <div
         style={{
