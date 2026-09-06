@@ -1,7 +1,7 @@
 import { Link } from "@remix-run/react";
 
-export default function VeltoSidebar() {
-  return (
+export default function VeltoNav() {
+return (
     <div
       style={{
         width: "260px",
