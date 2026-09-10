@@ -8,16 +8,78 @@ import {
   Button,
 } from "@shopify/polaris";
 import { Link, useLoaderData } from "@remix-run/react";
+import { authenticate } from "../shopify.server";
 
 import IAChart from "../components/IAChart";
 import { predictSales7Days } from "../utils/ai.sales.predict";
-import { analyzeProduct } from "../utils/ai/ai.product.analysis";
+import { analyzeProduct } from "../utils/ai/ai.product.analysis.server";
 import { generateMarketingText } from "../utils/ai/ai.marketing.server";
 
 // Tout le code qui appelle des modules .server.js doit vivre ici,
 // dans loader(). Cette fonction ne tourne QUE côté serveur —
 // c'est ce qui évite l'erreur "Server-only module referenced by client".
-export async function loader() {
+export async function loader({ request }) {
+  const { admin } = await authenticate.admin(request);
+
+  // --- Vraies données Shopify ---
+
+  // Nombre de produits actifs
+  const productsCountResponse = await admin.graphql(`#graphql
+    query {
+      productsCount(query: "status:active") {
+        count
+      }
+    }
+  `);
+  const productsCountJson = await productsCountResponse.json();
+  const productsCount = productsCountJson.data.productsCount.count;
+
+  // Promotions/réductions actives
+  const discountsResponse = await admin.graphql(`#graphql
+    query {
+      codeDiscountNodes(first: 50, query: "status:active") {
+        edges {
+          node {
+            id
+          }
+        }
+      }
+    }
+  `);
+  const discountsJson = await discountsResponse.json();
+  const activePromotionsCount = discountsJson.data.codeDiscountNodes.edges.length;
+
+  // Un vrai produit pour l'analyse IA (le premier produit actif trouvé)
+  const productResponse = await admin.graphql(`#graphql
+    query {
+      products(first: 1, query: "status:active") {
+        edges {
+          node {
+            id
+            title
+            priceRangeV2 {
+              minVariantPrice {
+                amount
+              }
+            }
+          }
+        }
+      }
+    }
+  `);
+  const productJson = await productResponse.json();
+  const realProduct = productJson.data.products.edges[0]?.node;
+
+  // --- Données encore simulées (à connecter plus tard) ---
+  // Shopify ne fournit pas directement le coût, le CTR ou les vues par produit
+  // via l'API Admin standard — ça nécessite Shopify Analytics ou une saisie
+  // manuelle du marchand. En attendant, on estime le coût à 40% du prix
+  // (marge courante e-commerce) et on garde CTR/conversion/vues en exemple.
+  const realPrice = realProduct
+    ? parseFloat(realProduct.priceRangeV2.minVariantPrice.amount)
+    : 40;
+  const estimatedCost = realPrice * 0.4;
+
   const ai = {
     marginRate: 40,
     newMarginRate: 25,
@@ -32,31 +94,54 @@ export async function loader() {
     marginRate: ai.marginRate,
   });
 
-  const productAI = analyzeProduct({
-    price: 40,
-    cost: 12,
-    conversion: 2.1,
-    views: 300,
+  const productAI = await analyzeProduct({
+    productName: realProduct ? realProduct.title : "Produit Cozy Warm",
+    price: realPrice,
+    cost: estimatedCost,
+    conversion: 2.1, // simulé — pas encore connecté à de vraies analytics
+    views: 300, // simulé — pas encore connecté à de vraies analytics
   });
 
   const marketing = generateMarketingText({
     title: "Promotion T-shirt Velto",
     discount: 20,
-    productName: "le T-shirt Velto édition Cozy Warm",
+    productName: realProduct ? realProduct.title : "le T-shirt Velto édition Cozy Warm",
   });
 
-  return { ai, sales, productAI, marketing };
+  return {
+    ai,
+    sales,
+    productAI,
+    marketing,
+    productsCount,
+    activePromotionsCount,
+  };
 }
 
 export default function DashboardRoute() {
   // Le composant ne fait plus AUCUN appel direct aux modules .server.js.
   // Il récupère simplement le résultat déjà calculé par loader().
-  const { ai, sales, productAI, marketing } = useLoaderData();
+  const { ai, sales, productAI, marketing, productsCount, activePromotionsCount } =
+    useLoaderData();
 
   return (
     <VeltoLayout title="Dashboard Cozy Warm">
       <Page>
         <Layout>
+
+          {/* Bloc Vue d'ensemble - vraies données Shopify */}
+          <Layout.Section>
+            <Card title="Vue d'ensemble de la boutique" sectioned>
+              <TextContainer>
+                <Text variant="bodyMd" fontWeight="bold">
+                  {productsCount} produits actifs
+                </Text>
+                <Text variant="bodyMd" fontWeight="bold">
+                  {activePromotionsCount} promotions en cours
+                </Text>
+              </TextContainer>
+            </Card>
+          </Layout.Section>
 
           {/* Bloc Promotions + IA */}
           <Layout.Section>
@@ -150,19 +235,19 @@ export default function DashboardRoute() {
             </Card>
           </Layout.Section>
 
-          {/* Bloc Analyse produit Cozy Warm */}
+          {/* Bloc Analyse produit - vrai produit Shopify */}
           <Layout.Section>
-            <Card title="Analyse produit Cozy Warm" sectioned>
+            <Card title={`Analyse produit : ${productAI.productName || "Produit"}`} sectioned>
               <TextContainer>
                 <Text variant="bodyMd" fontWeight="bold">
                   IA produit : marge, performance, recommandation.
                 </Text>
                 <p>
-                  Analyse un produit Cozy Warm pour optimiser prix et conversion.
+                  Analyse basée sur un vrai produit de ta boutique.
                 </p>
               </TextContainer>
               <div style={{ marginTop: "12px" }}>
-                <p>Marge : {productAI.margin}$</p>
+                <p>Marge : {productAI.margin.toFixed(2)}$</p>
                 <p>Marge % : {productAI.marginRate}%</p>
                 <p>Performance : {productAI.performance}</p>
                 <p>Recommandation : {productAI.recommendation}</p>
