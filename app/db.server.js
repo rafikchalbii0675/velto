@@ -1,58 +1,77 @@
-import { createRequestHandler } from "@remix-run/express";
-import express from "express";
-import path from "path";
-import { fileURLToPath } from "url";
-import { shopifyApp } from "@shopify/shopify-app-express";
-import { shopifyAuth } from "@shopify/shopify-app-express/auth";
-import { shopifyWebhook } from "@shopify/shopify-app-express/webhooks";
 import { PrismaClient } from "@prisma/client";
 
-const prisma = new PrismaClient();
+let prisma;
 
-// Fix __dirname for ES modules
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+if (!global.__db__) {
+  global.__db__ = new PrismaClient();
+}
 
-const app = express();
+prisma = global.__db__;
 
-// Shopify App Initialization
-const shopify = shopifyApp({
-  apiKey: process.env.SHOPIFY_API_KEY,
-  apiSecretKey: process.env.SHOPIFY_API_SECRET,
-  apiVersion: "2026-07",
-  scopes: [
-    "read_products",
-    "write_products",
-    "read_orders",
-    "write_orders",
-    "read_discounts",
-    "write_discounts",
-  ],
-  hostName: process.env.SHOPIFY_APP_URL.replace("https://", ""),
-  hostScheme: "https",
-});
+// -----------------------------
+// PRODUITS & STOCK
+// -----------------------------
 
-// Authentication Route
-app.get("/api/auth", shopifyAuth);
+export async function getProducts(shop) {
+  return prisma.product.findMany({
+    where: { shop },
+    orderBy: { createdAt: "desc" },
+  });
+}
 
-// Webhooks
-app.post("/webhooks", shopifyWebhook);
+export async function updateStock(productId, quantity) {
+  return prisma.product.update({
+    where: { id: productId },
+    data: { stock: quantity },
+  });
+}
 
-// Static files (for Remix build)
-app.use(express.static(path.join(__dirname, "public")));
+// -----------------------------
+// IA : TENDANCES & SEO
+// -----------------------------
 
-// Remix request handler
-app.all(
-  "*",
-  createRequestHandler({
-    build: await import("./build/server/index.js"),
-    mode: process.env.NODE_ENV,
-  })
-);
+export async function saveProductAIInsights(productId, insights) {
+  return prisma.product.update({
+    where: { id: productId },
+    data: {
+      ai_trends: insights.trends || null,
+      ai_seo: insights.seo || null,
+      ai_score: insights.score || null,
+    },
+  });
+}
 
-// Start server
-const PORT = process.env.PORT || 3000;
+// -----------------------------
+// NOTIFICATIONS IA
+// -----------------------------
 
-app.listen(PORT, () => {
-  console.log(`🚀 Velto server running on port ${PORT}`);
-});
+export async function createNotification(shop, type, message) {
+  return prisma.notification.create({
+    data: {
+      shop,
+      type,
+      message,
+      read: false,
+    },
+  });
+}
+
+export async function getNotifications(shop) {
+  return prisma.notification.findMany({
+    where: { shop },
+    orderBy: { createdAt: "desc" },
+  });
+}
+
+export async function markNotificationRead(id) {
+  return prisma.notification.update({
+    where: { id },
+    data: { read: true },
+  });
+}
+
+// -----------------------------
+// EXPORT PRISMA
+// -----------------------------
+
+export { prisma };
