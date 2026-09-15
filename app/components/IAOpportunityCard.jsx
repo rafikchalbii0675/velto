@@ -1,58 +1,43 @@
-// app/components/IAOpportunityCard.jsx
-
 import React from "react";
-import { Card, Text, Badge, Button, InlineStack, BlockStack } from "@shopify/polaris";
 
-export default function IAOpportunityCard({ opportunity, onApply, loading }) {
-  if (!opportunity) return null;
-
-  const { title, description, impact, actionLabel, carrier, expiresAt } =
-    opportunity;
-
+export default function IAOpportunityCard({ title, score, trend, description }) {
   return (
-    <Card title="Opportunité IA du jour" sectioned>
-      <BlockStack gap="4">
-        
-        <InlineStack align="center" gap="2">
-          <Text as="h3" variant="headingMd">
-            {title}
-          </Text>
-          <Badge status="info">IA recommandée</Badge>
-        </InlineStack>
+    <div
+      style={{
+        border: "1px solid #e5e7eb",
+        borderRadius: "12px",
+        padding: "16px",
+        background: "#fff",
+        boxShadow: "0 2px 6px rgba(0,0,0,0.06)",
+        display: "flex",
+        flexDirection: "column",
+        gap: "8px",
+      }}
+    >
+      <h3 style={{ fontSize: "18px", fontWeight: "600" }}>{title}</h3>
 
-        <Text as="p" variant="bodyMd">
-          {description}
-        </Text>
+      <div style={{ fontSize: "14px", color: "#4b5563" }}>
+        {description || "Analyse IA disponible"}
+      </div>
 
-        <InlineStack gap="2">
-          {impact?.conversion && (
-            <Badge status="success">
-              Conversion {impact.conversion}
-            </Badge>
-          )}
-          {impact?.loyaltyPoints && (
-            <Badge status="attention">
-              Points fidélité {impact.loyaltyPoints}
-            </Badge>
-          )}
-          {impact?.retention && (
-            <Badge status="info">
-              Rétention {impact.retention}
-            </Badge>
-          )}
-        </InlineStack>
+      <div
+        style={{
+          marginTop: "8px",
+          display: "flex",
+          justifyContent: "space-between",
+          fontSize: "14px",
+        }}
+      >
+        <span>
+          🔥 Tendance :{" "}
+          <strong style={{ color: "#2563eb" }}>{trend || "N/A"}</strong>
+        </span>
 
-        <Text as="p" variant="bodySm" tone="subdued">
-          Transporteur recommandé : {carrier} · Valide jusqu’au {expiresAt}
-        </Text>
-
-        <InlineStack align="end">
-          <Button primary onClick={onApply} loading={loading}>
-            {actionLabel}
-          </Button>
-        </InlineStack>
-
-      </BlockStack>
-    </Card>
+        <span>
+          ⚡ Score IA :{" "}
+          <strong style={{ color: "#16a34a" }}>{score || "0%"}</strong>
+        </span>
+      </div>
+    </div>
   );
 }
