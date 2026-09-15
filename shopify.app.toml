@@ -1,23 +1,20 @@
-# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
-
-client_id = "f99b070bef6dec2b4386313ebe0af234"
 name = "Velto"
-application_url = "https://velto-production.up.railway.app"
+application_url = "https://mini-somewhere-ordered-treatment.trycloudflare.com"
 embedded = true
+client_id = "f99b07bef6dec2b438613ebe0af234"
 
 [webhooks]
 api_version = "2026-07"
 
-  [[webhooks.subscriptions]]
-  uri = "/webhooks/gdpr"
-  compliance_topics = [ "customers/data_request", "customers/redact", "shop/redact" ]
+[[webhooks.subscriptions]]
+uri = "/webhooks/gdpr"
+compliance_topics = [ "customers/data_request", "customers/redact", "shop/redact" ]
 
 [access_scopes]
-# Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
-scopes = "read_orders,write_orders,read_products,read_discounts"
+scopes = "read_discounts,read_orders,read_products,write_discounts,write_orders,write_products"
 
 [auth]
-redirect_urls = [ "https://velto-production.up.railway.app/api/auth" ]
+redirect_urls = [ "https://mini-somewhere-ordered-treatment.trycloudflare.com/api/auth" ]
 
 [build]
 automatically_update_urls_on_dev = true

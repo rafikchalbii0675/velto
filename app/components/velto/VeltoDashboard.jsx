@@ -1,4 +1,4 @@
-export default function VeltoDashboard() {
+export default function VeltoDashboard({ stats, shop }) {
   const cardStyle = {
     padding: "24px",
     backgroundColor: "#fff",
@@ -7,26 +7,40 @@ export default function VeltoDashboard() {
     marginBottom: "24px",
   };
 
+  const {
+    products = 0,
+    promotions = 0,
+    alerts = 0,
+    hotProducts = 0,
+    cryptoTransactions = 0,
+  } = stats || {};
+
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
+      {shop && (
+        <p style={{ color: "#9a9a9a", fontSize: "12px" }}>
+          Boutique connectée : {shop}
+        </p>
+      )}
+
       <div style={cardStyle}>
         <h2 style={{ marginBottom: "12px" }}>Produits</h2>
-        <p style={{ color: "#4a4a4a" }}>128 produits actifs</p>
+        <p style={{ color: "#4a4a4a" }}>{products} produits actifs</p>
       </div>
 
       <div style={cardStyle}>
         <h2 style={{ marginBottom: "12px" }}>Promotions</h2>
-        <p style={{ color: "#4a4a4a" }}>12 promotions en cours</p>
+        <p style={{ color: "#4a4a4a" }}>{promotions} promotions en cours</p>
       </div>
 
       <div style={cardStyle}>
         <h2 style={{ marginBottom: "12px" }}>Alertes</h2>
-        <p style={{ color: "#4a4a4a" }}>3 alertes actives</p>
+        <p style={{ color: "#4a4a4a" }}>{alerts} alertes actives</p>
       </div>
 
       <div style={cardStyle}>
         <h2 style={{ marginBottom: "12px" }}>Crypto</h2>
-        <p style={{ color: "#4a4a4a" }}>54 transactions IA</p>
+        <p style={{ color: "#4a4a4a" }}>{cryptoTransactions} transactions IA</p>
       </div>
     </div>
   );

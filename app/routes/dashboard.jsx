@@ -1,34 +1,37 @@
-import VeltoLayout from "../components/velto/VeltoLayout";
-import VeltoDashboard from "../components/velto/VeltoDashboard";
 import { json } from "@remix-run/node";
+import { useLoaderData } from "@remix-run/react";
+import { Page, Card, Text } from "@shopify/polaris";
+import { authenticate } from "../shopify.server";
 
-/* Loader PRO — si tu veux ajouter des stats dynamiques plus tard */
-export async function loader() {
+export async function loader({ request }) {
+  const { admin } = await authenticate.admin(request);
+
+  const query = `
+    {
+      productsCount
+      ordersCount
+    }
+  `;
+
+  const response = await admin.graphql(query);
+  const data = await response.json();
+
   return json({
-    stats: {
-      products: 128,
-      promotions: 12,
-      alerts: 3,
-      hotProducts: 7,
-      cryptoTransactions: 54,
-    },
+    productsCount: data.data.productsCount,
+    ordersCount: data.data.ordersCount,
   });
 }
 
-/* Page Dashboard PRO */
-export default function DashboardRoute() {
+export default function Dashboard() {
+  const { productsCount, ordersCount } = useLoaderData();
+
   return (
-    <VeltoLayout title="Dashboard Velto PRO">
-      <div
-        style={{
-          padding: "20px",
-          display: "flex",
-          flexDirection: "column",
-          gap: "24px",
-        }}
-      >
-        <VeltoDashboard />
-      </div>
-    </VeltoLayout>
+    <Page title="Dashboard Velto">
+      <Card>
+        <Text variant="headingLg">Statistiques Velto</Text>
+        <Text variant="bodyLg">Produits : {productsCount}</Text>
+        <Text variant="bodyLg">Commandes : {ordersCount}</Text>
+      </Card>
+    </Page>
   );
 }

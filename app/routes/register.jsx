@@ -33,7 +33,7 @@ export async function action({ request }) {
   }
 
   // Créer l'utilisateur
-  const user = await createUser(email, password);
+  const user = await createUser({ email, password });
 
   // Créer la session et rediriger
   return createUserSession({

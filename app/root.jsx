@@ -16,9 +16,9 @@ export function links() {
 
 export function meta() {
   return [
-    { charset: "utf-8" },
+    { charSet: "utf-8" },
     { title: "Velto" },
-    { viewport: "width=device-width, initial-scale=1" },
+    { name: "viewport", content: "width=device-width, initial-scale=1" },
   ];
 }
 
@@ -27,6 +27,10 @@ export default function Root() {
     <html lang="fr">
       <head>
         <Meta />
+
+        {/*  LIGNE OBLIGATOIRE POUR CORRIGER LES ACCENTS */}
+        <meta charSet="utf-8" />
+
         <Links />
       </head>
 

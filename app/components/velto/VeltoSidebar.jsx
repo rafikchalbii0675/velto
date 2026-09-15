@@ -1,57 +1,59 @@
-export default function VeltoSidebar() {
+export default function VeltoSidebar({ data, shop }) {
+  const latestNotification = data?.latestNotification;
+  const latestAction = data?.latestAction;
+
   return (
     <div
       style={{
         width: "260px",
-        backgroundColor: "#f7f0e8",
+        backgroundColor: "#fff",
         borderRadius: "16px",
         padding: "20px",
+        boxShadow: "0px 4px 12px rgba(0,0,0,0.06)",
         display: "flex",
         flexDirection: "column",
-        gap: "16px",
+        gap: "20px",
       }}
     >
-      <h3 style={{ margin: 0 }}>Velto Sidebar</h3>
-      <p style={{ margin: 0, fontSize: "14px", color: "#6b5f54" }}>
-        Espace latéral pour modules IA, crypto, historique, etc.
-      </p>
+      {/* INFOS BOUTIQUE */}
+      {shop && (
+        <div>
+          <h3 style={{ marginBottom: "12px" }}>Boutique</h3>
+          <p><strong>Nom :</strong> {shop.name || "—"}</p>
+          <p><strong>Domaine :</strong> {shop.myshopify_domain || "—"}</p>
+          <p><strong>Email :</strong> {shop.email || "—"}</p>
+        </div>
+      )}
 
-      <div
-        style={{
-          backgroundColor: "#fff",
-          borderRadius: "12px",
-          padding: "16px",
-        }}
-      >
+      {/* MODULE IA */}
+      <div style={{ backgroundColor: "#f7f0e8", borderRadius: "12px", padding: "16px" }}>
         <strong>Module IA</strong>
         <p style={{ margin: "4px 0 0", fontSize: "14px" }}>
-          Suggestions, analyses, prédictions.
+          {latestNotification ? latestNotification.message : "Aucune notification récente."}
         </p>
       </div>
 
-      <div
-        style={{
-          backgroundColor: "#fff",
-          borderRadius: "12px",
-          padding: "16px",
-        }}
-      >
-        <strong>Crypto</strong>
+      {/* CRYPTO — V2 */}
+      <div style={{ backgroundColor: "#f7f0e8", borderRadius: "12px", padding: "16px", opacity: 0.55 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+          <strong>Crypto</strong>
+          <span style={{
+            fontSize: "11px", fontWeight: "700", color: "#a85a3f",
+            border: "1px solid #a85a3f", borderRadius: "999px", padding: "2px 8px",
+          }}>
+            Bientôt — V2
+          </span>
+        </div>
         <p style={{ margin: "4px 0 0", fontSize: "14px" }}>
-          Marché, tendances, paiements.
+          Marché, tendances, paiements crypto.
         </p>
       </div>
 
-      <div
-        style={{
-          backgroundColor: "#fff",
-          borderRadius: "12px",
-          padding: "16px",
-        }}
-      >
+      {/* HISTORIQUE */}
+      <div style={{ backgroundColor: "#f7f0e8", borderRadius: "12px", padding: "16px" }}>
         <strong>Historique</strong>
         <p style={{ margin: "4px 0 0", fontSize: "14px" }}>
-          Actions, promotions, transactions.
+          {latestAction ? `${latestAction.title} (${latestAction.type})` : "Aucune action récente."}
         </p>
       </div>
     </div>

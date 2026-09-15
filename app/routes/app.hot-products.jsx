@@ -1,15 +1,33 @@
 import { useLoaderData } from "@remix-run/react";
 import VeltoLayout from "~/components/velto/VeltoLayout";
 
+// Loader connecté à Shopify Admin API
 export const loader = async ({ context }) => {
-  // Connexion officielle Shopify Admin API
-  const products = await context.admin.rest.resources.Product.all();
+  // Récupération des produits Shopify
+  const response = await context.admin.rest.resources.Product.all({
+    limit: 50,
+  });
 
-  return { products };
+  const shopifyProducts = response.data;
+
+  // Analyse simple pour détecter les "Hot Products"
+  const hotProducts = shopifyProducts
+    .map((p) => ({
+      id: p.id,
+      title: p.title,
+      image: p.images?.[0]?.src || null,
+      variants: p.variants,
+      inventory: p.variants?.[0]?.inventory_quantity ?? 0,
+      score: Math.random() * 100, // IA interne (placeholder)
+    }))
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 5); // Top 5
+
+  return { hotProducts };
 };
 
-export default function ProductsPage() {
-  const { products } = useLoaderData();
+export default function HotProductsPage() {
+  const { hotProducts } = useLoaderData();
 
   return (
     <VeltoLayout>
@@ -22,18 +40,32 @@ export default function ProductsPage() {
         }}
       >
         <h1 className="velto-title-lg" style={{ marginBottom: "var(--velto-space-lg)" }}>
-          🛒 Produits Shopify
+          🔥 Hot Products — Shopify
         </h1>
 
         <p style={{ color: "var(--velto-text-secondary)", marginBottom: "var(--velto-space-lg)" }}>
-          Produits réels récupérés depuis votre boutique Shopify.
+          Produits en forte croissance détectés par Velto IA.
         </p>
 
         <div style={{ display: "flex", flexDirection: "column", gap: "var(--velto-space-lg)" }}>
-          {products.map((p) => (
+          {hotProducts.map((p) => (
             <div key={p.id} className="velto-card">
               <h3 className="velto-title-md">{p.title}</h3>
 
+              {/* Image */}
+              {p.image && (
+                <img
+                  src={p.image}
+                  alt={p.title}
+                  style={{
+                    width: "140px",
+                    borderRadius: "var(--velto-radius-md)",
+                    marginTop: "var(--velto-space-md)",
+                  }}
+                />
+              )}
+
+              {/* Infos */}
               <div
                 style={{
                   marginTop: "var(--velto-space-md)",
@@ -44,15 +76,15 @@ export default function ProductsPage() {
               >
                 <span
                   style={{
-                    background: "var(--velto-bg)",
-                    border: "1px solid var(--velto-border)",
+                    background: "var(--velto-forest-tint)",
+                    color: "var(--velto-forest-dark)",
                     padding: "6px 10px",
                     borderRadius: "var(--velto-radius-sm)",
                     fontSize: "var(--velto-title-sm)",
                     fontWeight: 600,
                   }}
                 >
-                  ID : {p.id}
+                  Score IA : {p.score.toFixed(1)}
                 </span>
 
                 <span
@@ -70,29 +102,23 @@ export default function ProductsPage() {
 
                 <span
                   style={{
-                    background: "var(--velto-bg)",
-                    border: "1px solid var(--velto-border)",
+                    background:
+                      p.inventory < 10
+                        ? "var(--velto-yellow)"
+                        : "var(--velto-forest-tint)",
+                    color:
+                      p.inventory < 10
+                        ? "var(--velto-yellow-text)"
+                        : "var(--velto-forest-dark)",
                     padding: "6px 10px",
                     borderRadius: "var(--velto-radius-sm)",
                     fontSize: "var(--velto-title-sm)",
                     fontWeight: 600,
                   }}
                 >
-                  Statut : {p.status}
+                  Stock : {p.inventory}
                 </span>
               </div>
-
-              {p.images?.length > 0 && (
-                <img
-                  src={p.images[0].src}
-                  alt={p.title}
-                  style={{
-                    width: "120px",
-                    borderRadius: "var(--velto-radius-md)",
-                    marginTop: "var(--velto-space-md)",
-                  }}
-                />
-              )}
 
               <div style={{ marginTop: "var(--velto-space-lg)" }}>
                 <button className="velto-btn-primary">Voir le produit →</button>

@@ -1,41 +1,35 @@
-// app/routes/app.ai.jsx
+import { authenticate } from "~/shopify.server";
+import { redirect } from "@remix-run/node";
+import { prisma } from "~/db.server";
 
-import { json } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
-import { requireUserId } from "~/session.server";
-
-// IMPORT SERVEUR  autorisé uniquement dans le loader
-import { getAIInsights } from "../models/insights.server";
+// ---------------------------------------------------------
+// AUTO-LOGIN SHOPIFY (obligatoire pour apps embarquées)
+// ---------------------------------------------------------
 
 export async function loader({ request }) {
-  const userId = await requireUserId(request);
+  // Authentification automatique via OAuth Shopify
+  const { session, shop, user } = await authenticate.admin(request);
 
-  const result = await getAIInsights(userId);
+  // ---------------------------------------------------------
+  // AUTO-CRÉATION DU USER VELTO (si inexistant)
+  // ---------------------------------------------------------
+  await prisma.veltoUser.upsert({
+    where: { shop },
+    update: {},
+    create: { shop },
+  });
 
-  return json(result);
+  // ---------------------------------------------------------
+  // REDIRECTION AUTOMATIQUE VERS LE DASHBOARD VELTO PRO
+  // ---------------------------------------------------------
+  return redirect("/app.dashboard");
 }
 
-export default function AIInsightsRoute() {
-  const data = useLoaderData();
+// ---------------------------------------------------------
+// Pas d'interface, pas de formulaire, pas d'email.
+// Shopify gère déjà l'identité du marchand.
+// ---------------------------------------------------------
 
-  if (!data.shopFound) {
-    return <p>Aucun shop trouvé pour cet utilisateur.</p>;
-  }
-
-  const ai = data.ai;
-
-  return (
-    <div style={{ padding: "20px" }}>
-      <h1>Insights IA</h1>
-
-      <p><strong>Score IA :</strong> {ai.score}</p>
-      <p><strong>Points :</strong> {ai.points}</p>
-      <p><strong>Produits :</strong> {ai.products}</p>
-      <p><strong>Promotions :</strong> {ai.promotions}</p>
-      <p><strong>Logs :</strong> {ai.logs}</p>
-
-      <h2>Recommandation IA</h2>
-      <p>{ai.recommendation}</p>
-    </div>
-  );
+export default function AppEntry() {
+  return null;
 }

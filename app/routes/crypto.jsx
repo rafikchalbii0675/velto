@@ -1,71 +1,20 @@
-import crypto from "crypto";
+import { Page, Card, Text } from "@shopify/polaris";
+import VeltoLayout from "../components/velto/VeltoLayout";
 
-// Vérifie la signature HMAC
-export function verifySignature() {
-  const secret = process.env.SHOPIFY_API_SECRET;
-
-  if (!secret) {
-    return {
-      valid: false,
-      message: "Clé API Shopify manquante.",
-    };
-  }
-
-  const payload = "velto-security-check";
-
-  const signature = crypto
-    .createHmac("sha256", secret)
-    .update(payload)
-    .digest("hex");
-
-  return {
-    valid: true,
-    message: "Signature valide.",
-    signature,
-  };
-}
-
-// Mock : données crypto IA
-export async function getCryptoMarket() {
-  return [
-    { id: 1, name: "Bitcoin", price: "$64,200", trend: "+2.4%" },
-    { id: 2, name: "Ethereum", price: "$3,420", trend: "-1.1%" },
-    { id: 3, name: "Solana", price: "$148", trend: "+5.8%" },
-  ];
-}
-
-// Vérifie la présence des clés
-export function checkKeys() {
-  const keys = {
-    apiKey: !!process.env.SHOPIFY_API_KEY,
-    apiSecret: !!process.env.SHOPIFY_API_SECRET,
-    veltoSecret: !!process.env.VELTO_CRYPTO_SECRET,
-  };
-
-  const allGood = keys.apiKey && keys.apiSecret && keys.veltoSecret;
-
-  return {
-    allGood,
-    keys,
-  };
-}
-
-// Vérifie les warnings
-export function getWarnings() {
-  const warnings = [];
-
-  if (process.env.NODE_ENV !== "production") {
-    warnings.push("L'application tourne en mode développement.");
-  }
-
-  if (!process.env.SHOPIFY_API_SECRET) {
-    warnings.push("La clé API Shopify est manquante.");
-  }
-
-  return warnings;
-}
-
-// Niveau de sécurité (exemple simple)
-export function getSecurityLevel(shopId) {
-  return "medium";
+export default function Crypto() {
+  return (
+    <VeltoLayout title="Crypto-commerce">
+      <Page>
+        <Card sectioned>
+          <Text variant="headingLg">Crypto-commerce</Text>
+          <div style={{ marginTop: "12px" }}>
+            <Text variant="bodyMd">
+              Paiements crypto, wallets et cashback Web3 — cette
+              fonctionnalité arrive dans la version 2 de Velto.
+            </Text>
+          </div>
+        </Card>
+      </Page>
+    </VeltoLayout>
+  );
 }

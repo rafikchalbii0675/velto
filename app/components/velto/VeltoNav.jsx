@@ -1,60 +1,83 @@
-import { Link } from "@remix-run/react";
+import { Link, useLocation } from "@remix-run/react";
 
 export default function VeltoNav() {
+  const location = useLocation();
+  const isActive = (path) => location.pathname === path;
+
+  const items = [
+    { path: "/app", label: "Dashboard" },
+    { path: "/app/products", label: "Produits" },
+    { path: "/app/promotions", label: "Promotions" },
+    { path: "/app/notifications", label: "Notifications IA" },
+    { path: "/app/hot-products", label: "Hot Products" },
+    { path: "/app/crypto", label: "Crypto (v2)" },
+    { path: "/app/settings", label: "Paramètres" },
+    { path: "/app/market-ia", label: "Tendances IA" },
+    { path: "/app/campaigns", label: "Campagnes IA" },
+    { path: "/app/about", label: "À propos" },
+  ];
+
   return (
-    <div
+    <nav
       style={{
-        width: "260px",
-        background: "#f7f3ef",
-        height: "100vh",
-        padding: "20px",
-        borderRight: "1px solid #e0d8d1",
-        display: "flex",
-        flexDirection: "column"
+        width: "240px",
+        minWidth: "240px",
+        flexShrink: 0,
+        background: "var(--velto-bg)",
+        borderRight: "1px solid var(--velto-border)",
+        padding: "var(--velto-space-lg) var(--velto-space-md)",
+        position: "sticky",
+        top: 0,
+        height: "calc(100vh - 120px)",
+        overflowY: "auto",
+        zIndex: 1,
       }}
     >
-      <h2 style={{ marginBottom: "30px" }}>Velto</h2>
+      {/* LOGO */}
+      <div style={{ marginBottom: "var(--velto-space-xl)", textAlign: "center" }}>
+        <h2
+          style={{
+            margin: 0,
+            fontSize: "var(--velto-title-lg)",
+            fontWeight: 700,
+            color: "var(--velto-ocean-dark)",
+          }}
+        >
+          Velto
+        </h2>
+        <p
+          style={{
+            margin: 0,
+            fontSize: "12px",
+            color: "var(--velto-text-secondary)",
+          }}
+        >
+          Cozy Warm • Mode Pro
+        </p>
+      </div>
 
-      <Link to="/app/dashboard" style={linkStyle}>Dashboard</Link>
-      <Link to="/app/products" style={linkStyle}>Produits</Link>
-      <Link to="/promotions" style={linkStyle}>Promotions</Link>
-      <Link to="/app/notifications" style={linkStyle}>Notifications intelligentes</Link>
-      <Link to="/app/hot_products" style={linkStyle}>Hot Products</Link>
-      <Link to="/crypto" style={linkStyle}>Crypto</Link>
-      <Link to="/rewards" style={linkStyle}>Points de récompenses</Link>
-      <Link to="/promotions/history" style={linkStyle}>Historique</Link>
-
-      <div
-        style={{
-          margin: "30px 0",
-          height: "1px",
-          background: "#d6ccc4"
-        }}
-      />
-
-      <Link
-        to="/premium"
-        style={{
-          padding: "12px 16px",
-          background: "#ff9900",
-          color: "#fff",
-          borderRadius: "8px",
-          textDecoration: "none",
-          textAlign: "center",
-          fontWeight: "bold"
-        }}
-      >
-        Passer à Velto Premium
-      </Link>
-    </div>
+      {/* MENU */}
+      <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
+        {items.map((item) => (
+          <li key={item.path} style={{ marginBottom: "var(--velto-space-md)" }}>
+            <Link
+              to={item.path}
+              className={isActive(item.path) ? "velto-nav-item-active" : "velto-nav-item"}
+              style={{
+                display: "block",
+                padding: "var(--velto-space-sm)",
+                borderRadius: "var(--velto-radius-md)",
+                textDecoration: "none",
+                fontSize: "var(--velto-title-md)",
+                transition: "0.2s",
+                fontWeight: 500,
+              }}
+            >
+              {item.label}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </nav>
   );
 }
-
-const linkStyle = {
-  marginBottom: "16px",
-  textDecoration: "none",
-  color: "#4a3f35",
-  fontSize: "16px",
-  padding: "8px 0",
-  display: "block"
-};

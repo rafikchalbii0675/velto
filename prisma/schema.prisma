@@ -203,14 +203,23 @@ model OwnerReward {
   createdAt DateTime @default(now())
 }
 model Session {
-  id          String   @id @default(cuid())
+  id          String    @id @default(cuid())
   shop        String
   state       String
   isOnline    Boolean
   scope       String?
-  expiresAt   DateTime?
+  expires     DateTime?
   accessToken String?
+  userId          BigInt?
+  firstName       String?
+  lastName        String?
+  email           String?
+  accountOwner    Boolean   @default(false)
+  locale          String?
+  collaborator    Boolean?  @default(false)
+  emailVerified   Boolean?  @default(false)
 }
+
 model GdprRequest {
   id            String   @id @default(cuid())
   type          String   // "DATA_REQUEST" | "CUSTOMER_REDACT" | "SHOP_REDACT"
@@ -220,4 +229,12 @@ model GdprRequest {
   payload       String
   status        String   @default("PENDING") // "PENDING" | "COMPLETED"
   createdAt     DateTime @default(now())
+}model ShopSettings {
+  id                   String   @id @default(cuid())
+  shopId               String   @unique
+  notificationsEnabled Boolean  @default(true)
+  loyaltyEnabled       Boolean  @default(true)
+  hotProductThreshold  Int      @default(30) // % de hausse avant alerte "produit chaud"
+  autoPromoEnabled     Boolean  @default(false)
+  updatedAt            DateTime @updatedAt
 }

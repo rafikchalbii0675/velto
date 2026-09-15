@@ -1,27 +1,22 @@
 import VeltoTopbar from "./VeltoTopbar";
-import VeltoLogo from "./VeltoLogo";
 import VeltoHeader from "./VeltoHeader";
 import VeltoFooter from "./VeltoFooter";
 import VeltoNav from "./VeltoNav";
 import VeltoSidebar from "./VeltoSidebar";
 
-export default function VeltoLayout({ children, title }) {
+export default function VeltoLayout({ children, title, sidebarData }) {
   return (
     <div
       style={{
         minHeight: "100vh",
-        backgroundColor: "#fdf8f3",
+        backgroundColor: "var(--velto-bg)",
         display: "flex",
         flexDirection: "column",
       }}
     >
-      {/* TOPBAR */}
       <VeltoTopbar />
-
-      {/* HEADER */}
       <VeltoHeader title={title} />
 
-      {/* MAIN CONTENT */}
       <div
         style={{
           display: "flex",
@@ -29,41 +24,28 @@ export default function VeltoLayout({ children, title }) {
           maxWidth: "1400px",
           margin: "0 auto",
           width: "100%",
-          padding: "24px",
-          gap: "24px",
+          padding: "var(--velto-space-lg)",
+          gap: "var(--velto-space-lg)",
         }}
       >
-        {/* LEFT SIDE: LOGO + NAV */}
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "24px",
-            width: "220px",
-          }}
-        >
-          <VeltoLogo size={42} />
-          <VeltoNav />
-        </div>
+        <VeltoNav />
 
-        {/* PAGE CONTENT */}
         <div
           style={{
             flex: 1,
-            backgroundColor: "#fff",
-            borderRadius: "16px",
-            padding: "24px",
-            boxShadow: "0px 4px 12px rgba(0,0,0,0.06)",
+            minWidth: 0,
+            backgroundColor: "var(--velto-card-bg)",
+            borderRadius: "var(--velto-radius-lg)",
+            padding: "var(--velto-space-lg)",
+            boxShadow: "var(--velto-shadow-card)",
           }}
         >
           {children}
         </div>
 
-        {/* ADVANCED SIDEBAR */}
-        <VeltoSidebar />
+        <VeltoSidebar data={sidebarData} />
       </div>
 
-      {/* FOOTER */}
       <VeltoFooter />
     </div>
   );

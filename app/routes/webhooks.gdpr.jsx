@@ -24,13 +24,28 @@ export async function action({ request }) {
 
     case "CUSTOMERS_REDACT": {
       const { customer } = payload;
+      const email = customer.email;
+
+      // On anonymise toute trace de l'email du client dans les notifications
+      // (aucune table Customer dédiée n'existe actuellement dans le schéma)
+      if (email) {
+        await prisma.notification.updateMany({
+          where: { shopId: shop, message: { contains: email } },
+          data: { message: "[Donnée client supprimée - RGPD]" },
+        });
+
+        await prisma.iANotification.updateMany({
+          where: { shopId: shop, message: { contains: email } },
+          data: { message: "[Donnée client supprimée - RGPD]" },
+        });
+      }
 
       await prisma.gdprRequest.create({
         data: {
           type: "CUSTOMER_REDACT",
           shopDomain: shop,
           customerId: String(customer.id),
-          customerEmail: customer.email,
+          customerEmail: email,
           payload: JSON.stringify(payload),
           status: "COMPLETED",
         },
@@ -39,13 +54,24 @@ export async function action({ request }) {
     }
 
     case "SHOP_REDACT": {
-      const shopRecord = await prisma.shop.findUnique({
-        where: { shopId: shop },
-      });
-
-      if (shopRecord) {
-        await prisma.shop.delete({ where: { id: shopRecord.id } });
-      }
+      // Suppression manuelle dans toutes les tables liées à cette boutique,
+      // car il n'existe pas de relation Prisma/cascade entre Shop et les autres modèles.
+      await prisma.$transaction([
+        prisma.points.deleteMany({ where: { shopId: shop } }),
+        prisma.cryptoSale.deleteMany({ where: { shopId: shop } }),
+        prisma.notification.deleteMany({ where: { shopId: shop } }),
+        prisma.product.deleteMany({ where: { shopId: shop } }),
+        prisma.alert.deleteMany({ where: { shopId: shop } }),
+        prisma.securityLog.deleteMany({ where: { shopId: shop } }),
+        prisma.iAPoints.deleteMany({ where: { shopId: shop } }),
+        prisma.iAWallet.deleteMany({ where: { shopId: shop } }),
+        prisma.iATransaction.deleteMany({ where: { shopId: shop } }),
+        prisma.iANotification.deleteMany({ where: { shopId: shop } }),
+        prisma.iACoaching.deleteMany({ where: { shopId: shop } }),
+        prisma.iASuccess.deleteMany({ where: { shopId: shop } }),
+        prisma.user.deleteMany({ where: { shopId: shop } }),
+        prisma.shop.deleteMany({ where: { shopId: shop } }),
+      ]);
 
       await prisma.gdprRequest.create({
         data: {
