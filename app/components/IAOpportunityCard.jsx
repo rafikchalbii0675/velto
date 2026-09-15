@@ -29,12 +29,12 @@ export default function IAOpportunityCard({ title, score, trend, description }) 
         }}
       >
         <span>
-          🔥 Tendance :{" "}
+           Tendance :{" "}
           <strong style={{ color: "#2563eb" }}>{trend || "N/A"}</strong>
         </span>
 
         <span>
-          ⚡ Score IA :{" "}
+           Score IA :{" "}
           <strong style={{ color: "#16a34a" }}>{score || "0%"}</strong>
         </span>
       </div>

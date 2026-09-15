@@ -71,7 +71,8 @@ export async function markNotificationRead(id) {
 }
 
 // -----------------------------
-// EXPORT PRISMA
+// EXPORTS
 // -----------------------------
 
 export { prisma };
+export default prisma;
