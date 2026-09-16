@@ -2,31 +2,32 @@
   "name": "velto",
   "version": "1.0.0",
   "private": true,
+
   "scripts": {
     "dev": "remix dev",
     "build": "remix build",
     "start": "node server.js",
     "postinstall": "prisma generate"
   },
+
   "engines": {
     "node": ">=20.0.0"
   },
+
   "dependencies": {
     "@prisma/client": "^5.0.0",
     "@remix-run/express": "^2.13.1",
     "@remix-run/node": "^2.13.1",
     "@remix-run/react": "^2.13.1",
-    "@shopify/polaris": "^13.9.5",
     "@shopify/shopify-api": "^11.0.0",
     "@shopify/shopify-app-express": "^5.0.0",
-    "@shopify/shopify-app-remix": "^5.0.1",
     "@shopify/shopify-app-session-storage-prisma": "^5.0.0",
     "express": "^4.18.2",
     "prisma": "^5.0.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-icons": "^5.7.0"
+    "react-dom": "^18.2.0"
   },
+
   "devDependencies": {
     "@remix-run/dev": "^2.13.1",
     "vite": "^6.4.3"
