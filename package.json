@@ -16,13 +16,13 @@
 
   "dependencies": {
     "@prisma/client": "^5.0.0",
+
     "@remix-run/express": "^2.13.1",
     "@remix-run/node": "^2.13.1",
     "@remix-run/react": "^2.13.1",
 
     "@shopify/shopify-api": "^11.0.0",
     "@shopify/shopify-app-express": "^5.0.0",
-
     "@shopify/shopify-app-session-storage-prisma": "^5.0.0",
 
     "@shopify/polaris": "^12.0.0",
