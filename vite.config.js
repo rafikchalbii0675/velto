@@ -13,6 +13,10 @@ export default defineConfig({
     hmr: false,
   },
 
+  ssr: {
+    noExternal: ["@shopify/shopify-app-remix", "@shopify/polaris"],
+  },
+
   plugins: [
     remix({
       ignoredRouteFiles: ["**/.*"],
