@@ -1,17 +1,22 @@
-// app/routes/webhooks.app.uninstalled.jsx
-
 import { authenticate } from "../shopify.server";
-import { prisma } from "../db.server";   // ← FIX : import correct
+import { prisma as db } from "../db.server";
 
 export const action = async ({ request }) => {
-  const { session } = await authenticate.webhook(request);
+  const { payload, session, topic, shop } = await authenticate.webhook(request);
 
-  // Nettoyer les données du marchand désinstallé
-  await prisma.session.deleteMany({
-    where: {
-      shop: session.shop,
-    },
-  });
+  console.log(`Received ${topic} webhook for ${shop}`);
+  const current = payload.current;
 
-  return new Response("OK");
+  if (session) {
+    await db.session.update({
+      where: {
+        id: session.id,
+      },
+      data: {
+        scope: current.toString(),
+      },
+    });
+  }
+
+  return new Response();
 };

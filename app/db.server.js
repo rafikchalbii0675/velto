@@ -2,7 +2,6 @@
 
 import { PrismaClient } from "@prisma/client";
 
-// Prevent multiple Prisma instances in development or serverless environments
 let prisma;
 
 if (!global.__prisma__) {
