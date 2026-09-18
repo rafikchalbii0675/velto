@@ -1,5 +1,4 @@
 import { useLoaderData, useRouteError } from "@remix-run/react";
-import { boundary } from "@shopify/shopify-app-remix/server";
 
 import VeltoLayout from "~/components/velto/VeltoLayout";
 import { authenticate } from "~/shopify.server";
@@ -62,6 +61,9 @@ async function fetchAllActiveProductsWithStock(admin) {
 export async function loader({ request }) {
   const { admin } = await authenticate.admin(request);
 
+  const url = new URL(request.url);
+  const shop = url.searchParams.get("shop");
+
   const [productsCountResponse, discountsResponse, allProductEdges] =
     await Promise.all([
       admin.graphql(`#graphql
@@ -118,12 +120,16 @@ export async function loader({ request }) {
     })
     .filter((p) => p.stock < 5);
 
-  return {
-    totalProducts,
-    totalPromotions,
-    discountsHasMore,
-    lowStock,
-  };
+  return Response.json(
+    { totalProducts, totalPromotions, discountsHasMore, lowStock },
+    {
+      headers: {
+        "Content-Security-Policy": shop
+          ? `frame-ancestors https://${shop} https://admin.shopify.com;`
+          : "frame-ancestors https://admin.shopify.com;",
+      },
+    }
+  );
 }
 
 export default function DashboardPage() {
@@ -169,9 +175,15 @@ export default function DashboardPage() {
 }
 
 export function ErrorBoundary() {
-  return boundary.error(useRouteError());
-}
+  const error = useRouteError();
+  console.error("Dashboard ErrorBoundary:", error);
 
-export const headers = (headersArgs) => {
-  return boundary.headers(headersArgs);
-};
+  return (
+    <VeltoLayout title="Erreur">
+      <div style={{ padding: "var(--velto-space-xl)" }}>
+        <h1 className="velto-title-lg">Une erreur est survenue</h1>
+        <p>{error?.statusText || error?.message || "Erreur inconnue"}</p>
+      </div>
+    </VeltoLayout>
+  );
+}
