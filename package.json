@@ -7,7 +7,7 @@
     "lint": "eslint --cache --cache-location ./node_modules/.cache/eslint .",
     "setup": "prisma generate && prisma migrate deploy",
     "shopify": "shopify",
-    "start": "node ./build/server/index.js",
+    "start": "remix-serve ./build/server/index.js",
     "typecheck": "tsc"
   },
   "engines": {
@@ -20,7 +20,7 @@
     "@remix-run/serve": "^2.17.5",
     "@shopify/app-bridge-react": "^4.1.6",
     "@shopify/polaris": "^13.9.5",
-    "@shopify/shopify-app-remix": "^3.7.0",
+    "@shopify/shopify-app-remix": "3.7.0",
     "@shopify/shopify-app-session-storage-prisma": "^6.0.4",
     "axios": "^1.19.0",
     "bcryptjs": "^3.0.3",
