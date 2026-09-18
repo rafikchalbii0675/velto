@@ -1,6 +1,7 @@
 // app/shopify.server.js
 
-import { shopifyApp } from "@shopify/shopify-app-remix";
+import "@shopify/shopify-app-remix/adapters/node";
+import { shopifyApp } from "@shopify/shopify-app-remix/server";
 import { PrismaSessionStorage } from "@shopify/shopify-app-session-storage-prisma";
 import { prisma } from "./db.server"; // ← FIX: named import
 
