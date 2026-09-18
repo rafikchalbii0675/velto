@@ -1,45 +1,52 @@
-import "@shopify/shopify-app-remix/adapters/node";
+// app/shopify.server.js
 
-import {
-  ApiVersion,
-  AppDistribution,
-  shopifyApp,
-} from "@shopify/shopify-app-remix/server";
-
+import { shopifyApp } from "@shopify/shopify-app-remix";
 import { PrismaSessionStorage } from "@shopify/shopify-app-session-storage-prisma";
+import { prisma } from "./db.server"; // ← FIX: named import
 
-import prisma from "./db.server";
+// ------------------------------------------------------------
+// Shopify App Configuration
+// ------------------------------------------------------------
 
-const shopify = shopifyApp({
+export const shopify = shopifyApp({
   apiKey: process.env.SHOPIFY_API_KEY,
-  apiSecretKey: process.env.SHOPIFY_API_SECRET || "",
-  apiVersion: ApiVersion.October25,
-  scopes: process.env.SCOPES?.split(","),
-  appUrl: process.env.SHOPIFY_APP_URL || process.env.HOST,
+  apiSecretKey: process.env.SHOPIFY_API_SECRET,
+  apiVersion: "2024-07",
+
+  scopes: process.env.SCOPES?.split(",") ?? [
+    "read_products",
+    "write_products",
+    "read_orders",
+    "write_orders",
+    "read_customers",
+    "write_customers",
+  ],
+
+  appUrl: process.env.SHOPIFY_APP_URL,
   authPathPrefix: "/auth",
   sessionStorage: new PrismaSessionStorage(prisma),
-  distribution: AppDistribution.AppStore,
-  isEmbeddedApp: true,
 
-  future: {
-    expiringOfflineAccessTokens: true,
-    unstable_newEmbeddedAuthStrategy: true,
+  // ------------------------------------------------------------
+  // Webhooks
+  // ------------------------------------------------------------
+  webhooks: {
+    APP_UNINSTALLED: {
+      deliveryMethod: "http",
+      callbackUrl: "/webhooks/app_uninstalled",
+    },
   },
-
-  ...(process.env.SHOP_CUSTOM_DOMAIN
-    ? {
-        customShopDomains: [process.env.SHOP_CUSTOM_DOMAIN],
-      }
-    : {}),
 });
 
-export default shopify;
+// ------------------------------------------------------------
+// Authentication Helper
+// ------------------------------------------------------------
 
-export const apiVersion = ApiVersion.October25;
-export const addDocumentResponseHeaders =
-  shopify.addDocumentResponseHeaders;
 export const authenticate = shopify.authenticate;
+
+// ------------------------------------------------------------
+// Loaders / Actions Helpers
+// ------------------------------------------------------------
+
 export const unauthenticated = shopify.unauthenticated;
-export const login = shopify.login;
-export const registerWebhooks = shopify.registerWebhooks;
-export const sessionStorage = shopify.sessionStorage;
+export const session = shopify.session;
+export const redirectToAuth = shopify.redirectToAuth;
