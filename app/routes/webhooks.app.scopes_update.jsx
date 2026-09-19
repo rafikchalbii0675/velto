@@ -1,22 +1,24 @@
+// app/routes/webhooks.app.scopes_update.jsx
+
 import { authenticate } from "../shopify.server";
-import db from "../db.server";
+import { prisma } from "../db.server";   // ← FIX : import correct
 
 export const action = async ({ request }) => {
-  const { payload, session, topic, shop } = await authenticate.webhook(request);
+  const { session } = await authenticate.webhook(request);
 
-  console.log(`Received ${topic} webhook for ${shop}`);
-  const current = payload.current;
-
-  if (session) {
-    await db.session.update({
-      where: {
-        id: session.id,
-      },
-      data: {
-        scope: current.toString(),
-      },
-    });
+  if (!session) {
+    return new Response("No session found", { status: 200 });
   }
 
-  return new Response();
+  // Exemple : mettre à jour les scopes dans ta DB si tu enregistres ça
+  await prisma.session.updateMany({
+    where: {
+      shop: session.shop,
+    },
+    data: {
+      scopes: session.scope,
+    },
+  });
+
+  return new Response("OK");
 };
