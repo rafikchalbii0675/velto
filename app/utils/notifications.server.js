@@ -31,3 +31,11 @@ export async function deleteNotification(id) {
     where: { id },
   });
 }
+
+// ← FIX : ajouter la fonction manquante
+export async function markNotificationRead(id) {
+  return prisma.notification.update({
+    where: { id },
+    data: { read: true },
+  });
+}
