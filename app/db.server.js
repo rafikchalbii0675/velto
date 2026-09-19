@@ -11,3 +11,4 @@ if (!global.__prisma__) {
 prisma = global.__prisma__;
 
 export { prisma };
+export default prisma;
