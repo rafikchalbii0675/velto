@@ -1,35 +1,32 @@
-import { authenticate } from "~/shopify.server";
+// app/routes/app.ai.jsx
+
+import { authenticate } from "../shopify.server";   // ← FIX alias "~"
 import { redirect } from "@remix-run/node";
-import { prisma } from "~/db.server";
+import { prisma } from "../db.server";              // ← FIX alias "~"
 
-// ---------------------------------------------------------
-// AUTO-LOGIN SHOPIFY (obligatoire pour apps embarquées)
-// ---------------------------------------------------------
+// ---------------------------------------------------------------
+// Page principale de l’IA Velto
+// ---------------------------------------------------------------
 
-export async function loader({ request }) {
-  // Authentification automatique via OAuth Shopify
-  const { session, shop, user } = await authenticate.admin(request);
+export const loader = async ({ request }) => {
+  const { session } = await authenticate.admin(request);
 
-  // ---------------------------------------------------------
-  // AUTO-CRÉATION DU USER VELTO (si inexistant)
-  // ---------------------------------------------------------
-  await prisma.veltoUser.upsert({
-    where: { shop },
-    update: {},
-    create: { shop },
+  if (!session) {
+    return redirect("/auth/login");
+  }
+
+  const aiSettings = await prisma.aiSettings.findUnique({
+    where: { shop: session.shop },
   });
 
-  // ---------------------------------------------------------
-  // REDIRECTION AUTOMATIQUE VERS LE DASHBOARD VELTO PRO
-  // ---------------------------------------------------------
-  return redirect("/app.dashboard");
-}
+  return aiSettings || {};
+};
 
-// ---------------------------------------------------------
-// Pas d'interface, pas de formulaire, pas d'email.
-// Shopify gère déjà l'identité du marchand.
-// ---------------------------------------------------------
-
-export default function AppEntry() {
-  return null;
+export default function VeltoAIPage() {
+  return (
+    <div>
+      <h1>Velto AI</h1>
+      {/* Ton UI ici */}
+    </div>
+  );
 }
