@@ -5,7 +5,7 @@ import { useLoaderData, Form } from "@remix-run/react";
 import { requireUserId } from "~/session.server";
 
 // IMPORTANT : alias "~" casse dans Railway  chemin relatif 100% fiable
-import { prisma } from "../db.server";
+import prisma from "../db.server";
 
 // ◆ Loader : récupère les paramètres Autopilot IA du marchand
 export async function loader({ request }) {
