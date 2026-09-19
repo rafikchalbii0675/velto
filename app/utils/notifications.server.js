@@ -1,27 +1,33 @@
-import db from "../db.server";
+// app/utils/notifications.server.js
+
+import { prisma } from "../db.server";   // ← FIX : import correct
 
 export async function createNotification({
-  type,
-  level = "info",
+  shop,
   title,
   message,
+  level = "info",
 }) {
-  return db.notification.create({
-    data: { type, level, title, message },
+  return prisma.notification.create({
+    data: {
+      shop,
+      title,
+      message,
+      level,
+    },
   });
 }
 
-export async function getNotifications({ onlyUnread = false } = {}) {
-  return db.notification.findMany({
-    where: onlyUnread ? { read: false } : {},
-    orderBy: { id: "desc" },
+export async function getNotifications(shop) {
+  return prisma.notification.findMany({
+    where: { shop },
+    orderBy: { createdAt: "desc" },
     take: 50,
   });
 }
 
-export async function markNotificationRead(id) {
-  return db.notification.update({
+export async function deleteNotification(id) {
+  return prisma.notification.delete({
     where: { id },
-    data: { read: true },
   });
 }
