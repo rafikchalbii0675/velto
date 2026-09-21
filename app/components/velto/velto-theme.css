@@ -1,27 +1,27 @@
-/* Thème Velto — Cozy Warm (vert océan / vert forêt / jaune) */
+/* Thème Velto — Cozy Warm (vert océan profond / vert nature / jaune) */
 
 :root {
   /* Verts — en-tête, accents, item de nav actif */
-  --velto-ocean: #0F6E56;
-  --velto-ocean-dark: #085041;
-  --velto-forest: #27500A;
-  --velto-forest-dark: #173404;
-  --velto-forest-soft: #639922;
-  --velto-forest-tint: #EAF3DE;
+  --velto-ocean: #0d3d33;
+  --velto-ocean-dark: #082a23;
+  --velto-forest: #355e3b;
+  --velto-forest-dark: #1f3a23;
+  --velto-forest-soft: #6b8f5e;
+  --velto-forest-tint: #ffffff;
 
-  /* Jaune — boutons, badges */
-  --velto-yellow: #FAC775;
-  --velto-yellow-strong: #EF9F27;
-  --velto-yellow-text: #412402;
+  /* Jaune — boutons, badges, texte gras, icônes */
+  --velto-yellow: #f5d6a0;
+  --velto-yellow-strong: #e0b876;
+  --velto-yellow-text: #2c1c05;
 
-  /* Fond — toujours blanc cassé */
-  --velto-bg: #FAFAF7;
-  --velto-card-bg: #FFFFFF;
-  --velto-border: #E5E3DA;
+  /* Fond — dominé par le vert océan profond */
+  --velto-bg: #0d1f1a;
+  --velto-card-bg: #132922;
+  --velto-border: #234a3d;
 
   /* Texte */
-  --velto-text-primary: #2C2C2A;
-  --velto-text-secondary: #5F5E5A;
+  --velto-text-primary: #ffffff;
+  --velto-text-secondary: #a8c3b6;
 }
 
 /* En-tête principal */
@@ -54,7 +54,7 @@
 /* Bouton secondaire (contour vert) */
 .velto-btn-secondary {
   background: transparent;
-  color: var(--velto-forest);
+  color: var(--velto-forest-soft);
   border: 1px solid var(--velto-forest-soft);
   font-weight: 500;
   padding: 8px 16px;
@@ -73,10 +73,12 @@
 /* Fond global de page et cartes */
 .velto-page-bg {
   background: var(--velto-bg);
+  color: var(--velto-text-primary);
 }
 
 .velto-card {
   background: var(--velto-card-bg);
   border: 1px solid var(--velto-border);
   border-radius: 12px;
+  color: var(--velto-text-primary);
 }

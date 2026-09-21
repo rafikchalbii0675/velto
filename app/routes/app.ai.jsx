@@ -1,32 +1,42 @@
-// app/routes/app.ai.jsx
-
-import { authenticate } from "../shopify.server";   // ← FIX alias "~"
-import { redirect } from "@remix-run/node";
-import { prisma } from "../db.server";              // ← FIX alias "~"
-
-// ---------------------------------------------------------------
-// Page principale de l’IA Velto
-// ---------------------------------------------------------------
+import { json, redirect } from "@remix-run/node";
+import { useLoaderData } from "@remix-run/react";
+import { authenticate } from "../shopify.server";
+import { prisma } from "../db.server";
+import VeltoLayout from "../components/velto/VeltoLayout";
 
 export const loader = async ({ request }) => {
   const { session } = await authenticate.admin(request);
 
   if (!session) {
-    return redirect("/auth/login");
+    return json({ error: "No session found" });
   }
 
-  const aiSettings = await prisma.aiSettings.findUnique({
+  // Vérification abonnement
+  const subscription = await prisma.subscription.findUnique({
     where: { shop: session.shop },
   });
 
-  return aiSettings || {};
+  if (!subscription || !subscription.active) {
+    return redirect("/app.billing.page");
+  }
+
+  // Exemple : résumé AI simple
+  const aiSummary = `Analyse AI : votre boutique montre une activité stable cette semaine.`;
+
+  return json({ aiSummary });
 };
 
-export default function VeltoAIPage() {
+export default function VeltoAI() {
+  const data = useLoaderData();
+
   return (
-    <div>
-      <h1>Velto AI</h1>
-      {/* Ton UI ici */}
-    </div>
+    <VeltoLayout title="Analyse AI">
+      <div className="space-y-4">
+        <section className="p-4 bg-blue-50 rounded-lg">
+          <h2 className="text-xl font-bold">Résumé AI</h2>
+          <p>{data.aiSummary}</p>
+        </section>
+      </div>
+    </VeltoLayout>
   );
 }
