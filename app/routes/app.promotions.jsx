@@ -1,19 +1,19 @@
 import { useLoaderData } from "@remix-run/react";
+import { authenticate } from "~/shopify.server";
 import VeltoLayout from "~/components/velto/VeltoLayout";
 
-export const loader = async ({ context }) => {
-  // Récupération des promotions Shopify
-  const priceRules = await context.admin.rest.resources.PriceRule.all();
-  const discountCodes = await context.admin.rest.resources.DiscountCode.all();
+export const loader = async ({ request }) => {
+  // Connexion officielle Shopify Admin API
+  const { admin } = await authenticate.admin(request);
 
-  return {
-    priceRules: priceRules.data,
-    discountCodes: discountCodes.data,
-  };
+  // Exemple : récupérer les produits pour les promotions
+  const products = await admin.rest.resources.Product.all();
+
+  return { products };
 };
 
 export default function PromotionsPage() {
-  const { priceRules, discountCodes } = useLoaderData();
+  const { products } = useLoaderData();
 
   return (
     <VeltoLayout>
@@ -25,42 +25,100 @@ export default function PromotionsPage() {
           margin: "0 auto",
         }}
       >
-        <h1 className="velto-title-lg" style={{ marginBottom: "var(--velto-space-lg)" }}>
-          Promotions Shopify
+        <h1
+          className="velto-title-lg"
+          style={{ marginBottom: "var(--velto-space-lg)" }}
+        >
+          🎯 Promotions intelligentes
         </h1>
 
-        <p style={{ color: "var(--velto-text-secondary)", marginBottom: "var(--velto-space-lg)" }}>
-          Promotions actives récupérées depuis votre boutique Shopify.
+        <p
+          style={{
+            color: "var(--velto-text-secondary)",
+            marginBottom: "var(--velto-space-lg)",
+          }}
+        >
+          Module de promotions basé sur vos produits Shopify.
         </p>
 
-        <div style={{ display: "flex", flexDirection: "column", gap: "var(--velto-space-lg)" }}>
-          {priceRules.map((rule) => (
-            <div key={rule.id} className="velto-card">
-              <h3 className="velto-title-md">{rule.title}</h3>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "var(--velto-space-lg)",
+          }}
+        >
+          {products.map((p) => (
+            <div key={p.id} className="velto-card">
+              <h3 className="velto-title-md">{p.title}</h3>
 
-              <p style={{ marginTop: "var(--velto-space-md)" }}>
-                Type: {rule.value_type}
-              </p>
-              <p>Valeur: {rule.value}</p>
-              <p>État: {rule.entitled_product_ids?.length > 0 ? "Active" : "Inactive"}</p>
+              <div
+                style={{
+                  marginTop: "var(--velto-space-md)",
+                  display: "flex",
+                  gap: "var(--velto-space-md)",
+                  flexWrap: "wrap",
+                }}
+              >
+                <span
+                  style={{
+                    background: "var(--velto-bg)",
+                    border: "1px solid var(--velto-border)",
+                    padding: "6px 10px",
+                    borderRadius: "var(--velto-radius-sm)",
+                    fontSize: "var(--velto-title-sm)",
+                    fontWeight: 600,
+                  }}
+                >
+                  ID : {p.id}
+                </span>
+
+                <span
+                  style={{
+                    background: "var(--velto-bg)",
+                    border: "1px solid var(--velto-border)",
+                    padding: "6px 10px",
+                    borderRadius: "var(--velto-radius-sm)",
+                    fontSize: "var(--velto-title-sm)",
+                    fontWeight: 600,
+                  }}
+                >
+                  Variantes : {p.variants.length}
+                </span>
+
+                <span
+                  style={{
+                    background: "var(--velto-bg)",
+                    border: "1px solid var(--velto-border)",
+                    padding: "6px 10px",
+                    borderRadius: "var(--velto-radius-sm)",
+                    fontSize: "var(--velto-title-sm)",
+                    fontWeight: 600,
+                  }}
+                >
+                  Statut : {p.status}
+                </span>
+              </div>
+
+              {p.images?.length > 0 && (
+                <img
+                  src={p.images[0].src}
+                  alt={p.title}
+                  style={{
+                    width: "120px",
+                    borderRadius: "var(--velto-radius-md)",
+                    marginTop: "var(--velto-space-md)",
+                  }}
+                />
+              )}
 
               <div style={{ marginTop: "var(--velto-space-lg)" }}>
-                <button className="velto-btn-primary">Voir la promotion</button>
+                <button className="velto-btn-primary">
+                  Créer une promotion →
+                </button>
               </div>
             </div>
           ))}
-
-          {discountCodes.length > 0 && (
-            <div className="velto-card">
-              <h3 className="velto-title-md">Codes de réduction</h3>
-
-              {discountCodes.map((code) => (
-                <p key={code.id} style={{ marginTop: "var(--velto-space-sm)" }}>
-                  Code: {code.code}
-                </p>
-              ))}
-            </div>
-          )}
         </div>
       </div>
     </VeltoLayout>

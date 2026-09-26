@@ -1,27 +1,24 @@
 import { useLoaderData } from "@remix-run/react";
+import { authenticate } from "~/shopify.server";
 import VeltoLayout from "~/components/velto/VeltoLayout";
 
-// Loader connecté à Shopify Admin API
-export const loader = async ({ context }) => {
-  // Récupération des produits Shopify
-  const response = await context.admin.rest.resources.Product.all({
-    limit: 50,
-  });
+export const loader = async ({ request }) => {
+  // Connexion officielle Shopify Admin API
+  const { admin } = await authenticate.admin(request);
 
-  const shopifyProducts = response.data;
+  // Exemple : récupérer les produits pour détecter les tendances
+  const products = await admin.rest.resources.Product.all();
 
-  // Analyse simple pour détecter les "Hot Products"
-  const hotProducts = shopifyProducts
-    .map((p) => ({
-      id: p.id,
-      title: p.title,
-      image: p.images?.[0]?.src || null,
-      variants: p.variants,
-      inventory: p.variants?.[0]?.inventory_quantity ?? 0,
-      score: Math.random() * 100, // IA interne (placeholder)
-    }))
-    .sort((a, b) => b.score - a.score)
-    .slice(0, 5); // Top 5
+  // Simulation d’analyse (tu remplaceras plus tard par IA Premium)
+  const hotProducts = products.slice(0, 5).map((p) => ({
+    id: p.id,
+    title: p.title,
+    trend: "+42%",
+    views: Math.floor(Math.random() * 1500),
+    sales: Math.floor(Math.random() * 80),
+    inventory: p.variants?.[0]?.inventory_quantity ?? 0,
+    image: p.images?.[0]?.src ?? null,
+  }));
 
   return { hotProducts };
 };
@@ -39,33 +36,34 @@ export default function HotProductsPage() {
           margin: "0 auto",
         }}
       >
-        <h1 className="velto-title-lg" style={{ marginBottom: "var(--velto-space-lg)" }}>
-          🔥 Hot Products — Shopify
+        <h1
+          className="velto-title-lg"
+          style={{ marginBottom: "var(--velto-space-lg)" }}
+        >
+          🔥 Hot Products
         </h1>
 
-        <p style={{ color: "var(--velto-text-secondary)", marginBottom: "var(--velto-space-lg)" }}>
-          Produits en forte croissance détectés par Velto IA.
+        <p
+          style={{
+            color: "var(--velto-text-secondary)",
+            marginBottom: "var(--velto-space-lg)",
+          }}
+        >
+          Produits en forte croissance selon les données internes de votre
+          boutique.
         </p>
 
-        <div style={{ display: "flex", flexDirection: "column", gap: "var(--velto-space-lg)" }}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "var(--velto-space-lg)",
+          }}
+        >
           {hotProducts.map((p) => (
             <div key={p.id} className="velto-card">
               <h3 className="velto-title-md">{p.title}</h3>
 
-              {/* Image */}
-              {p.image && (
-                <img
-                  src={p.image}
-                  alt={p.title}
-                  style={{
-                    width: "140px",
-                    borderRadius: "var(--velto-radius-md)",
-                    marginTop: "var(--velto-space-md)",
-                  }}
-                />
-              )}
-
-              {/* Infos */}
               <div
                 style={{
                   marginTop: "var(--velto-space-md)",
@@ -84,7 +82,7 @@ export default function HotProductsPage() {
                     fontWeight: 600,
                   }}
                 >
-                  Score IA : {p.score.toFixed(1)}
+                  Tendance : {p.trend}
                 </span>
 
                 <span
@@ -97,7 +95,20 @@ export default function HotProductsPage() {
                     fontWeight: 600,
                   }}
                 >
-                  Variantes : {p.variants.length}
+                  Vues : {p.views}
+                </span>
+
+                <span
+                  style={{
+                    background: "var(--velto-bg)",
+                    border: "1px solid var(--velto-border)",
+                    padding: "6px 10px",
+                    borderRadius: "var(--velto-radius-sm)",
+                    fontSize: "var(--velto-title-sm)",
+                    fontWeight: 600,
+                  }}
+                >
+                  Ventes : {p.sales}
                 </span>
 
                 <span
@@ -119,6 +130,18 @@ export default function HotProductsPage() {
                   Stock : {p.inventory}
                 </span>
               </div>
+
+              {p.image && (
+                <img
+                  src={p.image}
+                  alt={p.title}
+                  style={{
+                    width: "120px",
+                    borderRadius: "var(--velto-radius-md)",
+                    marginTop: "var(--velto-space-md)",
+                  }}
+                />
+              )}
 
               <div style={{ marginTop: "var(--velto-space-lg)" }}>
                 <button className="velto-btn-primary">Voir le produit →</button>

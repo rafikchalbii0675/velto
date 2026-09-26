@@ -238,3 +238,25 @@ model GdprRequest {
   autoPromoEnabled     Boolean  @default(false)
   updatedAt            DateTime @updatedAt
 }
+model Shop {
+  id                Int      @id @default(autoincrement())
+  shop              String   @unique
+  plan              String   @default("FREE") // FREE | PRO | PREMIUM
+  subscriptionId    String?  // ID Shopify de l'abonnement
+  status            String   @default("ACTIVE") // ACTIVE | CANCELLED
+  activatedAt       DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+model IaLog {
+  id        String   @id @default(cuid())
+  userId    String
+  module    String
+  input     String
+  output    String
+  createdAt DateTime @default(now())
+}
+model IaCredits {
+  id        String   @id @default(cuid())
+  userId    String
+  credits   Int      @default(50)
+}

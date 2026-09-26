@@ -40,6 +40,13 @@ export function checkKeys() {
     keys,
   };
 }
+<div
+  className={`px-3 py-1 rounded-full text-white inline-block ${
+    iaLevel === "PREMIUM" ? "bg-purple-600" : "bg-blue-600"
+  }`}
+>
+  {iaLevel}
+</div>
 
 // Vérifie les warnings
 export function getWarnings() {

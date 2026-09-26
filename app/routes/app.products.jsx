@@ -1,9 +1,13 @@
 import { useLoaderData } from "@remix-run/react";
+import { authenticate } from "~/shopify.server";
 import VeltoLayout from "~/components/velto/VeltoLayout";
 
-export const loader = async ({ context }) => {
+export const loader = async ({ request }) => {
   // Connexion officielle Shopify Admin API
-  const products = await context.admin.rest.resources.Product.all();
+  const { admin } = await authenticate.admin(request);
+
+  // Récupération des produits via l’API REST
+  const products = await admin.rest.resources.Product.all();
 
   return { products };
 };
@@ -21,15 +25,29 @@ export default function ProductsPage() {
           margin: "0 auto",
         }}
       >
-        <h1 className="velto-title-lg" style={{ marginBottom: "var(--velto-space-lg)" }}>
+        <h1
+          className="velto-title-lg"
+          style={{ marginBottom: "var(--velto-space-lg)" }}
+        >
           🛒 Produits Shopify
         </h1>
 
-        <p style={{ color: "var(--velto-text-secondary)", marginBottom: "var(--velto-space-lg)" }}>
+        <p
+          style={{
+            color: "var(--velto-text-secondary)",
+            marginBottom: "var(--velto-space-lg)",
+          }}
+        >
           Produits réels récupérés depuis votre boutique Shopify.
         </p>
 
-        <div style={{ display: "flex", flexDirection: "column", gap: "var(--velto-space-lg)" }}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "var(--velto-space-lg)",
+          }}
+        >
           {products.map((p) => (
             <div key={p.id} className="velto-card">
               <h3 className="velto-title-md">{p.title}</h3>

@@ -1,52 +1,28 @@
-// app/routes/app.ai.autopilot.settings.jsx
+import VeltoLayout from "../components/velto/VeltoLayout";
+import { prisma } from "../utils/db.server";
 
-// IMPORTANT : alias "~" casse dans Railway → chemin relatif obligatoire
-import { prisma } from "../db.server";   // ← FIX : import correct
-import { authenticate } from "../shopify.server";
-
-// ◆ Loader : récupère les paramètres Autopilot IA du marchand
-export const loader = async ({ request }) => {
-  const { session } = await authenticate.admin(request);
-
-  if (!session) {
-    return new Response("No session found", { status: 200 });
-  }
-
-  const settings = await prisma.autopilotSettings.findUnique({
-    where: {
-      shop: session.shop,
-    },
+export async function loader() {
+  const logs = await prisma.iaLog.findMany({
+    orderBy: { createdAt: "desc" }
   });
 
-  return Response.json(settings || {});
-};
+  return { logs };
+}
 
-// ◆ Action : met à jour les paramètres Autopilot IA
-export const action = async ({ request }) => {
-  const { session } = await authenticate.admin(request);
-
-  if (!session) {
-    return new Response("No session found", { status: 200 });
-  }
-
-  const formData = await request.formData();
-
-  await prisma.autopilotSettings.upsert({
-    where: {
-      shop: session.shop,
-    },
-    update: {
-      enabled: formData.get("enabled") === "on",
-      mode: formData.get("mode"),
-      frequency: formData.get("frequency"),
-    },
-    create: {
-      shop: session.shop,
-      enabled: formData.get("enabled") === "on",
-      mode: formData.get("mode"),
-      frequency: formData.get("frequency"),
-    },
-  });
-
-  return new Response("OK");
-};
+export default function AiLogs() {
+  return (
+    <VeltoLayout title="Historique IA">
+      <div className="space-y-6">
+        {logs.map(log => (
+          <div key={log.id} className="p-4 bg-white border rounded-xl">
+            <p><strong>Module :</strong> {log.module}</p>
+            <p><strong>Input :</strong> {log.input}</p>
+            <p><strong>Output :</strong></p>
+            <pre className="whitespace-pre-wrap">{log.output}</pre>
+            <p className="text-sm opacity-70">{log.createdAt}</p>
+          </div>
+        ))}
+      </div>
+    </VeltoLayout>
+  );
+}
