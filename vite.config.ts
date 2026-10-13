@@ -16,10 +16,15 @@ export default defineConfig({
   ],
   build: {
     rollupOptions: {
-      external: ["@shopify/shopify-api/adapters/node"],
+      external: [
+        "@shopify/shopify-api",
+        "@shopify/shopify-api/adapters/node",
+        "@shopify/shopify-app-remix",
+        "@shopify/shopify-app-remix/adapters/node",
+      ],
     },
   },
   ssr: {
-    noExternal: [/^@shopify\/shopify-app-remix/],
+    noExternal: [],
   },
 });
