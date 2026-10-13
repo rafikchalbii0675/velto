@@ -1,15 +1,14 @@
-import VeltoLayout from "../components/velto/VeltoLayout";
-import db from "../db.server";
+﻿import VeltoLayout from "../components/velto/VeltoLayout";
+import { useLoaderData } from "@remix-run/react";
+import db from "../db.server.js";
 
 export async function loader() {
-  const logs = await db.iaLog.findMany({
-    orderBy: { createdAt: "desc" }
-  });
-
+  const logs = await db.iaLog.findMany({ orderBy: { createdAt: "desc" }, take: 50 });
   return { logs };
 }
 
 export default function AiLogs() {
+  const { logs } = useLoaderData();
   return (
     <VeltoLayout title="Historique IA">
       <div className="space-y-6">
@@ -18,8 +17,8 @@ export default function AiLogs() {
             <p><strong>Module :</strong> {log.module}</p>
             <p><strong>Input :</strong> {log.input}</p>
             <p><strong>Output :</strong></p>
-            <pre className="whitespace-pre-wrap">{log.output}</pre>
-            <p className="text-sm opacity-70">{log.createdAt}</p>
+            <pre className="whitespace-pre-wrap text-xs">{log.output}</pre>
+            <p className="text-sm opacity-70">{String(log.createdAt)}</p>
           </div>
         ))}
       </div>
