@@ -14,17 +14,6 @@ export default defineConfig({
     }),
     tsconfigPaths(),
   ],
-  build: {
-    rollupOptions: {
-      external: [
-        "@shopify/shopify-api",
-        "@shopify/shopify-api/adapters/node",
-        "@shopify/shopify-app-remix",
-        "@shopify/shopify-app-remix/adapters/node",
-      ],
-    },
-  },
-  ssr: {
-    noExternal: [],
-  },
+  build: { rollupOptions: { external: [] } },
+  ssr: { noExternal: [/^@shopify\//] },
 });
