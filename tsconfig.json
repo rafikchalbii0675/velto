@@ -1,7 +1,11 @@
 {
   "include": [
-    "app/**/*.jsx",
+    "app/**/*.ts",
+    "app/**/*.tsx",
     "app/**/*.js",
+    "app/**/*.jsx",
+    "**/*.ts",
+    "**/*.tsx",
     "**/*.js",
     "**/*.jsx"
   ],

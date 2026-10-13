@@ -1,10 +1,10 @@
-import { PassThrough } from "stream";
-import { renderToPipeableStream } from "react-dom/server";
+import { PassThrough } from "node:stream";
+import { createReadableStreamFromReadable } from "@remix-run/node";
 import { RemixServer } from "@remix-run/react";
+import { renderToPipeableStream } from "react-dom/server";
 import { isbot } from "isbot";
-import { shopify } from "./shopify.server";
 
-const ABORT_DELAY = 5000;
+const ABORT_DELAY = 5_000;
 
 export default function handleRequest(
   request,
@@ -12,101 +12,22 @@ export default function handleRequest(
   responseHeaders,
   remixContext
 ) {
-  // Shopify ajoute ses propres headers
-  shopify.addDocumentResponseHeaders(request, responseHeaders);
-
-  return isbot(request.headers.get("user-agent"))
-    ? handleBotRequest(
-        request,
-        responseStatusCode,
-        responseHeaders,
-        remixContext
-      )
-    : handleBrowserRequest(
-        request,
-        responseStatusCode,
-        responseHeaders,
-        remixContext
-      );
-}
-
-/* ---------------------------------------------------------
-   BOT REQUEST (Google, Bing, etc.)
---------------------------------------------------------- */
-function handleBotRequest(
-  request,
-  responseStatusCode,
-  responseHeaders,
-  remixContext
-) {
+  const prohibitsOutOfOrderTags = !request.headers.get("user-agent") || isbot(request.headers.get("user-agent"));
+  
   return new Promise((resolve, reject) => {
+    let shellRendered = false;
     const { pipe, abort } = renderToPipeableStream(
-      <RemixServer context={remixContext} url={request.url} />,
-      {
-        onAllReady() {
-          responseHeaders.set("Content-Type", "text/html");
-
-          //  Correction Shopify iframe
-          responseHeaders.delete("X-Frame-Options");
-          responseHeaders.set(
-            "Content-Security-Policy",
-            "frame-ancestors https://admin.shopify.com https://*.shopify.com;"
-          );
-
-          const body = new PassThrough();
-
-          resolve(
-            new Response(body, {
-              headers: responseHeaders,
-              status: responseStatusCode,
-            })
-          );
-
-          pipe(body);
-        },
-
-        onShellError(error) {
-          reject(error);
-        },
-
-        onError(error) {
-          responseStatusCode = 500;
-          console.error(error);
-        },
-      }
-    );
-
-    setTimeout(abort, ABORT_DELAY + 1000);
-  });
-}
-
-/* ---------------------------------------------------------
-   BROWSER REQUEST (Shopify Admin)
---------------------------------------------------------- */
-function handleBrowserRequest(
-  request,
-  responseStatusCode,
-  responseHeaders,
-  remixContext
-) {
-  return new Promise((resolve, reject) => {
-    const { pipe, abort } = renderToPipeableStream(
-      <RemixServer context={remixContext} url={request.url} />,
+      <RemixServer context={remixContext} url={request.url} abortDelay={ABORT_DELAY} />,
       {
         onShellReady() {
+          shellRendered = true;
+          const body = new PassThrough();
+          const stream = createReadableStreamFromReadable(body);
+
           responseHeaders.set("Content-Type", "text/html");
 
-          //  Correction Shopify iframe
-          responseHeaders.delete("X-Frame-Options");
-          responseHeaders.set(
-            "Content-Security-Policy",
-            "frame-ancestors https://admin.shopify.com https://*.shopify.com;"
-          );
-
-          const body = new PassThrough();
-
           resolve(
-            new Response(body, {
+            new Response(stream, {
               headers: responseHeaders,
               status: responseStatusCode,
             })
@@ -114,18 +35,18 @@ function handleBrowserRequest(
 
           pipe(body);
         },
-
         onShellError(error) {
           reject(error);
         },
-
         onError(error) {
           responseStatusCode = 500;
-          console.error(error);
+          if (shellRendered) {
+            console.error(error);
+          }
         },
       }
     );
 
-    setTimeout(abort, ABORT_DELAY + 1000);
+    setTimeout(abort, ABORT_DELAY);
   });
 }

@@ -1,9 +1,12 @@
 # Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 
 client_id = "f99b070bef6dec2b4386313ebe0af234"
+name = "Velto"
 application_url = "https://velto-production.up.railway.app"
 embedded = true
-name = "Velto"
+
+[build]
+automatically_update_urls_on_dev = true
 
 [webhooks]
 api_version = "2026-07"
@@ -18,6 +21,3 @@ scopes = "read_discounts,read_orders,read_products,write_discounts,write_orders,
 
 [auth]
 redirect_urls = [ "https://velto-production.up.railway.app/api/auth" ]
-
-[build]
-automatically_update_urls_on_dev = true
