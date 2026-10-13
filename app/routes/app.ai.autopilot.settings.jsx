@@ -1,9 +1,9 @@
 ﻿import VeltoLayout from "../components/velto/VeltoLayout";
 import { useLoaderData } from "@remix-run/react";
-import db from "../db.server.js";
+import { prisma } from "../db.server.js";
 
 export async function loader() {
-  const logs = await db.iaLog.findMany({ orderBy: { createdAt: "desc" }, take: 50 });
+  const logs = await prisma.iaLog.findMany({ orderBy: { createdAt: "desc" }, take: 50 });
   return { logs };
 }
 
