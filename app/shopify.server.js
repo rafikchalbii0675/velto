@@ -1,90 +1,66 @@
 import "@shopify/shopify-api/adapters/node";
-import { shopifyApi, ApiVersion } from "@shopify/shopify-api";
+import { shopifyApp } from "@shopify/shopify-app-remix/server";
+import { prisma } from "./db.server";
 
-// Velto - Shopify Server Utilities
-// Gestion des appels Admin API (REST)
-
-// Initialisation de l'API Shopify
-export const shopify = shopifyApi({
+const shopify = shopifyApp({
   apiKey: process.env.SHOPIFY_API_KEY,
-  apiSecretKey: process.env.SHOPIFY_API_SECRET,
-  apiVersion: ApiVersion.October24,
-  scopes: process.env.SCOPES.split(","),
-  hostName: process.env.SHOPIFY_APP_URL.replace("https://", ""),
+  apiSecretKey: process.env.SHOPIFY_API_SECRET || "",
+  apiVersion: "2024-10",
+  scopes: process.env.SCOPES?.split(","),
+  appUrl: process.env.SHOPIFY_APP_URL || "",
+  authPathPrefix: "/auth",
+  sessionStorage: {
+    storeSession: async (session) => {
+      await prisma.session.upsert({
+        where: { id: session.id },
+        update: { 
+          shop: session.shop, 
+          state: session.state, 
+          isOnline: session.isOnline, 
+          scope: session.scope, 
+          expires: session.expires, 
+          accessToken: session.accessToken, 
+          userId: session.userId ? String(session.userId) : null 
+        },
+        create: { 
+          id: session.id, 
+          shop: session.shop, 
+          state: session.state, 
+          isOnline: session.isOnline || false, 
+          scope: session.scope || "", 
+          expires: session.expires, 
+          accessToken: session.accessToken || "", 
+          userId: session.userId ? String(session.userId) : null 
+        },
+      });
+      return true;
+    },
+    loadSession: async (id) => {
+      const s = await prisma.session.findUnique({ where: { id } });
+      if (!s) return undefined;
+      return { ...s, userId: typeof s.userId === "string" ? BigInt(s.userId) : s.userId };
+    },
+    deleteSession: async (id) => { 
+      await prisma.session.delete({ where: { id } }); 
+      return true; 
+    },
+    deleteSessions: async (ids) => { 
+      await prisma.session.deleteMany({ where: { id: { in: ids } } }); 
+      return true; 
+    },
+    findSessionsByShop: async (shop) => { 
+      const sessions = await prisma.session.findMany({ where: { shop } }); 
+      return sessions.map(s => ({ ...s, userId: typeof s.userId === "string" ? BigInt(s.userId) : s.userId })); 
+    },
+  },
+  future: { unstable_newEmbeddedAuthStrategy: true },
 });
 
-// Création d’un produit Shopify via Admin API
-export async function createShopifyProduct(session, product) {
-  const client = new shopify.clients.Rest({ session });
-
-  const response = await client.post({
-    path: "products",
-    data: {
-      product: {
-        title: product.title,
-        body_html: product.description,
-        vendor: "Velto IA",
-        product_type: product.category || "IA Generated",
-        tags: product.tags,
-        variants: [
-          {
-            price: product.price || "0.00",
-          },
-        ],
-      },
-    },
-  });
-
-  return response.body.product;
-}
-
-// Mise à jour d’un produit Shopify
-export async function updateShopifyProduct(session, productId, updates) {
-  const client = new shopify.clients.Rest({ session });
-
-  const response = await client.put({
-    path: `products/${productId}`,
-    data: {
-      product: {
-        id: productId,
-        ...updates,
-      },
-    },
-  });
-
-  return response.body.product;
-}
-
-// Suppression d’un produit Shopify
-export async function deleteShopifyProduct(session, productId) {
-  const client = new shopify.clients.Rest({ session });
-
-  const response = await client.delete({
-    path: `products/${productId}`,
-  });
-
-  return response;
-}
-
-// Récupération d’un produit Shopify
-export async function getShopifyProduct(session, productId) {
-  const client = new shopify.clients.Rest({ session });
-
-  const response = await client.get({
-    path: `products/${productId}`,
-  });
-
-  return response.body.product;
-}
-
-// Récupération de tous les produits Shopify
-export async function listShopifyProducts(session, limit = 50) {
-  const client = new shopify.clients.Rest({ session });
-
-  const response = await client.get({
-    path: "products",
-    query: { limit },
-  });
-
-  return response.body.products;
-}
+export default shopify;
+export const apiVersion = shopify.apiVersion;
+export const addDocumentResponseHeaders = shopify.addDocumentResponseHeaders;
+export const authenticate = shopify.authenticate;
+export const unauthenticated = shopify.unauthenticated;
+export const login = shopify.login;
+export const registerWebhooks = shopify.registerWebhooks;
+export const sessionStorage = shopify.sessionStorage;
