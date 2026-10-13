@@ -1,8 +1,8 @@
 import VeltoLayout from "../components/velto/VeltoLayout";
-import { prisma } from "../utils/db.server";
+import db from "../db.server";
 
 export async function loader() {
-  const logs = await prisma.iaLog.findMany({
+  const logs = await db.iaLog.findMany({
     orderBy: { createdAt: "desc" }
   });
 
