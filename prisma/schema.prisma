@@ -9,7 +9,7 @@ generator client {
 
 model Points {
   id        String   @id @default(cuid())
-  shopId    String   @unique
+  shopId    String
   total     Int      @default(0)
   month     Int      @default(0)
   level     String   @default("Bronze Cozy")
@@ -21,12 +21,6 @@ model Logs {
   type    String
   message String
   date    String
-}
-
-model Shop {
-  id        String   @id @default(cuid())
-  shopId    String   @unique
-  createdAt DateTime @default(now())
 }
 
 model CryptoSale {
@@ -202,51 +196,56 @@ model OwnerReward {
   type      String
   createdAt DateTime @default(now())
 }
+
 model Session {
-  id          String    @id @default(cuid())
-  shop        String
-  state       String
-  isOnline    Boolean
-  scope       String?
-  expires     DateTime?
-  accessToken String?
-  userId          BigInt?
-  firstName       String?
-  lastName        String?
-  email           String?
-  accountOwner    Boolean   @default(false)
-  locale          String?
-  collaborator    Boolean?  @default(false)
-  emailVerified   Boolean?  @default(false)
+  id             String    @id @default(cuid())
+  shop           String
+  state          String
+  isOnline       Boolean
+  scope          String?
+  expires        DateTime?
+  accessToken    String?
+  userId         BigInt?
+  firstName      String?
+  lastName       String?
+  email          String?
+  accountOwner   Boolean   @default(false)
+  locale         String?
+  collaborator   Boolean?  @default(false)
+  emailVerified  Boolean?  @default(false)
 }
 
 model GdprRequest {
   id            String   @id @default(cuid())
-  type          String   // "DATA_REQUEST" | "CUSTOMER_REDACT" | "SHOP_REDACT"
+  type          String
   shopDomain    String
   customerId    String?
   customerEmail String?
   payload       String
-  status        String   @default("PENDING") // "PENDING" | "COMPLETED"
+  status        String   @default("PENDING")
   createdAt     DateTime @default(now())
-}model ShopSettings {
+}
+
+model ShopSettings {
   id                   String   @id @default(cuid())
   shopId               String   @unique
   notificationsEnabled Boolean  @default(true)
   loyaltyEnabled       Boolean  @default(true)
-  hotProductThreshold  Int      @default(30) // % de hausse avant alerte "produit chaud"
+  hotProductThreshold  Int      @default(30)
   autoPromoEnabled     Boolean  @default(false)
   updatedAt            DateTime @updatedAt
 }
+
 model Shop {
   id                Int      @id @default(autoincrement())
   shop              String   @unique
-  plan              String   @default("FREE") // FREE | PRO | PREMIUM
-  subscriptionId    String?  // ID Shopify de l'abonnement
-  status            String   @default("ACTIVE") // ACTIVE | CANCELLED
+  plan              String   @default("FREE")
+  subscriptionId    String?
+  status            String   @default("ACTIVE")
   activatedAt       DateTime @default(now())
   updatedAt         DateTime @updatedAt
 }
+
 model IaLog {
   id        String   @id @default(cuid())
   userId    String
@@ -255,6 +254,7 @@ model IaLog {
   output    String
   createdAt DateTime @default(now())
 }
+
 model IaCredits {
   id        String   @id @default(cuid())
   userId    String
