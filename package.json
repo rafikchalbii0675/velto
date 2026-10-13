@@ -26,6 +26,7 @@
     "bcryptjs": "^3.0.3",
     "chart.js": "^4.5.1",
     "isbot": "^5.2.2",
+    "openai": "^6.49.0",
     "prisma": "^6.12.0",
     "react": "^18.2.0",
     "react-chartjs-2": "^5.3.1",
