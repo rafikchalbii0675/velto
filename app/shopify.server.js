@@ -1,17 +1,9 @@
 import "@shopify/shopify-api/adapters/node";
-import {
-  ApiVersion,
-  AppDistribution,
-  shopifyApp,
-} from "@shopify/shopify-app-remix/server";
+import { ApiVersion, AppDistribution, shopifyApp } from "@shopify/shopify-app-remix/server";
 import { PrismaSessionStorage } from "@shopify/shopify-app-session-storage-prisma";
-
-// Ton db.server.js exporte "db", pas "prisma" - on gère les 2 cas
 import { db } from "./db.server";
-import * as dbModule from "./db.server";
 
-// On récupère prisma peu importe comment il est exporté
-const prisma = dbModule.prisma || dbModule.db || dbModule.default || db;
+const prisma = db;
 
 const shopify = shopifyApp({
   apiKey: process.env.SHOPIFY_API_KEY,
@@ -22,9 +14,7 @@ const shopify = shopifyApp({
   authPathPrefix: "/auth",
   sessionStorage: new PrismaSessionStorage(prisma),
   distribution: AppDistribution.AppStore,
-  future: {
-    unstable_newEmbeddedAuthStrategy: true,
-  },
+  future: { unstable_newEmbeddedAuthStrategy: true },
 });
 
 export default shopify;
