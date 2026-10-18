@@ -2,12 +2,12 @@
   "name": "velto",
   "private": true,
   "scripts": {
-    "build": "remix vite:build",
+    "build": "prisma generate && remix vite:build",
     "dev": "remix vite:dev --port 3000",
     "lint": "eslint --cache --cache-location ./node_modules/.cache/eslint .",
     "setup": "prisma generate && prisma migrate deploy",
     "shopify": "shopify",
-    "start": "remix-serve ./build/server/index.js",
+    "start": "prisma migrate deploy && remix-serve ./build/server/index.js",
     "typecheck": "tsc"
   },
   "engines": {
