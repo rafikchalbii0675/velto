@@ -1,63 +1,34 @@
 import "@shopify/shopify-api/adapters/node";
-import { shopifyApp } from "@shopify/shopify-app-remix/server";
-import { prisma } from "./db.server";
+import {
+  ApiVersion,
+  AppDistribution,
+  shopifyApp,
+} from "@shopify/shopify-app-remix/server";
+import { PrismaSessionStorage } from "@shopify/shopify-app-session-storage-prisma";
+
+// Ton db.server.js exporte "db", pas "prisma" - on gère les 2 cas
+import { db } from "./db.server";
+import * as dbModule from "./db.server";
+
+// On récupère prisma peu importe comment il est exporté
+const prisma = dbModule.prisma || dbModule.db || dbModule.default || db;
 
 const shopify = shopifyApp({
   apiKey: process.env.SHOPIFY_API_KEY,
   apiSecretKey: process.env.SHOPIFY_API_SECRET || "",
-  apiVersion: "2024-10",
+  apiVersion: ApiVersion.January25,
   scopes: process.env.SCOPES?.split(","),
   appUrl: process.env.SHOPIFY_APP_URL || "",
   authPathPrefix: "/auth",
-  sessionStorage: {
-    storeSession: async (session) => {
-      await prisma.session.upsert({
-        where: { id: session.id },
-        update: { 
-          shop: session.shop, 
-          state: session.state, 
-          isOnline: session.isOnline, 
-          scope: session.scope, 
-          expires: session.expires, 
-          accessToken: session.accessToken, 
-          userId: session.userId ? String(session.userId) : null 
-        },
-        create: { 
-          id: session.id, 
-          shop: session.shop, 
-          state: session.state, 
-          isOnline: session.isOnline || false, 
-          scope: session.scope || "", 
-          expires: session.expires, 
-          accessToken: session.accessToken || "", 
-          userId: session.userId ? String(session.userId) : null 
-        },
-      });
-      return true;
-    },
-    loadSession: async (id) => {
-      const s = await prisma.session.findUnique({ where: { id } });
-      if (!s) return undefined;
-      return { ...s, userId: typeof s.userId === "string" ? BigInt(s.userId) : s.userId };
-    },
-    deleteSession: async (id) => { 
-      await prisma.session.delete({ where: { id } }); 
-      return true; 
-    },
-    deleteSessions: async (ids) => { 
-      await prisma.session.deleteMany({ where: { id: { in: ids } } }); 
-      return true; 
-    },
-    findSessionsByShop: async (shop) => { 
-      const sessions = await prisma.session.findMany({ where: { shop } }); 
-      return sessions.map(s => ({ ...s, userId: typeof s.userId === "string" ? BigInt(s.userId) : s.userId })); 
-    },
+  sessionStorage: new PrismaSessionStorage(prisma),
+  distribution: AppDistribution.AppStore,
+  future: {
+    unstable_newEmbeddedAuthStrategy: true,
   },
-  future: { unstable_newEmbeddedAuthStrategy: true },
 });
 
 export default shopify;
-export const apiVersion = shopify.apiVersion;
+export const apiVersion = ApiVersion.January25;
 export const addDocumentResponseHeaders = shopify.addDocumentResponseHeaders;
 export const authenticate = shopify.authenticate;
 export const unauthenticated = shopify.unauthenticated;
