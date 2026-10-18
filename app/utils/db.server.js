@@ -1,4 +1,5 @@
-﻿import { prisma } from "../db.server.js";
-export { prisma };
-export const db = prisma;
-export default prisma;
+﻿import { db } from "../db.server.js";
+
+export const prisma = db;
+export { db };
+export default db;
