@@ -12,6 +12,13 @@ export async function loader({ request }) {
   // CHECK BETA FREE FOR LIFE - martz869
   const isBeta = isBetaFree(shopDomain) || isBetaFree(shopEmail);
 
+  const shopDomain = session.shop;
+  // On récupère l'email si dispo dans la session
+  const shopEmail = session.email || "";
+
+  // CHECK BETA FREE FOR LIFE - martz869
+  const isBeta = isBetaFree(shopDomain) || isBetaFree(shopEmail);
+
   await prisma.shop.update({
     where: { shop: session.shop },
     data: {
