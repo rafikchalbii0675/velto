@@ -12,24 +12,16 @@ export async function loader({ request }) {
   // CHECK BETA FREE FOR LIFE - martz869
   const isBeta = isBetaFree(shopDomain) || isBetaFree(shopEmail);
 
-  const shopDomain = session.shop;
-  // On récupère l'email si dispo dans la session
-  const shopEmail = session.email || "";
-
-  // CHECK BETA FREE FOR LIFE - martz869
-  const isBeta = isBetaFree(shopDomain) || isBetaFree(shopEmail);
-
   await prisma.shop.update({
     where: { shop: session.shop },
     data: {
       plan: isBeta ? "BETA_FREE" : "FREE",
       subscriptionId: null,
-      status: "ACTIVE",
-      // On ajoute un flag BETA si tu as la colonne, sinon le plan suffit
+      status: "ACTIVE"
     }
   });
 
-  console.log(`✅ ${shopDomain} activé en ${isBeta ? "BETA_FREE FOR LIFE $0" : "FREE"} - email: ${shopEmail}`);
+  console.log(`✅ ${shopDomain} activé en ${isBeta ? "BETA_FREE FOR LIFE $0" : "FREE"}`);
 
   return redirect("/app/settings/subscription");
 }
