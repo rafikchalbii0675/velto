@@ -14,6 +14,14 @@ export default defineConfig({
     }),
     tsconfigPaths(),
   ],
+  server: {
+    port: Number(process.env.PORT) || 52823,
+    host: true,
+    allowedHosts: true,
+    hmr: {
+      clientPort: 443,
+    },
+  },
   build: { rollupOptions: { external: [] } },
-  ssr: { noExternal: [/^@shopify\//] },
+  ssr: { noExternal: [/@shopify\//] },
 });
