@@ -1,0 +1,17 @@
+<div style="padding:16px;border:1px solid #FF6B35;border-radius:12px;background:#FFF8F5;display:flex;align-items:center;gap:12px;">
+<img src="{{ 'thumbs-up.png' | asset_url }}" style="width:36px;height:36px;">
+<div>
+<div style="font-weight:900;font-size:11px;color:#FF6B35;">VELTO TRUSTED CONVERSION</div>
+<div style="margin-top:6px;"><span style="text-decoration:line-through;color:#999;">USD ${{ block.settings.usd_price }}</span><span style="font-weight:bold;margin-left:10px;">CAD ${{ block.settings.cad_price }}</span></div>
+</div>
+</div>
+{% schema %}
+{
+"name": "Velto Currency USD to CAD",
+"target": "section",
+"settings": [
+{ "type": "text", "id": "usd_price", "label": "USD Price", "default": "19.99" },
+{ "type": "text", "id": "cad_price", "label": "CAD Price", "default": "26.99" }
+]
+}
+{% endschema %}q
