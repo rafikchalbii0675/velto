@@ -1,17 +1,21 @@
-﻿<div style="padding:16px;border:1px solid #FF6B35;border-radius:12px;background:#FFF8F5;display:flex;align-items:center;gap:12px;">
-<img src="{{ 'thumbs-up.png' | asset_url }}" style="width:36px;height:36px;">
+﻿{% assign rate = 1.36 %}
+{% assign usd = block.settings.usd_price | plus: 0 %}
+{% assign cad = usd | times: rate | round: 2 %}
+
+<div style="padding:16px;border:1px solid #FF6B35;border-radius:12px;background:#FFF8F5;display:flex;align-items:center;gap:12px;">
+<img src="{{ 'thumbs-up.png' | asset_url }}" width="36" height="36" style="width:36px;height:36px;" alt="VELTO TRUSTED">
 <div>
-<div style="font-weight:900;font-size:11px;color:#FF6B35;">VELTO TRUSTED CONVERSION</div>
-<div style="margin-top:6px;"><span style="text-decoration:line-through;color:#999;">USD ${{ block.settings.usd_price }}</span><span style="font-weight:bold;margin-left:10px;">CAD ${{ block.settings.cad_price }}</span></div>
+<div style="font-weight:900;font-size:11px;color:#FF6B35;letter-spacing:1px;">VELTO TRUSTED CONVERSION</div>
+<div style="margin-top:6px;"><span style="text-decoration:line-through;color:#999;">USD ${{ usd }}</span><span style="font-weight:bold;margin-left:10px;">CAD ${{ cad }}</span><span style="font-size:11px;color:#666;margin-left:6px;">(x{{ rate }})</span></div>
 </div>
 </div>
+
 {% schema %}
 {
 "name": "Velto Currency USD to CAD",
 "target": "section",
 "settings": [
-{ "type": "text", "id": "usd_price", "label": "USD Price", "default": "19.99" },
-{ "type": "text", "id": "cad_price", "label": "CAD Price", "default": "26.99" }
+{ "type": "text", "id": "usd_price", "label": "USD Price", "default": "10.00" }
 ]
 }
 {% endschema %}
